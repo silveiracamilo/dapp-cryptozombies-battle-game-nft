@@ -3,6 +3,7 @@ import { Image, Layout, Menu, MenuProps } from "antd";
 import logo from "assets/images/cryptozombies-logo.png";
 import { useNavigate } from "react-router";
 import { map } from "lodash";
+import { Paths } from "src/router/RouteConsts";
 
 const { Header, Content, Footer } = Layout;
 
@@ -19,11 +20,15 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
         item && navigate(item.route);
     }, []);
 
+    const goHome = () => {
+        navigate(Paths.HOME);
+    }
+
     return (
         <Layout style={{ width: "100vw", height: "100vh" }}>
             <Header style={{ display: 'flex', alignItems: 'center' }}>
                 <div>
-                    <Image src={logo} width={150} preview={false} />
+                    <Image src={logo} width={150} preview={false} onClick={goHome} />
                 </div>
                 <Menu
                     theme="dark"

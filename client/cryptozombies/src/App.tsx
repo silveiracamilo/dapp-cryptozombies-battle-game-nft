@@ -6,7 +6,7 @@ import Router from './router/Router'
 
 function App() {
   return (
-    <ConfigProvider>
+    <ConfigProvider theme={{ hashed: false }}>
       <ErrorBoundary FallbackComponent={FallbackErrorBoundary}>
         <AuthContextProvider>
           <Router />

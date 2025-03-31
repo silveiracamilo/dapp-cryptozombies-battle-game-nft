@@ -3,11 +3,17 @@ pragma solidity ^0.8.28;
 
 import "./ZombieAttack.sol";
 import "./ERC721.sol";
+// import { ERC721URIStorage, ERC721 } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+
 
 /// @title A contract that manages transfering zombie ownership
 /// @author Alphanet
 /// @dev Compliant with OpenZeppelin's implementation of the ERC721 spec draft
 contract ZombieOwnership is ZombieAttack, ERC721 {
+// contract ZombieOwnership is ZombieAttack, ERC721URIStorage {
+
+    constructor() {}
+    // constructor() ERC721("Zombie", "ZMB") {}
 
     mapping (uint => address) zombieApprovals;
     

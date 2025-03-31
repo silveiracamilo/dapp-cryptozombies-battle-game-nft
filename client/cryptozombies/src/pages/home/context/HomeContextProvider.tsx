@@ -1,10 +1,11 @@
-import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
-import { ethers } from 'ethers';
-import { notification } from 'antd';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
+import { Paths } from "src/router/RouteConsts";
+import ContractService from "src/store/services/ContractService";
 
 interface IHomeContext {
-    doAuth: () => void;
+    zombiesId: number[]
 }
 
 const HomeContext = createContext<IHomeContext>({} as IHomeContext);
@@ -18,28 +19,33 @@ export const useHomeContext = () => {
 }
 
 const HomeContextProvider = ({ children }: { children: ReactNode }) => {
-    const { setAddress } = useAuthContext();
+    const { address } = useAuthContext();
+    const navigate = useNavigate();
+    const [zombiesId, setZombiesId] = useState<number[]>([]);
+    const isFirst = useRef(true);
 
-    const doAuth = useCallback(async () => {
-        console.log('doAuth window.ethereum: ', window.ethereum);
-        let signer = null;
-        let provider;
-        if (typeof window.ethereum === 'undefined') {
-            notification.warning({
-                message: 'MetaMask not installed.',
-                description: <p>Please install MetaMask.</p>
-            });
-            // provider = ethers.getDefaultProvider();
-        } else {
-            provider = new ethers.BrowserProvider(window.ethereum)
-            signer = await provider.getSigner();
-            const myAddress = await signer.getAddress();
-            console.log('myAddress: ', myAddress);
-            setAddress(myAddress);
+    useEffect(() => {
+        if (isFirst.current) {
+            checkIfHasZombie();
+            isFirst.current = false;
         }
     }, []);
 
-    const contextValue = useMemo(() => ({ doAuth }), []);
+    const checkIfHasZombie = useCallback(async () => {
+        try {
+            const zombies = await ContractService.instance.getZombiesByOwner(address);
+            if (!zombies?.length) {
+                navigate(Paths.ZOMBIE_CREATE);
+            } else {
+                setZombiesId([...zombies]);
+            }
+        } catch(e) {
+            console.log('getZombiesByOwner error:', e);
+            navigate(Paths.ZOMBIE_CREATE);
+        }
+    }, []);
+
+    const contextValue = useMemo(() => ({ zombiesId }), [zombiesId]);
 
     return (
         <HomeContext.Provider value={contextValue}>

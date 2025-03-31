@@ -1,4 +1,3 @@
-import Web3 from 'web3';
 import { Eip1193Provider } from 'ethers';
 
 declare global {

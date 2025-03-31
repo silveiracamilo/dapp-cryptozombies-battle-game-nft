@@ -32,7 +32,7 @@ const LoginContextProvider = ({ children }: { children: ReactNode }) => {
             });
             // provider = ethers.getDefaultProvider();
         } else {
-            provider = new ethers.BrowserProvider(window.ethereum)
+            provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
             const myAddress = await signer.getAddress();
             console.log('myAddress: ', myAddress);

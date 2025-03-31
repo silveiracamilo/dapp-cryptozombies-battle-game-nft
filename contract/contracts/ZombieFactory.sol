@@ -8,9 +8,9 @@ import "./SafeMath16.sol";
 
 contract ZombieFactory is Ownable {
 
-    using SafeMath for uint256;
-    using SafeMath32 for uint32;
-    using SafeMath16 for uint16;
+    // using SafeMath for uint256;
+    // using SafeMath32 for uint32;
+    // using SafeMath16 for uint16;
 
     event NewZombie(uint zombieId, string name, uint dna);
 
@@ -46,7 +46,7 @@ contract ZombieFactory is Ownable {
     }
 
     function createRandomZombie(string memory _name) public {
-        require(ownerZombieCount[msg.sender] == 0);
+        require(ownerZombieCount[msg.sender] == 0, "Pode criar apenas um zumbi por conta");
         uint randDna = _generateRandomDna(_name);
         _createZombie(_name, randDna);
     }
