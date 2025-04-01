@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { Zombie } from 'src/components/zombie/Zombie';
 import { useZombieDetailContext } from './context/ZombieDetailContextProvider';
 import { zombieGenesMapper } from 'src/store/mapper/zombie/ZombieMapper';
+import moment from 'moment';
 
 const ZombieDetail: React.FC = () => {
     const { zombie } = useZombieDetailContext();
@@ -13,6 +14,13 @@ const ZombieDetail: React.FC = () => {
     }
 
     const genes = useMemo(() => zombieGenesMapper(zombie.dna), [zombie.dna]);
+    
+    const parseReadyTime = useMemo(
+        () => moment(zombie.readyTime * 1000).fromNow(), 
+        [zombie.readyTime]
+    );
+
+    console.log('zombie: ', zombie);
 
     return (
         <>
@@ -29,7 +37,9 @@ const ZombieDetail: React.FC = () => {
                 <p><strong>Level</strong>: {zombie.level}</p>
                 <p><strong>Wins</strong>: {zombie.winCount}</p>
                 <p><strong>Losses</strong>: {zombie.lossCount}</p>
-                <p><strong>Ready Time</strong>: {zombie.readyTime}</p>
+                {/* <p><strong>Ready Time</strong>: {zombie.readyTime}</p> */}
+                {/* <p><strong>Ready Time</strong>: {moment.duration(zombie.readyTime - moment().millisecond(),'milliseconds').humanize()}</p> */}
+                <p><strong>Ready Time</strong>: {parseReadyTime}</p>
                 <p><strong>Head gene</strong>: {genes.head}</p>
                 <p><strong>Eye gene</strong>: {genes.eye}</p>
                 <p><strong>Shirt gene</strong>: {genes.shirt}</p>

@@ -1,5 +1,8 @@
-import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
+import { notification } from "antd";
+import { Contract } from "ethers";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router";
+import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import ContractService from "src/store/services/ContractService";
 
@@ -18,11 +21,74 @@ export const useZombieCreateContext = () => {
 }
 
 const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
+    const { address } = useAuthContext();
     const navigate = useNavigate();
+    const contract = useRef<Contract>();
+
+    useEffect(() => {
+        addEventListener();
+        
+        return () => {
+            removeEventListener();
+        }
+    }, []);
+
+    const addEventListener = useCallback(async () => {
+        const ctct = await ContractService.instance.getContract();
+
+        // const eventTopic = ethers.id("NewZombie(address,uint,string,uint)");
+        // const ownerAddress = address; // Endereço do owner
+        // const filter = {
+        //     address: ContractService.instance.contractAddress, // Opcional: filtra eventos apenas deste contrato
+        //     topics: [
+        //         eventTopic, // Tópico do evento
+        //         ethers.zeroPadValue(ownerAddress, 32) // Filtra eventos onde `from == owner`
+        //     ]
+        // };
+
+
+        ctct.on('NewZombie', handleNewZombie);
+        // ContractService.instance.provider.on(filter, handleNewZombie);
+        contract.current = ctct;
+    }, []);
+
+    const removeEventListener = useCallback(() => {
+        if(contract.current) {
+            contract.current.off('NewZombie', handleNewZombie);
+        }
+    }, []);
+
+    // const handleNewZombie = useCallback((log: any) => {
+    //     console.log('handleNewZombie', log);
+    //     // navigate(
+    //     //     Paths.ZOMBIE_CREATE_SUCCESS
+    //     //         .replace(':id', zombieId.toString())
+    //     //         .replace(':name', name)
+    //     //         .replace(':dna', dna.toString())
+    //     // )
+    // }, []);
+    const handleNewZombie = useCallback((from: string, zombieId: number, name: string, dna: number) => {
+        console.log('handleNewZombie: ', from, zombieId, name, dna);
+        if (from === address) {
+            navigate(
+                Paths.ZOMBIE_CREATE_SUCCESS
+                    .replace(':id', zombieId.toString())
+                    .replace(':name', name)
+                    .replace(':dna', dna.toString())
+            )
+        }
+    }, []);
+    
 
     const create = useCallback(async (name: string) => {
-        await ContractService.instance.createRandomZombie(name);
-        navigate(Paths.HOME);
+        try {
+            await ContractService.instance.createRandomZombie(name);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in create zombie',
+                description: error.reason || 'Error generic'
+            });
+        }
     }, []);
 
     const contextValue = useMemo(() => ({ create }), []);

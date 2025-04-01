@@ -5,11 +5,13 @@ import "./ZombieHelper.sol";
 
 contract ZombieAttack is ZombieHelper {
 
+    event onAttackVitory(address indexed from, uint fromDna, uint targetDna, uint newDna);
+    event onAttackDefeat(address indexed from, uint fromDna, uint targetDna);
+
     uint randNonce = 0;
     uint attackVictoryProbability = 70;
 
     function randMod(uint _modulus) internal returns (uint) {
-        // randNonce = randNonce.add(1);
         randNonce = randNonce + 1;
         return uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % _modulus;
     }
@@ -24,11 +26,13 @@ contract ZombieAttack is ZombieHelper {
             myZombie.level = myZombie.level + 1;
             enemyZombie.lossCount = enemyZombie.lossCount + 1;
 
-            feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+            uint newDna = feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+            emit onAttackVitory(msg.sender, myZombie.dna, enemyZombie.dna, newDna);
         } else {
             myZombie.lossCount = myZombie.lossCount + 1;
             enemyZombie.winCount = enemyZombie.winCount + 1;
             _triggerCooldown(myZombie);
+            emit onAttackDefeat(msg.sender, myZombie.dna, enemyZombie.dna);
         }
     }
 }

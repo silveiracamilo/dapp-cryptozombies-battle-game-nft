@@ -1,6 +1,19 @@
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { notification } from "antd";
+import { Contract } from "ethers";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+import { useAuthContext } from "src/context/auth/AuthContextProvider";
+import { Paths } from "src/router/RouteConsts";
+import { useGetKittiesQuery } from "src/store/cryptokitties/api";
+import { IKitty } from "src/store/interface/cryptokitties/IKitty";
+import { IZombie } from "src/store/interface/zombie/IZombie";
+import ContractService from "src/store/services/ContractService";
 
 interface IZombieFeedContext {
+    zombie: IZombie | undefined
+    kitties: IKitty[] | undefined
+    isKittiesLoading: boolean
+    feedOnKitty: (kittyGenes: string, kittyId: number) => Promise<void>
 }
 
 const ZombieFeedContext = createContext<IZombieFeedContext>({} as IZombieFeedContext);
@@ -14,8 +27,85 @@ export const useZombieFeedContext = () => {
 }
 
 const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
+    const { address } = useAuthContext();
+    const navigate = useNavigate();
+    const { id = '' } = useParams();
+    const [zombie, setZombie] = useState<IZombie>();
+    const contract = useRef<Contract>();
+    const {
+        data: kitties,
+        isLoading: isKittiesLoading,
+    } = useGetKittiesQuery();
 
-    const contextValue = useMemo(() => ({ }), []);
+    useEffect(() => {
+        if (id) {
+            getZombieById();
+        }
+    }, [id]);
+
+    useEffect(() => {
+        addEventListener();
+        
+        return () => {
+            removeEventListener();
+        }
+    }, []);
+
+    const addEventListener = useCallback(async () => {
+        const ctct = await ContractService.instance.getContract();
+        ctct.on('onFeed', handleOnFeed);
+        contract.current = ctct;
+    }, []);
+
+    const removeEventListener = useCallback(() => {
+        if(contract.current) {
+            contract.current.off('onFeed', handleOnFeed);
+        }
+    }, []);
+
+    const handleOnFeed = useCallback((from: string, fromDna: number, targetDna: number, kittyId: number, newDna: number) => {
+        console.log('handleOnFeed: ', from, fromDna, kittyId, newDna);
+        if (from === address) {
+            navigate(
+                Paths.ZOMBIE_FEEDING
+                    .replace(':fromDna', fromDna.toString())
+                    .replace(':targetDna', targetDna.toString())
+                    .replace(':kittyId', kittyId.toString())
+                    .replace(':newDna', newDna.toString())
+            )
+        }
+    }, []);
+
+    const getZombieById = useCallback(async () => {
+        try {
+            const zombie = await ContractService.instance.getZombieById(+id);
+            setZombie(zombie);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get zombie',
+                description: error.reason || 'Error generic'
+            });
+        }
+    }, [id]);
+
+    const feedOnKitty = useCallback(async (kittyGenes: string, kittyId: number) => {
+        try {
+            await ContractService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
+        } catch (error: any) {
+            console.log('feedOnKitty error: ', error);
+            notification.error({
+                message: 'Error in feed zombie',
+                description: error.reason || 'Error generic'
+            });
+        }
+    }, [id]);
+
+    const contextValue = useMemo(() => ({ 
+        zombie, 
+        kitties,
+        isKittiesLoading,
+        feedOnKitty,
+    }), [zombie, feedOnKitty, kitties, isKittiesLoading]);
 
     return (
         <ZombieFeedContext.Provider value={contextValue}>

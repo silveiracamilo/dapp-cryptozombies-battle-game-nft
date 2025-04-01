@@ -2,21 +2,15 @@
 pragma solidity ^0.8.28;
 
 import "./Ownable.sol";
-import "./SafeMath.sol";
-import "./SafeMath32.sol";
-import "./SafeMath16.sol";
 
 contract ZombieFactory is Ownable {
 
-    // using SafeMath for uint256;
-    // using SafeMath32 for uint32;
-    // using SafeMath16 for uint16;
-
-    event NewZombie(uint zombieId, string name, uint dna);
+    event NewZombie(address indexed from, uint zombieId, string name, uint dna);
 
     uint dnaDigits = 16;
     uint dnaModulus = 10 ** dnaDigits;
-    uint cooldownTime = 1 days;
+    // uint cooldownTime = 1 days;
+    uint cooldownTime = 1 minutes;
 
     struct Zombie {
         string name;
@@ -37,7 +31,7 @@ contract ZombieFactory is Ownable {
         uint id = zombies.length - 1;
         zombieToOwner[id] = msg.sender;
         ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender] + 1;
-        emit NewZombie(id, _name, _dna);
+        emit NewZombie(msg.sender, id, _name, _dna);
     }
 
     function _generateRandomDna(string memory _str) private view returns (uint) {
@@ -46,7 +40,7 @@ contract ZombieFactory is Ownable {
     }
 
     function createRandomZombie(string memory _name) public {
-        require(ownerZombieCount[msg.sender] == 0, "Pode criar apenas um zumbi por conta");
+        require(ownerZombieCount[msg.sender] == 0, "You can only create one zombie per account");
         uint randDna = _generateRandomDna(_name);
         _createZombie(_name, randDna);
     }

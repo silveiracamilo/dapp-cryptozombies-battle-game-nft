@@ -19,6 +19,7 @@ abstract contract KittyInterface {
 }
 
 contract ZombieFeeding is ZombieFactory {
+    event onFeed(address indexed from, uint fromDna, uint targetDna, uint _kittyId, uint newDna);
 
     KittyInterface kittyContract;
 
@@ -39,10 +40,10 @@ contract ZombieFeeding is ZombieFactory {
         return (_zombie.readyTime <= block.timestamp);
     }
 
-    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal onlyOwnerOf(_zombieId) {
+    function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal onlyOwnerOf(_zombieId) returns (uint) {
         Zombie storage myZombie = zombies[_zombieId];
 
-        require(_isReady(myZombie));
+        require(_isReady(myZombie), "Zombie is not ready to feed");
 
         _targetDna = _targetDna % dnaModulus;
         uint newDna = (myZombie.dna + _targetDna) / 2;
@@ -50,14 +51,27 @@ contract ZombieFeeding is ZombieFactory {
         if (keccak256(abi.encodePacked(_species)) == keccak256(abi.encodePacked("kitty"))) {
             newDna = newDna - newDna % 100 + 99;
         }
+
         _createZombie("NoName", newDna);
         _triggerCooldown(myZombie);
+
+        return newDna;
     }
 
-    function feedOnKitty(uint _zombieId, uint _kittyId) public {
-        uint kittyDna;
-        (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
-        feedAndMultiply(_zombieId, kittyDna, "kitty");
+    function feedOnKitty(uint _zombieId, uint _kittyDna, uint _kittyId) public {
+        Zombie storage myZombie = zombies[_zombieId];
+        uint newDna = feedAndMultiply(_zombieId, _kittyDna, "kitty");
+        emit onFeed(msg.sender, myZombie.dna, _kittyDna, _kittyId, newDna);
     }
+    // function feedOnKitty(address _kittyContractAddress, uint _zombieId, uint _kittyId) public {
+    //     uint kittyDna;
+    //     (,,,,,,,,,kittyDna) = KittyInterface(_kittyContractAddress).getKitty(_kittyId);
+    //     feedAndMultiply(_zombieId, kittyDna, "kitty");
+    // }
+    // function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    //     uint kittyDna;
+    //     (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    //     feedAndMultiply(_zombieId, kittyDna, "kitty");
+    // }
     
 }

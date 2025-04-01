@@ -8,7 +8,7 @@ import { Paths } from "src/router/RouteConsts";
 const { Header, Content, Footer } = Layout;
 
 const items = [
-    { label: "Ranking", route: '/ranking' },
+    { label: "Ranking", route: Paths.RANKING },
 ];
 const menuItems = map(items, ({ label }, i) => ({ key: i + 1, label }));
 
@@ -39,8 +39,8 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
                     style={{ flex: 1, minWidth: 0 }}
                 />
             </Header>
-            <Content>{children}</Content>
-            <Footer style={{ textAlign: 'center' }}>Footer</Footer>
+            <Content style={{ padding: 20, height: '90%' }}>{children}</Content>
+            <Footer style={{ textAlign: 'center' }}></Footer>
         </Layout>
     )
 }

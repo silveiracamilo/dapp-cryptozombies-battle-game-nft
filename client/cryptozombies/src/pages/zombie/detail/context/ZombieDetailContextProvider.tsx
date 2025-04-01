@@ -1,7 +1,7 @@
+import { notification } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
 import ContractService from "src/store/services/ContractService";
 
 interface IZombieDetailContext {
@@ -29,8 +29,15 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     }, [id]);
 
     const getZombieById = useCallback(async () => {
-        const zombie = await ContractService.instance.getZombieById(+id);
-        setZombie(zombieMapper(zombie));
+        try {
+            const zombie = await ContractService.instance.getZombieById(+id);
+            setZombie(zombie);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get zombie',
+                description: error.reason || 'Error generic'
+            });
+        }
     }, []);
 
     const contextValue = useMemo(() => ({ zombie }), [zombie]);

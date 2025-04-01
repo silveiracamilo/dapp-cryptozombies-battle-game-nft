@@ -2,15 +2,13 @@ import { Zombie } from "src/components/zombie/Zombie";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Card, notification } from "antd";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import { useNavigate } from "react-router";
-import { Paths } from "src/router/RouteConsts";
-import { useHomeContext } from "../context/HomeContextProvider";
+import { useZombieBattleContext } from "../context/ZombieBattleContextProvider";
+import { debounce } from "lodash";
 
 const { Meta } = Card;
 
-const ZombieArmy = ({ id }: { id: number }) => {
-    const { getZombieById } = useHomeContext();
-    const navigate = useNavigate();
+const ZombieEnemy = ({ id }: { id: number }) => {
+    const { getZombieById, attack } = useZombieBattleContext();
     const [zombie, setZombie] = useState<IZombie>();
 
     useEffect(() => {
@@ -34,17 +32,15 @@ const ZombieArmy = ({ id }: { id: number }) => {
             style={{ width: 300 }}
             cover={zombie ? <Zombie dna={zombie.dna} /> : null}
             actions={[
-                <Button onClick={() => navigate(Paths.ZOMBIE_FEED.replace(':id', id.toString()))}>Feed</Button>,
-                <Button onClick={() => navigate(Paths.ZOMBIE_BATTLE.replace(':id', id.toString()))}>Battle</Button>,
-                <Button onClick={() => navigate(Paths.ZOMBIE_DETAIL.replace(':id', id.toString()))}>Detail</Button>,
+                <Button onClick={debounce(() => attack(id), 200)}>Attach that</Button>,
             ]}
         >
             <Meta
                 title={`${zombie?.name} - ${zombie?.dna}`}
-                description={`#${id} - Level: ${zombie?.level} Score: ${zombie?.score}`}
+                description={`Level: ${zombie?.level} Score: ${zombie?.score}`}
             />
         </Card>
     )
 }
 
-export default ZombieArmy;
+export default ZombieEnemy;

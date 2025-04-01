@@ -9,7 +9,15 @@ const ZombieCreate: React.FC = () => {
     return (
         <Row>
             <h1>ZombieCreate</h1>
-            <Input value={name} onChange={e => setName(e.target.value)} />
+            <Input 
+                value={name} 
+                placeholder="Zombie name" 
+                onChange={e => {
+                    const filteredValue = e.target.value.replace(/[^a-zA-Z0-9 ]/g, '');
+                    setName(filteredValue);
+                }} 
+            />
+
             <button onClick={() => create(name)}>Create</button>
         </Row>
     )

@@ -1,11 +1,14 @@
+import { notification } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
+import { IZombie } from "src/store/interface/zombie/IZombie";
 import ContractService from "src/store/services/ContractService";
 
 interface IHomeContext {
     zombiesId: number[]
+    getZombieById: (id: number) => Promise<IZombie>
 }
 
 const HomeContext = createContext<IHomeContext>({} as IHomeContext);
@@ -26,12 +29,12 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         if (isFirst.current) {
-            checkIfHasZombie();
+            start();
             isFirst.current = false;
         }
     }, []);
 
-    const checkIfHasZombie = useCallback(async () => {
+    const start = useCallback(async () => {
         try {
             const zombies = await ContractService.instance.getZombiesByOwner(address);
             if (!zombies?.length) {
@@ -39,13 +42,20 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
             } else {
                 setZombiesId([...zombies]);
             }
-        } catch(e) {
-            console.log('getZombiesByOwner error:', e);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get zombies',
+                description: error.reason || 'Error generic'
+            });
             navigate(Paths.ZOMBIE_CREATE);
         }
     }, []);
 
-    const contextValue = useMemo(() => ({ zombiesId }), [zombiesId]);
+    const getZombieById = useCallback(async (id: number) => {
+        return ContractService.instance.getZombieById(id);
+    }, []);
+
+    const contextValue = useMemo(() => ({ zombiesId, getZombieById }), [zombiesId]);
 
     return (
         <HomeContext.Provider value={contextValue}>

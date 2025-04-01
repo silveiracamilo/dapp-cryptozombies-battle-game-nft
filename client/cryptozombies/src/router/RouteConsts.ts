@@ -3,9 +3,10 @@ export enum Paths {
     HOME = '/',
     RANKING = '/ranking',
     ZOMBIE_CREATE = '/zombie/create',
+    ZOMBIE_CREATE_SUCCESS = '/zombie/create/success/:id/:name/:dna',
     ZOMBIE_DETAIL = '/zombie/detail/:id',
-    ZOMBIE_FEED = '/zombie/feed',
-    ZOMBIE_FEEDING = '/zombie/feeding',
+    ZOMBIE_FEED = '/zombie/feed/:id',
+    ZOMBIE_FEEDING = '/zombie/feeding/:fromDna/:targetDna/:kittyId/:newDna',
     ZOMBIE_ATTACK = '/zombie/attack',
-    ZOMBIE_BATTLE = '/zombie/battle',
+    ZOMBIE_BATTLE = '/zombie/battle/:id',
 }
