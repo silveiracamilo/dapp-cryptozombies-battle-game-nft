@@ -1,5 +1,6 @@
 import { notification } from "antd";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { filter } from "lodash";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { IZombie } from "src/store/interface/zombie/IZombie";
@@ -7,9 +8,8 @@ import ContractService from "src/store/services/ContractService";
 
 interface IZombieBattleContext {
     zombie: IZombie | undefined
-    zombiesId: number[]
-    getZombieById: (id: number) => Promise<IZombie>
-    attack: (targetId: number) => Promise<void>
+    accounts: string[]
+    getZombiesByOwnerMapped: (accountAddress: string) => Promise<IZombie[]>
 }
 
 const ZombieBattleContext = createContext<IZombieBattleContext>({} as IZombieBattleContext);
@@ -26,22 +26,26 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
     const { address } = useAuthContext();
     const { id = '' } = useParams();
     const [zombie, setZombie] = useState<IZombie>();
-    const [zombiesId, setZombiesId] = useState<number[]>([]);
-    const isFirst = useRef(true);
+    const [accounts, setAccounts] = useState<string[]>([]);
 
     useEffect(() => {
-        if (isFirst.current) {
-            start();
-            isFirst.current = false;
-        }
+        load();
+        loadZombieById(+id);
     }, []);
 
-    useEffect(() => {
-        if (id) {
-            loadZombieById(+id);
+    const load = useCallback(async () => {
+        try {
+            const accounts = await ContractService.instance.getAccounts();
+            const accountsFiltered = filter([...accounts], account => account !== address);
+            console.log('accountsFiltered: ', accountsFiltered);
+            setAccounts(accountsFiltered);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get zombies',
+                description: error.reason || 'Error generic'
+            });
         }
-    }, [id]);
-
+    }, []);
 
     const loadZombieById = useCallback(async (id: number) => {
         try {
@@ -55,39 +59,15 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    const start = useCallback(async () => {
-        try {
-            const zombies = await ContractService.instance.getZombiesOtherOwner(address);
-            setZombiesId([...zombies]);
-        } catch (error: any) {
-            notification.error({
-                message: 'Error in get zombies',
-                description: error.reason || 'Error generic'
-            });
-        }
-    }, []);
-
     const getZombieById = useCallback(async (id: number) => {
         return ContractService.instance.getZombieById(id);
     }, []);
 
-    const attack = useCallback(async (targetId: number) => {
-        try {
-            await ContractService.instance.attack(parseInt(id), targetId);
-        } catch (error: any) {
-            notification.error({
-                message: 'Error attack zombie',
-                description: error.reason || 'Error generic'
-            });
-        }
-    }, [id]);
+    const getZombiesByOwnerMapped = useCallback(async (accountAddress: string) => {
+        return ContractService.instance.getZombiesByOwnerMapped(accountAddress);
+    }, []);
 
-    const contextValue = useMemo(() => ({ 
-        zombiesId,
-        getZombieById,
-        zombie,
-        attack,
-    }), [zombiesId, zombie, attack]);
+    const contextValue = useMemo(() => ({ zombie, accounts, getZombiesByOwnerMapped }), [zombie, accounts]);
 
     return (
         <ZombieBattleContext.Provider value={contextValue}>

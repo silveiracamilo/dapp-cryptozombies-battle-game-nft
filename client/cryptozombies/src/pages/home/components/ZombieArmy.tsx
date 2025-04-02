@@ -34,7 +34,7 @@ const ZombieArmy = ({ id }: { id: number }) => {
             style={{ width: 300 }}
             cover={zombie ? <Zombie dna={zombie.dna} /> : null}
             actions={[
-                <Button onClick={() => navigate(Paths.ZOMBIE_FEED.replace(':id', id.toString()))}>Feed</Button>,
+                <Button onClick={() => navigate(Paths.ZOMBIE_FEED.replace(':id', id.toString()))}>Feed me</Button>,
                 <Button onClick={() => navigate(Paths.ZOMBIE_BATTLE.replace(':id', id.toString()))}>Battle</Button>,
                 <Button onClick={() => navigate(Paths.ZOMBIE_DETAIL.replace(':id', id.toString()))}>Detail</Button>,
             ]}

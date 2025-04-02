@@ -22,6 +22,8 @@ contract ZombieFactory is Ownable {
     }
 
     Zombie[] public zombies;
+    
+    address[] accounts;
 
     mapping (uint => address) public zombieToOwner;
     mapping (address => uint) ownerZombieCount;
@@ -43,5 +45,13 @@ contract ZombieFactory is Ownable {
         require(ownerZombieCount[msg.sender] == 0, "You can only create one zombie per account");
         uint randDna = _generateRandomDna(_name);
         _createZombie(_name, randDna);
+        accounts.push(msg.sender);
+    }
+
+    function _generateStats(uint _dna) internal pure returns (uint, uint, uint) {
+        uint strength = 50 + (_dna % 50); // Força entre 50-99
+        uint agility = 50 + ((_dna / 100) % 50); // Agilidade entre 50-99
+        uint resilience = 50 + ((_dna / 10000) % 50); // Resistência entre 50-99
+        return (strength, agility, resilience);
     }
 }

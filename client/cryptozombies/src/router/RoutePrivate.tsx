@@ -11,6 +11,12 @@ const withLayoutAuthentication = (children: ReactElement) => {
 const RoutePrivate = () => {
     const { address } = useAuthContext();
 
+    // useEffect(() => {
+    //     if (address) {
+    //         navigate(Paths.HOME);
+    //     }
+    // }, [address]);
+
     if (isEmpty(address)) {
         return <Navigate to="/login" replace={true} />;
     }

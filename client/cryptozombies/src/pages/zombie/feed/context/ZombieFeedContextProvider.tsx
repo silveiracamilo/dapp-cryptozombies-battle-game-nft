@@ -1,4 +1,4 @@
-import { notification } from "antd";
+import { notification, Spin } from "antd";
 import { Contract } from "ethers";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -28,9 +28,10 @@ export const useZombieFeedContext = () => {
 
 const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
     const { address } = useAuthContext();
-    const navigate = useNavigate();
     const { id = '' } = useParams();
+    const navigate = useNavigate();
     const [zombie, setZombie] = useState<IZombie>();
+    const [loading, setLoading] = useState(false);
     const contract = useRef<Contract>();
     const {
         data: kitties,
@@ -89,6 +90,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
     }, [id]);
 
     const feedOnKitty = useCallback(async (kittyGenes: string, kittyId: number) => {
+        setLoading(true);
         try {
             await ContractService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
         } catch (error: any) {
@@ -97,6 +99,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
                 message: 'Error in feed zombie',
                 description: error.reason || 'Error generic'
             });
+            setLoading(false);
         }
     }, [id]);
 
@@ -109,7 +112,9 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ZombieFeedContext.Provider value={contextValue}>
-            {children}
+            <Spin spinning={loading}>
+                {children}
+            </Spin>
         </ZombieFeedContext.Provider>
     )
 }

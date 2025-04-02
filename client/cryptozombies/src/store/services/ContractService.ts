@@ -1,6 +1,7 @@
 import { BrowserProvider, Contract } from 'ethers';
 import CryptoZombies from './CryptoZombies.json';
 import { zombieMapper } from '../mapper/zombie/ZombieMapper';
+import { IZombie } from '../interface/zombie/IZombie';
 
 class ContractService {
     static _instance: ContractService;
@@ -44,6 +45,12 @@ class ContractService {
         const contract = await this.getContract();
         return contract.getZombiesByOwner(owner);
     }
+
+    public async getZombiesByOwnerMapped(accountAddress: string)  {
+        const zombiesId = await this.getZombiesByOwner(accountAddress);
+        const promiseAllZombies = zombiesId.map((zombieId: number) => this.getZombieById(zombieId))
+        return Promise.all<IZombie[]>(promiseAllZombies);
+    }
     
     public async getZombiesOtherOwner(owner: string) {
         console.log('getZombiesOtherOwner owner: ', owner);
@@ -55,23 +62,16 @@ class ContractService {
         console.log('getZombieById: ', id);
         const contract = await this.getContract();
         const zombie = await contract.zombies(id);
-        return zombieMapper(zombie);
+        return zombieMapper(id, zombie);
     }
 
-    public async feedOnKitty(zombieId: number, kittyGenes: number, kittyId: number) {
-        console.log('feedOnKitty: ', zombieId, kittyGenes, kittyId);
+    public async feedOnKitty(zombieId: number, kittyDna: number, kittyId: number) {
+        console.log('feedOnKitty: ', zombieId, kittyDna, kittyId);
         const contract = await this.getContract();
-        const tx = await contract.feedOnKitty(zombieId, kittyGenes, kittyId);
+        const tx = await contract.feedOnKitty(zombieId, kittyDna, kittyId);
         console.log('tx: ', tx);
         return tx.wait();
     }
-    // public async feedOnKitty(zombieId: number, kittyId: number) {
-    //     console.log('feedOnKitty: ', zombieId, kittyId);
-    //     const contract = await this.getContract();
-    //     const tx = await contract.feedOnKitty('0x06012c8cf97bead5deae237070f9587f8e7a266d', zombieId, kittyId);
-    //     console.log('tx: ', tx);
-    //     return tx.wait();
-    // }
 
     public async attack(zombieId: number, targetId: number) {
         console.log('attack: ', zombieId, targetId);
@@ -79,6 +79,12 @@ class ContractService {
         const tx = await contract.attack(zombieId, targetId);
         console.log('tx: ', tx);
         return tx.wait();
+    }
+
+    public async getAccounts() {
+        console.log('getAccounts:');
+        const contract = await this.getContract();
+        return contract.getAccounts();
     }
 } 
 

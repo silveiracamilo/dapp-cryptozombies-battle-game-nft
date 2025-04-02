@@ -1,6 +1,6 @@
-import { notification } from "antd";
+import { notification, Spin } from "antd";
 import { Contract } from "ethers";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
@@ -24,6 +24,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
     const { address } = useAuthContext();
     const navigate = useNavigate();
     const contract = useRef<Contract>();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         addEventListener();
@@ -81,6 +82,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
     
 
     const create = useCallback(async (name: string) => {
+        setLoading(true);
         try {
             await ContractService.instance.createRandomZombie(name);
         } catch (error: any) {
@@ -88,6 +90,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
                 message: 'Error in create zombie',
                 description: error.reason || 'Error generic'
             });
+            setLoading(false);
         }
     }, []);
 
@@ -95,7 +98,9 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ZombieCreateContext.Provider value={contextValue}>
-            {children}
+            <Spin spinning={loading}>
+                {children}
+            </Spin>
         </ZombieCreateContext.Provider>
     )
 }

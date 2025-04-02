@@ -1,6 +1,7 @@
 import { Input, Row } from 'antd';
 import React, { useState } from 'react';
 import { useZombieCreateContext } from './context/ZombieCreateContextProvider';
+import { debounce } from 'lodash';
 
 const ZombieCreate: React.FC = () => {
     const { create } = useZombieCreateContext();
@@ -18,7 +19,7 @@ const ZombieCreate: React.FC = () => {
                 }} 
             />
 
-            <button onClick={() => create(name)}>Create</button>
+            <button onClick={debounce(() => create(name), 200)}>Create</button>
         </Row>
     )
 }

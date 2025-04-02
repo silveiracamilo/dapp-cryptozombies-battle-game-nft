@@ -9,9 +9,11 @@ import { ZombieDetailPage } from '../pages/zombie/detail/loadable';
 import { ZombieFeedPage } from '../pages/zombie/feed/loadable';
 import { ZombieFeedingPage } from '../pages/zombie/feeding/loadable';
 import { ZombieAttackPage } from '../pages/zombie/attack/loadable';
+import { ZombieAttackVitoryPage } from '../pages/zombie/attackVitory/loadable';
+import { ZombieAttackDefeatPage } from '../pages/zombie/attackDefeat/loadable';
 import { ZombieBattlePage } from '../pages/zombie/battle/loadable';
-import RoutePrivate from './RoutePrivate';
 import { Paths } from './RouteConsts';
+import RoutePrivate from './RoutePrivate';
 
 const Router: React.FC = () => {
     return (
@@ -26,8 +28,10 @@ const Router: React.FC = () => {
                     <Route path={Paths.ZOMBIE_DETAIL} element={<ZombieDetailPage />} />
                     <Route path={Paths.ZOMBIE_FEED} element={<ZombieFeedPage />} />
                     <Route path={Paths.ZOMBIE_FEEDING} element={<ZombieFeedingPage />} />
-                    <Route path={Paths.ZOMBIE_ATTACK} element={<ZombieAttackPage />} />
                     <Route path={Paths.ZOMBIE_BATTLE} element={<ZombieBattlePage />} />
+                    <Route path={Paths.ZOMBIE_ATTACK} element={<ZombieAttackPage />} />
+                    <Route path={Paths.ZOMBIE_ATTACK_VITORY} element={<ZombieAttackVitoryPage />} />
+                    <Route path={Paths.ZOMBIE_ATTACK_DEFEAT} element={<ZombieAttackDefeatPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,12 +1,36 @@
-import { Row } from 'antd';
+import { Col, Row } from 'antd';
 import React from 'react';
+import { useZombieAttackContext } from './context/ZombieAttackContextProvider';
+import { map } from 'lodash';
+import ZombieEnemy from './components/ZombieEnemy';
+import { Zombie } from 'src/components/zombie/Zombie';
 
 const ZombieAttack: React.FC = () => {
+    const { zombie, zombies } = useZombieAttackContext();
 
     return (
-        <Row>
-            <h1>ZombieAttack</h1>
+        <>
+        <Row justify="center">
+            <h1>Choose a zombie to fight {zombie?.name}</h1>
         </Row>
+        <Row justify="center" align="middle">
+            <Col span={4}>
+                <Zombie dna={zombie?.dna || ''} />
+            </Col>
+            <Col span={20}>
+                {zombies?.length ?
+                <Row justify="center">
+                { map(zombies, zomb => (
+                    <ZombieEnemy zombie={zomb} key={zomb.id} />
+                )) }
+                </Row> :
+                <Row justify="center" align="middle">
+                    <p>Loading enemies...</p>
+                </Row>
+                }
+            </Col>
+        </Row>
+        </>
     )
 }
 

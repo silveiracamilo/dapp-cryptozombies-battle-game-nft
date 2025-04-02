@@ -4,6 +4,7 @@ import logo from "assets/images/cryptozombies-logo.png";
 import { useNavigate } from "react-router";
 import { map } from "lodash";
 import { Paths } from "src/router/RouteConsts";
+import AccountDropdown from "src/components/account/AccountDropdown";
 
 const { Header, Content, Footer } = Layout;
 
@@ -38,6 +39,7 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
                     onClick={onClickMenu}
                     style={{ flex: 1, minWidth: 0 }}
                 />
+                <AccountDropdown />
             </Header>
             <Content style={{ padding: 20, height: '90%' }}>{children}</Content>
             <Footer style={{ textAlign: 'center' }}></Footer>
