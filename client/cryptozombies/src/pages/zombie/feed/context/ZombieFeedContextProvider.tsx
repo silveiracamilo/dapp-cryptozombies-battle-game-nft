@@ -65,7 +65,6 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const handleOnFeed = useCallback((from: string, fromDna: number, targetDna: number, kittyId: number, newDna: number) => {
-        console.log('handleOnFeed: ', from, fromDna, kittyId, newDna);
         if (from === address) {
             navigate(
                 Paths.ZOMBIE_FEEDING
@@ -94,7 +93,6 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
         try {
             await ContractService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
         } catch (error: any) {
-            console.log('feedOnKitty error: ', error);
             notification.error({
                 message: 'Error in feed zombie',
                 description: error.reason || 'Error generic'

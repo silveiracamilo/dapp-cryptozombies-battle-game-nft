@@ -1,14 +1,12 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import * as S from './style'
 import { zombieGenesMapper } from 'src/store/mapper/zombie/ZombieMapper'
 
-type ZombieProps = {
+interface IZombie {
   dna: string
 }
 
-export const Zombie = ({ dna }: ZombieProps) => {
-  console.log('Zombie dna: ', dna);
-
+export const Zombie: React.FC<IZombie> = ({ dna }) => {
   const genes = useMemo(() => zombieGenesMapper(dna), [dna]);
 
   return (

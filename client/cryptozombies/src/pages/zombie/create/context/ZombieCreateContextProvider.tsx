@@ -59,17 +59,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    // const handleNewZombie = useCallback((log: any) => {
-    //     console.log('handleNewZombie', log);
-    //     // navigate(
-    //     //     Paths.ZOMBIE_CREATE_SUCCESS
-    //     //         .replace(':id', zombieId.toString())
-    //     //         .replace(':name', name)
-    //     //         .replace(':dna', dna.toString())
-    //     // )
-    // }, []);
     const handleNewZombie = useCallback((from: string, zombieId: number, name: string, dna: number) => {
-        console.log('handleNewZombie: ', from, zombieId, name, dna);
         if (from === address) {
             navigate(
                 Paths.ZOMBIE_CREATE_SUCCESS

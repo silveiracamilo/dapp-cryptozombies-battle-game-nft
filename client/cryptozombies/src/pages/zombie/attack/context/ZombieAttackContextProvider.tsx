@@ -69,7 +69,6 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const handleOnAttackVitory = useCallback((from: string, fromId: number, targetId: number, newDna: number) => {
-        console.log('handleOnAttackVitory: ', from, fromId, targetId, newDna);
         if (from === address) {
             navigate(
                 Paths.ZOMBIE_ATTACK_VITORY
@@ -81,7 +80,6 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
     
     const handleOnAttackDefeat = useCallback((from: string, fromId: number, targetId: number) => {
-        console.log('handleOnAttackDefeat: ', from, fromId, targetId);
         if (from === address) {
             navigate(
                 Paths.ZOMBIE_ATTACK_DEFEAT

@@ -35,7 +35,6 @@ const LoginContextProvider = ({ children }: { children: ReactNode }) => {
             provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
             const myAddress = await signer.getAddress();
-            console.log('myAddress: ', myAddress);
             setAddress(myAddress);
             navigate('/');
         }

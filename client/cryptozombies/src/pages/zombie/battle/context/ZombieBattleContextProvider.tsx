@@ -37,7 +37,6 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
         try {
             const accounts = await ContractService.instance.getAccounts();
             const accountsFiltered = filter([...accounts], account => account !== address);
-            console.log('accountsFiltered: ', accountsFiltered);
             setAccounts(accountsFiltered);
         } catch (error: any) {
             notification.error({

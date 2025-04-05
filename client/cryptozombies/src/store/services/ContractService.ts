@@ -33,15 +33,12 @@ class ContractService {
     }
 
     public async createRandomZombie(name: string) {
-        console.log('createRandomZombie name: ', name);
         const contract = await this.getContract();
         const tx = await contract.createRandomZombie(name);
-        console.log('tx: ', tx);
         return tx.wait();
     }
     
     public async getZombiesByOwner(owner: string) {
-        console.log('getZombiesByOwner owner: ', owner);
         const contract = await this.getContract();
         return contract.getZombiesByOwner(owner);
     }
@@ -53,61 +50,48 @@ class ContractService {
     }
     
     public async getZombiesOtherOwner(owner: string) {
-        console.log('getZombiesOtherOwner owner: ', owner);
         const contract = await this.getContract();
         return contract.getZombiesOtherOwner(owner, 5);
     }
 
     public async getZombieById(id: number) {
-        console.log('getZombieById: ', id);
         const contract = await this.getContract();
         const zombie = await contract.zombies(id);
         return zombieMapper(id, zombie);
     }
 
     public async feedOnKitty(zombieId: number, kittyDna: number, kittyId: number) {
-        console.log('feedOnKitty: ', zombieId, kittyDna, kittyId);
         const contract = await this.getContract();
         const tx = await contract.feedOnKitty(zombieId, kittyDna, kittyId);
-        console.log('tx: ', tx);
         return tx.wait();
     }
 
     public async attack(zombieId: number, targetId: number) {
-        console.log('attack: ', zombieId, targetId);
         const contract = await this.getContract();
         const tx = await contract.attack(zombieId, targetId);
-        console.log('tx: ', tx);
         return tx.wait();
     }
 
     public async getAccounts() {
-        console.log('getAccounts:');
         const contract = await this.getContract();
         return contract.getAccounts();
     }
 
     public async levelUp(zombieId: number) {
-        console.log('levelUp: ', zombieId);
         const contract = await this.getContract();
         const tx = await contract.levelUp(zombieId, { value: parseEther('0.001') });
-        console.log('tx: ', tx);
         return tx.wait();
     }
 
     public async changeName(zombieId: number, newName: string) {
-        console.log('changeName: ', zombieId, newName);
         const contract = await this.getContract();
         const tx = await contract.changeName(zombieId, newName, { value: parseEther('0.002') });
-        console.log('tx: ', tx);
         return tx.wait();
     }
 
     public async changeDna(zombieId: number, newDna: number) {
-        console.log('changeDna: ', zombieId, newDna);
         const contract = await this.getContract();
         const tx = await contract.changeDna(zombieId, newDna, { value: parseEther('0.004') });
-        console.log('tx: ', tx);
         return tx.wait();
     }
 } 
