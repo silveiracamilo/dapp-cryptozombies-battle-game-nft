@@ -6,6 +6,7 @@ import ContractService from "src/store/services/ContractService";
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
+    loading: boolean;
     levelUp: () => Promise<void>
     changeName: (newName: string) => Promise<void>
     changeDna: (newDna: number) => Promise<void>
@@ -92,10 +93,11 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
 
     const contextValue = useMemo(() => ({ 
         zombie,
+        loading,
         levelUp,
         changeName,
         changeDna,
-     }), [zombie]);
+     }), [zombie, loading]);
 
     return (
         <ZombieDetailContext.Provider value={contextValue}>

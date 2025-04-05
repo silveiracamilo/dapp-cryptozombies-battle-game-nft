@@ -47,7 +47,7 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
     function tokenURI(uint256 _tokenId) public view returns (string memory) {
         Zombie storage zombie = zombies[_tokenId];
         return string.concat(
-            "http://localhost:3333/zombie/",
+            "http://localhost:3333/zombie/uri/",
             Strings.toString(_tokenId),
             "/",
             zombie.name,

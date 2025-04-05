@@ -1,38 +1,68 @@
-import { Button, Card, Col, Row, Statistic } from 'antd';
-import React, { useMemo } from 'react';
+import { Button, Card, Col, Row, Statistic, Tooltip } from 'antd';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Zombie } from 'src/components/zombie/Zombie';
 import { useZombieDetailContext } from './context/ZombieDetailContextProvider';
 import moment from 'moment';
 import { debounce } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowsToEye, faArrowUp, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faPerson, faPersonRays, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowsToEye, faArrowUp, faCat, faCircleInfo, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faPerson, faPersonRays, faRadiation, faSignature, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
+import { Paths } from 'src/router/RouteConsts';
+import { useNavigate, useParams } from 'react-router';
+import ChangeNameModal from './components/ChangeNameModal';
+import ChangeDNAModal from './components/ChangeDNAModal';
 
 const ZombieDetail: React.FC = () => {
-    const { zombie, levelUp, changeName, changeDna } = useZombieDetailContext();
+    const { zombie, levelUp } = useZombieDetailContext();
+    const { id = '' } = useParams();
+    const navigate = useNavigate();
+    const [showChangeNameModal, setShowChangeNameModal] = useState(false);
+    const [showChangeDNAModal, setShowChangeDNAModal] = useState(false);
     
+    const parseReadyTime = useMemo(
+        () => (zombie ? moment(zombie.readyTime * 1000) : moment()).fromNow(), 
+        [zombie]
+    );
+
+    const feed = useCallback(() => {
+        navigate(Paths.ZOMBIE_FEED.replace(':id', id));
+    }, []);
+
+    const battle = useCallback(() => {
+        navigate(Paths.ZOMBIE_BATTLE.replace(':id', id));
+    }, []);
 
     if (!zombie) {
         return <div>loading...</div>;
     }
-    
-    const parseReadyTime = useMemo(
-        () => moment(zombie.readyTime * 1000).fromNow(), 
-        [zombie.readyTime]
-    );
-
-    console.log('zombie: ', zombie);
 
     return (
         <>
         <Row justify="space-evenly" align="middle" gutter={30}>
-            <Col span={12}>
+            <Col span={8}>
                 <h1>{zombie.id}#{zombie.name} </h1>
             </Col>
-            <Col span={12} style={{ textAlign: 'right' }}>
+            <Col span={16} style={{ textAlign: 'right' }}>
                 <Row style={{ gap: 16 }} justify="end">
-                    <Button onClick={debounce(levelUp, 200)}>Level Up</Button>
-                    <Button onClick={debounce(() => changeName('Camilo Novo Nome'), 200)}>Change Name</Button>
-                    <Button onClick={debounce(() => changeDna(3169225795162389), 200)}>Change DNA</Button>
+                    <Button icon={<FontAwesomeIcon icon={faCat} />} onClick={feed}>Feed</Button>
+                    <Button icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>Battle</Button>
+                    <Button icon={<FontAwesomeIcon icon={faArrowUp} />} onClick={debounce(levelUp, 200)}>
+                        Level Up
+                        <Tooltip title={'Price 0.001 ether'}>
+                            <FontAwesomeIcon icon={faCircleInfo} />
+                        </Tooltip>
+                    </Button>
+                    <Button icon={<FontAwesomeIcon icon={faSignature} />} onClick={() => setShowChangeNameModal(true)}>
+                        Change Name
+                        <Tooltip title={'Price 0.002 ether'}>
+                            <FontAwesomeIcon icon={faCircleInfo} />
+                        </Tooltip>
+                    </Button>
+                    <Button icon={<FontAwesomeIcon icon={faDna} />} onClick={() => setShowChangeDNAModal(true)}>
+                        Change DNA
+                        <Tooltip title={'Price 0.004 ether'}>
+                            <FontAwesomeIcon icon={faCircleInfo} />
+                        </Tooltip>
+                    </Button>
                 </Row>
             </Col>
         </Row>
@@ -183,25 +213,10 @@ const ZombieDetail: React.FC = () => {
                         </Card>
                     </Col>
                 </Row>
-                {/* <p><strong>DNA</strong>: {zombie.dna}</p>
-                <p><strong>Level</strong>: {zombie.level}</p>
-                <p><strong>Wins</strong>: {zombie.winCount}</p>
-                <p><strong>Losses</strong>: {zombie.lossCount}</p>
-
-                <p><strong>Ready Time</strong>: {parseReadyTime}</p>
-                <p><strong>Strength</strong>: {zombie.strength}</p>
-                <p><strong>Agility</strong>: {zombie.agility}</p>
-                <p><strong>Resilience</strong>: {zombie.resilience}</p>
-
-                <p><strong>Head gene</strong>: {zombie.head}</p>
-                <p><strong>Eye gene</strong>: {zombie.eye}</p>
-                <p><strong>Shirt gene</strong>: {zombie.shirt}</p>
-
-                <p><strong>Skin color gene</strong>: {zombie.skinColor}</p>
-                <p><strong>Eye color gene</strong>: {zombie.eyeColor}</p>
-                <p><strong>Clothes color gene</strong>: {zombie.clothesColor}</p> */}
             </Col>
         </Row>
+        <ChangeNameModal showChangeNameModal={showChangeNameModal} setShowChangeNameModal={setShowChangeNameModal} />
+        <ChangeDNAModal showChangeDNAModal={showChangeDNAModal} setShowChangeDNAModal={setShowChangeDNAModal} />
         </>
     )
 }
