@@ -1,4 +1,4 @@
-import { BrowserProvider, Contract } from 'ethers';
+import { BrowserProvider, Contract, parseEther } from 'ethers';
 import CryptoZombies from './CryptoZombies.json';
 import { zombieMapper } from '../mapper/zombie/ZombieMapper';
 import { IZombie } from '../interface/zombie/IZombie';
@@ -85,6 +85,30 @@ class ContractService {
         console.log('getAccounts:');
         const contract = await this.getContract();
         return contract.getAccounts();
+    }
+
+    public async levelUp(zombieId: number) {
+        console.log('levelUp: ', zombieId);
+        const contract = await this.getContract();
+        const tx = await contract.levelUp(zombieId, { value: parseEther('0.001') });
+        console.log('tx: ', tx);
+        return tx.wait();
+    }
+
+    public async changeName(zombieId: number, newName: string) {
+        console.log('changeName: ', zombieId, newName);
+        const contract = await this.getContract();
+        const tx = await contract.changeName(zombieId, newName, { value: parseEther('0.002') });
+        console.log('tx: ', tx);
+        return tx.wait();
+    }
+
+    public async changeDna(zombieId: number, newDna: number) {
+        console.log('changeDna: ', zombieId, newDna);
+        const contract = await this.getContract();
+        const tx = await contract.changeDna(zombieId, newDna, { value: parseEther('0.004') });
+        console.log('tx: ', tx);
+        return tx.wait();
     }
 } 
 

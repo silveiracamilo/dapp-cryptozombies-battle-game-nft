@@ -9,6 +9,7 @@ import AccountDropdown from "src/components/account/AccountDropdown";
 const { Header, Content, Footer } = Layout;
 
 const items = [
+    { label: "Army", route: Paths.HOME },
     { label: "Ranking", route: Paths.RANKING },
 ];
 const menuItems = map(items, ({ label }, i) => ({ key: i + 1, label }));

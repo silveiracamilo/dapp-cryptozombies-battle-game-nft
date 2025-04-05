@@ -9,7 +9,7 @@ const ZombieCreate: React.FC = () => {
 
     return (
         <Row>
-            <h1>ZombieCreate</h1>
+            <h1>Zombie Create</h1>
             <Input 
                 value={name} 
                 placeholder="Zombie name" 

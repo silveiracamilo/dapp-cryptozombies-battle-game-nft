@@ -14,7 +14,7 @@ const ZombieEnemy = ({ zombie }: { zombie: IZombie }) => {
             style={{ width: 300 }}
             cover={zombie ? <Zombie dna={zombie.dna} /> : null}
             actions={[
-                <Button onClick={debounce(() => attack(zombie.id), 200)}>Attach that</Button>,
+                <Button onClick={debounce(() => attack(zombie.id), 200)}>Attack that</Button>,
             ]}
         >
             <Meta

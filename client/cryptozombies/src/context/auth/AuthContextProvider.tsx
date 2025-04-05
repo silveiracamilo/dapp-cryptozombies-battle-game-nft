@@ -18,19 +18,6 @@ export const useAuthContext = () => {
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const [address, setAddress] = useState<string>("");
 
-    // useEffect(() => {
-    //     checkHasConnected();
-    // }, []);
-
-    // const checkHasConnected = async () => {
-    //     const provider = new ethers.BrowserProvider(window.ethereum);
-    //     const signer = await provider.getSigner();
-    //     const myAddress = await signer.getAddress();
-    //     if (myAddress) {
-    //         setAddress(myAddress);
-    //     }
-    // }
-
     const contextValue = useMemo(
         () => ({ address, setAddress }), 
         [address, setAddress]

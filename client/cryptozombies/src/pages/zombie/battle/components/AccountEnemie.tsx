@@ -52,7 +52,7 @@ const AccountEnemie = ({ account }: { account: string }) => {
                             .replace(':addressEnemie', account)
                     )}
                 >
-                    Attach that
+                    Attack that
                 </Button>,
             ]}
         >

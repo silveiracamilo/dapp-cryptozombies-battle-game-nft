@@ -2,13 +2,21 @@
 pragma solidity ^0.8.28;
 
 import "./ZombieFeeding.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract ZombieHelper is ZombieFeeding {
 
     uint levelUpFee = 0.001 ether;
+    uint changeNameFee = 0.002 ether;
+    uint changeDNAFee = 0.004 ether;
 
     modifier aboveLevel(uint _level, uint _zombieId) {
-        require(zombies[_zombieId].level >= _level);
+        require(zombies[_zombieId].level >= _level, string.concat("Level minimum is ", Strings.toString(_level)));
+        _;
+    }
+
+    modifier abovePrice(uint _price) {
+        require(msg.value >= _price, string.concat("Price minimum is ", Strings.toString(_price)));
         _;
     }
 
@@ -21,16 +29,23 @@ contract ZombieHelper is ZombieFeeding {
         levelUpFee = _fee;
     }
 
-    function levelUp(uint _zombieId) external payable {
-        require(msg.value == levelUpFee);
+    function setChangeNameFee(uint _fee) external onlyOwner {
+        changeNameFee = _fee;
+    }
+
+    function setChangeDNAFee(uint _fee) external onlyOwner {
+        changeDNAFee = _fee;
+    }
+
+    function levelUp(uint _zombieId) external payable abovePrice(levelUpFee) onlyOwnerOf(_zombieId) {
         zombies[_zombieId].level = zombies[_zombieId].level + 1;
     }
 
-    function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) onlyOwnerOf(_zombieId) {
+    function changeName(uint _zombieId, string calldata _newName) external payable abovePrice(changeNameFee) aboveLevel(2, _zombieId) onlyOwnerOf(_zombieId) {
         zombies[_zombieId].name = _newName;
     }
 
-    function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) onlyOwnerOf(_zombieId) {
+    function changeDna(uint _zombieId, uint _newDna) external payable abovePrice(changeDNAFee) aboveLevel(20, _zombieId) onlyOwnerOf(_zombieId) {
         zombies[_zombieId].dna = _newDna;
     }
 

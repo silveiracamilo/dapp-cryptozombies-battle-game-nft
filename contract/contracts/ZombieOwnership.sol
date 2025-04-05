@@ -3,6 +3,7 @@ pragma solidity ^0.8.28;
 
 import "./ZombieAttack.sol";
 import "./ERC721.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 // import { ERC721URIStorage, ERC721 } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 
@@ -47,11 +48,11 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
         Zombie storage zombie = zombies[_tokenId];
         return string.concat(
             "http://localhost:3333/zombie/",
-            string(abi.encodePacked(_tokenId)),
+            Strings.toString(_tokenId),
             "/",
             zombie.name,
             "/",
-            string(abi.encodePacked(zombie.dna))
+            Strings.toString(zombie.dna)
         );
     }
 }

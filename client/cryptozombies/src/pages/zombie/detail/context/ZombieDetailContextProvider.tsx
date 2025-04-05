@@ -1,4 +1,4 @@
-import { notification } from "antd";
+import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { IZombie } from "src/store/interface/zombie/IZombie";
@@ -6,6 +6,9 @@ import ContractService from "src/store/services/ContractService";
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
+    levelUp: () => Promise<void>
+    changeName: (newName: string) => Promise<void>
+    changeDna: (newDna: number) => Promise<void>
 }
 
 const ZombieDetailContext = createContext<IZombieDetailContext>({} as IZombieDetailContext);
@@ -21,6 +24,7 @@ export const useZombieDetailContext = () => {
 const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const { id = '' } = useParams();
     const [zombie, setZombie] = useState<IZombie>();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -39,14 +43,68 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
             });
         }
     }, []);
+    
+    const levelUp = useCallback(async () => {
+        setLoading(true);
+        try {
+            await ContractService.instance.levelUp(+id);
+            await getZombieById();
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in level up',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-    const contextValue = useMemo(() => ({ zombie }), [zombie]);
+    const changeName = useCallback(async (newName: string = 'Camilo Novo') => {
+        setLoading(true);
+        try {
+            await ContractService.instance.changeName(+id, newName);
+            await getZombieById();
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in change name',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const changeDna = useCallback(async (newDna: number = 3169225795162389) => {
+        setLoading(true);
+        try {
+            await ContractService.instance.changeDna(+id, newDna);
+            await getZombieById();
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in change dna',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+
+    const contextValue = useMemo(() => ({ 
+        zombie,
+        levelUp,
+        changeName,
+        changeDna,
+     }), [zombie]);
 
     return (
         <ZombieDetailContext.Provider value={contextValue}>
-            {children}
+            <Spin spinning={loading}>
+                {children}
+            </Spin>
         </ZombieDetailContext.Provider>
     )
 }
 
 export default ZombieDetailContextProvider;
+

@@ -5,6 +5,8 @@ import { IZombie } from "src/store/interface/zombie/IZombie";
 import { useNavigate } from "react-router";
 import { Paths } from "src/router/RouteConsts";
 import { useHomeContext } from "../context/HomeContextProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAddressCard, faCat, faRadiation } from "@fortawesome/free-solid-svg-icons";
 
 const { Meta } = Card;
 
@@ -29,14 +31,26 @@ const ZombieArmy = ({ id }: { id: number }) => {
         }
     }, []);
 
+    const feed = useCallback(() => {
+        navigate(Paths.ZOMBIE_FEED.replace(':id', id.toString()));
+    }, []);
+
+    const battle = useCallback(() => {
+        navigate(Paths.ZOMBIE_BATTLE.replace(':id', id.toString()));
+    }, []);
+
+    const detail = useCallback(() => {
+        navigate(Paths.ZOMBIE_DETAIL.replace(':id', id.toString()));
+    }, []);
+
     return (
         <Card
             style={{ width: 300 }}
             cover={zombie ? <Zombie dna={zombie.dna} /> : null}
             actions={[
-                <Button onClick={() => navigate(Paths.ZOMBIE_FEED.replace(':id', id.toString()))}>Feed me</Button>,
-                <Button onClick={() => navigate(Paths.ZOMBIE_BATTLE.replace(':id', id.toString()))}>Battle</Button>,
-                <Button onClick={() => navigate(Paths.ZOMBIE_DETAIL.replace(':id', id.toString()))}>Detail</Button>,
+                <Button icon={<FontAwesomeIcon icon={faCat} />} onClick={feed}>Feed</Button>,
+                <Button icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>Battle</Button>,
+                <Button icon={<FontAwesomeIcon icon={faAddressCard} />} onClick={detail}>Detail</Button>,
             ]}
         >
             <Meta
