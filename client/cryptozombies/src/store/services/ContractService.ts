@@ -48,11 +48,6 @@ class ContractService {
         const promiseAllZombies = zombiesId.map((zombieId: number) => this.getZombieById(zombieId))
         return Promise.all<IZombie[]>(promiseAllZombies);
     }
-    
-    public async getZombiesOtherOwner(owner: string) {
-        const contract = await this.getContract();
-        return contract.getZombiesOtherOwner(owner, 5);
-    }
 
     public async getZombieById(id: number) {
         const contract = await this.getContract();

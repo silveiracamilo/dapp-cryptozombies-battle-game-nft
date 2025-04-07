@@ -9,7 +9,7 @@ contract ZombieAttack is ZombieHelper {
     event onAttackDefeat(address indexed from, uint fromId, uint targetId);
 
     uint randNonce = 0;
-    uint attackVictoryProbability = 70;
+    uint attackVictoryProbability = 50;
 
     function randMod(uint _modulus) internal returns (uint) {
         randNonce = randNonce + 1;
@@ -17,7 +17,7 @@ contract ZombieAttack is ZombieHelper {
     }
 
     function _calculateVictoryChance(Zombie storage attacker, Zombie storage defender) internal view returns (uint) {
-        uint baseChance = attackVictoryProbability; // 70%
+        uint baseChance = attackVictoryProbability;
 
         // Adjust based on level difference
         int32 levelDiff = int32(attacker.level) - int32(defender.level); // Using int32

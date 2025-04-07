@@ -2,8 +2,9 @@ import { Col, Row } from 'antd';
 import React from 'react';
 import { useZombieBattleContext } from './context/ZombieBattleContextProvider';
 import { map } from 'lodash';
-import { Zombie } from 'src/components/zombie/Zombie';
 import AccountEnemie from './components/AccountEnemie';
+import ZombieCard from 'src/components/zombie/ZombieCard';
+import { IZombie } from 'src/store/interface/zombie/IZombie';
 
 const ZombieBattle: React.FC = () => {
     const { zombie, accounts } = useZombieBattleContext();
@@ -15,7 +16,7 @@ const ZombieBattle: React.FC = () => {
         </Row>
         <Row justify="center" align="middle">
             <Col span={4}>
-                <Zombie dna={zombie?.dna || ''} />
+                <ZombieCard zombie={zombie as IZombie} />
             </Col>
             <Col span={20}>
                 {accounts?.length ?

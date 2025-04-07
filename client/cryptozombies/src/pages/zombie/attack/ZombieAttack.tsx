@@ -3,7 +3,8 @@ import React from 'react';
 import { useZombieAttackContext } from './context/ZombieAttackContextProvider';
 import { map } from 'lodash';
 import ZombieEnemy from './components/ZombieEnemy';
-import { Zombie } from 'src/components/zombie/Zombie';
+import ZombieCard from 'src/components/zombie/ZombieCard';
+import { IZombie } from 'src/store/interface/zombie/IZombie';
 
 const ZombieAttack: React.FC = () => {
     const { zombie, zombies } = useZombieAttackContext();
@@ -15,7 +16,7 @@ const ZombieAttack: React.FC = () => {
         </Row>
         <Row justify="center" align="middle">
             <Col span={4}>
-                <Zombie dna={zombie?.dna || ''} />
+                <ZombieCard zombie={zombie as IZombie} />
             </Col>
             <Col span={20}>
                 {zombies?.length ?
