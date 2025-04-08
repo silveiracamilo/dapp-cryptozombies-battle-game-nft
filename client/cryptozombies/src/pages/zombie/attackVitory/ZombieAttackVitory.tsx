@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row } from 'antd';
+import { Card, Col, Row } from 'antd';
 import React from 'react';
 import { Zombie } from 'src/components/zombie/Zombie';
 import { useZombieAttackVitoryContext } from './context/ZombieAttackVitoryContextProvider';
@@ -6,6 +6,9 @@ import { useNavigate, useParams } from 'react-router';
 import { Paths } from 'src/router/RouteConsts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import ZombieCard from 'src/components/zombie/ZombieCard';
+import { IZombie } from 'src/store/interface/zombie/IZombie';
+import CardButtonAction from 'src/components/button/CardButtonAction';
 
 const { Meta } = Card;
 
@@ -17,18 +20,17 @@ const ZombieAttackVitory: React.FC = () => {
     return (
         <>
         <Row justify="center">
-            <h1>You Victory! Now you can to see, a new zombie.</h1>
+            <h1 style={{ color: '#b6a764' }}>You Victory! Now you can to see, a new zombie.</h1>
         </Row>
         <Row justify="center" align="middle">
             <Col span={5}>
                 <Card
                     style={{ width: 300 }}
-                    cover={<Zombie dna={zombieFrom?.dna || ''} />}
+                    cover={<ZombieCard zombie={zombieFrom as IZombie} />}
                 >
                     <Meta
-                        avatar={<FontAwesomeIcon icon={faCheck} />}
-                        title={`${zombieFrom?.name} - ${zombieFrom?.dna}`}
-                        description={`Level: ${zombieFrom?.level} Score: ${zombieFrom?.score}`}
+                        avatar={<FontAwesomeIcon icon={faCheck} size="xl" color="green" />}
+                        title="Win"
                     />
                 </Card>
             </Col>
@@ -36,12 +38,11 @@ const ZombieAttackVitory: React.FC = () => {
             <Col span={5}>
                 <Card
                     style={{ width: 300 }}
-                    cover={<Zombie dna={zombieTarget?.dna || ''} />}
+                    cover={<ZombieCard zombie={zombieTarget as IZombie} />}
                 >
                     <Meta
-                        avatar={<FontAwesomeIcon icon={faXmark} />}
-                        title={`${zombieTarget?.name} - ${zombieTarget?.dna}`}
-                        description={`Level: ${zombieTarget?.level} Score: ${zombieTarget?.score}`}
+                        avatar={<FontAwesomeIcon icon={faXmark} size="xl" color="red" />}
+                        title="Loss"
                     />
                 </Card>
             </Col>
@@ -63,9 +64,9 @@ const ZombieAttackVitory: React.FC = () => {
             </Col>
         </Row>
         <Row justify="center" style={{ marginTop: 60 }}>
-            <Button type="primary" key="army" onClick={() => navigate(Paths.HOME)}>
+            <CardButtonAction onClick={() => navigate(Paths.HOME)}>
                 Go Army
-            </Button>
+            </CardButtonAction>
         </Row>
         </>
     )

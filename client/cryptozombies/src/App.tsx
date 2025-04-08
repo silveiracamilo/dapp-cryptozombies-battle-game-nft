@@ -5,14 +5,16 @@ import AuthContextProvider from './context/auth/AuthContextProvider';
 import Router from './router/Router'
 import { Provider } from 'react-redux';
 import store from './store/store';
+import { GlobalStyle, themeStyle } from './globalStyles';
 
 function App() {
   return (
-    <ConfigProvider theme={{ hashed: false }}>
+    <ConfigProvider theme={{ hashed: false, ...themeStyle }}>
       <ErrorBoundary FallbackComponent={FallbackErrorBoundary}>
         <Provider store={store}>
           <AuthContextProvider>
             <Router />
+            <GlobalStyle />
           </AuthContextProvider>
         </Provider>
       </ErrorBoundary>

@@ -1,4 +1,4 @@
-import { Row } from 'antd';
+import { Col, Row } from 'antd';
 import { map } from 'lodash';
 import React from 'react';
 import { useHomeContext } from './context/HomeContextProvider';
@@ -9,12 +9,14 @@ const Home: React.FC = () => {
 
     return (
         <>
-            <Row justify="center">
-                <h1>Army</h1>
-            </Row>
             <Row>
+                <h1 style={{ color: '#b6a764' }}>Your Zombie Army</h1>
+            </Row>
+            <Row gutter={[8, 8]}>
             { map(zombiesId, id => (
-                <ZombieArmy id={id} key={id} />
+                <Col key={id} md={6} xxl={4}>
+                    <ZombieArmy id={id} />
+                </Col>
             )) }
             </Row>
         </>

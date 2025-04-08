@@ -11,9 +11,9 @@ const FallbackErrorBoundary: React.FC<FallbackProps> = ({ resetErrorBoundary }) 
           message="Erro"
           description={
               <>
-              <strong>Algo deu errado!</strong>
+              <strong>Oops something went wrong!</strong>
               &nbsp;
-              <Button onClick={resetErrorBoundary}>Reiniciar</Button>
+              <Button onClick={resetErrorBoundary}>Reset</Button>
               </>
           } 
           style={{ width: '300px', marginLeft: 'calc((100% - 300px) / 2)' }}

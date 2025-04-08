@@ -11,8 +11,8 @@ const ZombieFeed: React.FC = () => {
 
     return (
         <>
-            <Row justify="center">
-                <h1>Feed zombie {zombie?.name} with CryptoKitties</h1>
+            <Row>
+                <h1 style={{ color: '#b6a764' }}>Feed zombie {zombie?.name} with CryptoKitties</h1>
             </Row>
             <Row justify="center" align="middle">
                 <Col span={4}>

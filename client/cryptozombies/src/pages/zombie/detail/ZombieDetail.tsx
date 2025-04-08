@@ -39,7 +39,7 @@ const ZombieDetail: React.FC = () => {
         <>
         <Row justify="space-evenly" align="middle" gutter={30}>
             <Col span={8}>
-                <h1>{zombie.id}#{zombie.name} </h1>
+                <h1 style={{ color: '#b6a764' }}>{zombie.id}#{zombie.name} </h1>
             </Col>
             <Col span={16} style={{ textAlign: 'right' }}>
                 <Row style={{ gap: 16 }} justify="end">

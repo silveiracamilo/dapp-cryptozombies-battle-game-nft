@@ -1,11 +1,12 @@
-import { Button, Card, Image, notification, Spin } from "antd";
+import { Image, notification, Row, Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Paths } from "src/router/RouteConsts";
 import { addressFormat } from "utils/formatter";
 import { useZombieBattleContext } from "../context/ZombieBattleContextProvider";
+import styled from "styled-components";
+import CardButtonAction from "src/components/button/CardButtonAction";
 
-const { Meta } = Card;
 
 const AccountEnemie = ({ account }: { account: string }) => {
     const { id = '' } = useParams();
@@ -41,11 +42,19 @@ const AccountEnemie = ({ account }: { account: string }) => {
     }, []);
 
     return (
-        <Card
-            style={{ width: 300 }}
-            cover={<Image src={`https://robohash.org/${account}?set=set2`} placeholder={<Spin spinning />} preview={false} />}
-            actions={[
-                <Button 
+        <Card>
+            <Row justify="center">
+                <Image src={`https://robohash.org/${account}?set=set2`} placeholder={<Spin spinning />} preview={false} />
+            </Row>
+            
+            <CardFooterStyle>
+                <div>{addressFormat(account)} | Score: {infos.score}</div>
+                <div>Zombies Total: {infos.total}</div>
+                <div>Level more high: {infos.levelHigh}</div>
+                <div>Level more down: {infos.levelDown}</div>
+            </CardFooterStyle>
+            <CardFooterStyle>
+                <CardButtonAction 
                     onClick={() => navigate(
                         Paths.ZOMBIE_ATTACK
                             .replace(':id', id)
@@ -53,15 +62,32 @@ const AccountEnemie = ({ account }: { account: string }) => {
                     )}
                 >
                     Attack that
-                </Button>,
-            ]}
-        >
-            <Meta
-                title={addressFormat(account)}
-                description={`Zombies Total: ${infos.total}, Level more high: ${infos.levelHigh}, Level more down: ${infos.levelDown}, Score: ${infos.score}`}
-            />
+                </CardButtonAction>
+            </CardFooterStyle>
         </Card>
     );
 }
 
 export default AccountEnemie;
+
+const Card = styled.div`
+    width: 100%;
+    border-radius: 8px;
+    background: url("src/assets/images/textured-paper.png");
+    background-color: #86835dCC;
+    background-blend-mode: darken;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+`;
+
+const CardFooterStyle = styled(Row)`
+    width: 100%;
+    background-color: #262819;
+    color: #b6a764;
+    font-size: 16px;
+    font-weight: bold;
+    width: '100%';
+    padding: 8px;
+    display: block;
+`;

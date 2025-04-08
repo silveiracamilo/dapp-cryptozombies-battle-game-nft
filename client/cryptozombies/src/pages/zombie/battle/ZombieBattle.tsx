@@ -11,18 +11,20 @@ const ZombieBattle: React.FC = () => {
 
     return (
         <>
-        <Row justify="center">
-            <h1>Choose a account to fight {zombie?.name}</h1>
+        <Row>
+            <h1 style={{ color: '#b6a764' }}>Choose a account to fight {zombie?.name}</h1>
         </Row>
-        <Row justify="center" align="middle">
+        <Row align="middle">
             <Col span={4}>
                 <ZombieCard zombie={zombie as IZombie} />
             </Col>
             <Col span={20}>
                 {accounts?.length ?
-                <Row justify="center">
+                <Row gutter={[8, 8]}>
                 {map(accounts, (account, i) => (
-                    <AccountEnemie account={account} key={`${account}_${i}`} />
+                    <Col key={`${account}_${i}`} span={6}>
+                        <AccountEnemie account={account} />
+                    </Col>
                 ))}
                 </Row> :
                 <Row justify="center" align="middle">

@@ -1,14 +1,14 @@
-import { Zombie } from "src/components/zombie/Zombie";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Card, notification } from "antd";
+import { notification, Row } from "antd";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { useNavigate } from "react-router";
 import { Paths } from "src/router/RouteConsts";
 import { useHomeContext } from "../context/HomeContextProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressCard, faCat, faRadiation } from "@fortawesome/free-solid-svg-icons";
-
-const { Meta } = Card;
+import styled from "styled-components";
+import ZombieCard from "src/components/zombie/ZombieCard";
+import CardButtonAction from "src/components/button/CardButtonAction";
 
 const ZombieArmy = ({ id }: { id: number }) => {
     const { getZombieById } = useHomeContext();
@@ -44,21 +44,32 @@ const ZombieArmy = ({ id }: { id: number }) => {
     }, []);
 
     return (
-        <Card
-            style={{ width: 300 }}
-            cover={zombie ? <Zombie dna={zombie.dna} /> : null}
-            actions={[
-                <Button icon={<FontAwesomeIcon icon={faCat} />} onClick={feed}>Feed</Button>,
-                <Button icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>Battle</Button>,
-                <Button icon={<FontAwesomeIcon icon={faAddressCard} />} onClick={detail}>Detail</Button>,
-            ]}
-        >
-            <Meta
-                title={`${zombie?.name} - ${zombie?.dna}`}
-                description={`#${id} - Level: ${zombie?.level} Score: ${zombie?.score}`}
-            />
-        </Card>
+        <CardStyle>
+            <ZombieCard zombie={zombie as IZombie} />
+            <CardFooterStyle justify="space-between">
+                <CardButtonAction icon={<FontAwesomeIcon icon={faCat} />} onClick={feed}>
+                    Feed
+                </CardButtonAction>
+                <CardButtonAction icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>
+                    Battle
+                </CardButtonAction>
+                <CardButtonAction icon={<FontAwesomeIcon icon={faAddressCard} />} onClick={detail}>
+                    Detail
+                </CardButtonAction>
+            </CardFooterStyle>
+        </CardStyle>
     )
 }
 
 export default ZombieArmy;
+
+const CardStyle = styled.div`
+    width: 100%;
+`;
+
+const CardFooterStyle = styled(Row)`
+    width: 100%;
+    background-color: #262819;
+    gap: 8px; 
+    padding: 8px;
+`;

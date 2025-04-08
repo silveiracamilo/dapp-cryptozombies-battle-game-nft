@@ -1,10 +1,11 @@
 import { ReactNode, useCallback } from "react";
-import { Image, Layout, Menu, MenuProps } from "antd";
+import { ConfigProvider, Image, Layout, Menu, MenuProps } from "antd";
 import logo from "assets/images/cryptozombies-logo.png";
 import { useNavigate } from "react-router";
 import { map } from "lodash";
 import { Paths } from "src/router/RouteConsts";
 import AccountDropdown from "src/components/account/AccountDropdown";
+import styled from "styled-components";
 
 const { Header, Content, Footer } = Layout;
 
@@ -27,25 +28,43 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <Layout style={{ width: "100vw", height: "100vh" }}>
-            <Header style={{ display: 'flex', alignItems: 'center' }}>
-                <div>
-                    <Image src={logo} width={150} preview={false} onClick={goHome} />
-                </div>
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={['2']}
-                    items={menuItems}
-                    onClick={onClickMenu}
-                    style={{ flex: 1, minWidth: 0 }}
-                />
-                <AccountDropdown />
-            </Header>
-            <Content style={{ padding: 20, height: '90%' }}>{children}</Content>
-            <Footer style={{ textAlign: 'center' }}></Footer>
-        </Layout>
+        <ConfigProvider
+            theme={{
+                components: {
+                    Layout: {
+                        bodyBg: 'url("src/assets/images/grunge-scratched-cracked-texture-background_dark.jpg")',
+                        colorText: '#FFF'
+                    },
+                },
+            }}
+        >
+            <LayoutStyled>
+                <Header style={{ display: 'flex', alignItems: 'center' }}>
+                    <div>
+                        <Image src={logo} width={150} preview={false} onClick={goHome} />
+                    </div>
+                    <Menu
+                        theme="dark"
+                        mode="horizontal"
+                        defaultSelectedKeys={['2']}
+                        items={menuItems}
+                        onClick={onClickMenu}
+                        style={{ flex: 1, minWidth: 0 }}
+                    />
+                    <AccountDropdown />
+                </Header>
+                <Content style={{ padding: 20 }}>{children}</Content>
+                <Footer style={{ textAlign: 'center' }}></Footer>
+            </LayoutStyled>
+        </ConfigProvider>
     )
 }
 
 export default LayoutAuthentication;
+
+const LayoutStyled = styled(Layout)`
+    min-width: 100vw;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+`;
