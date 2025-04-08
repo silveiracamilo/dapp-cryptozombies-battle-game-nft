@@ -2,6 +2,9 @@ import { BrowserProvider, Contract, parseEther } from 'ethers';
 import CryptoZombies from './CryptoZombies.json';
 import { zombieMapper } from '../mapper/zombie/ZombieMapper';
 import { IZombie } from '../interface/zombie/IZombie';
+import { map } from 'lodash';
+import { rankingMapper } from '../mapper/ranking/RankingMapper';
+import { IRanking } from '../interface/ranking/IRanking';
 
 class ContractService {
     static _instance: ContractService;
@@ -89,6 +92,13 @@ class ContractService {
         const tx = await contract.changeDna(zombieId, newDna, { value: parseEther('0.004') });
         return tx.wait();
     }
+
+    public async getRanking(): Promise<IRanking[]> {
+        const contract = await this.getContract();
+        const ranking = await contract.getRanking();
+        return map(ranking, rankingMapper);
+    }
+
 } 
 
 export default ContractService;

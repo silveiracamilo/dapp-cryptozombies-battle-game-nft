@@ -29,18 +29,18 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
     const [accounts, setAccounts] = useState<string[]>([]);
 
     useEffect(() => {
-        load();
+        loadAccounts();
         loadZombieById(+id);
     }, []);
 
-    const load = useCallback(async () => {
+    const loadAccounts = useCallback(async () => {
         try {
             const accounts = await ContractService.instance.getAccounts();
             const accountsFiltered = filter([...accounts], account => account !== address);
             setAccounts(accountsFiltered);
         } catch (error: any) {
             notification.error({
-                message: 'Error in get zombies',
+                message: 'Error in get accounts',
                 description: error.reason || 'Error generic'
             });
         }

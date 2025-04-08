@@ -43,7 +43,7 @@ const AccountEnemie = ({ account }: { account: string }) => {
     return (
         <Card
             style={{ width: 300 }}
-            cover={<Image src={`https://robohash.org/${account}?set=set2`} placeholder={<Spin spinning />} />}
+            cover={<Image src={`https://robohash.org/${account}?set=set2`} placeholder={<Spin spinning />} preview={false} />}
             actions={[
                 <Button 
                     onClick={() => navigate(

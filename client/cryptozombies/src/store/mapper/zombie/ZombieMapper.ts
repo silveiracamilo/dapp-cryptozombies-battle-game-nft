@@ -5,16 +5,16 @@ const EYES_VARIATIONS = 11
 const SHIRT_VARIATIONS = 6
 
 export const zombieMapper = (id: number, zombie: (string | number)[]): IZombie => {
-    const level = +zombie[2].toString();
     const dna = zombie[1].toString();
-    const winCount = +zombie[4].toString();
-    const lossCount = +zombie[5].toString();
-    const score = level + winCount + lossCount;
+    const score = +zombie[2].toString();
+    const level = +zombie[3].toString();
+    const winCount = +zombie[5].toString();
+    const lossCount = +zombie[6].toString();
     return {
-        id,
+        id: parseInt(id.toString()),
         name: `${zombie[0]}`,
         dna,
-        readyTime: +zombie[3].toString(),
+        readyTime: +zombie[4].toString(),
         level,
         winCount,
         lossCount,

@@ -61,6 +61,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
 
     const handleNewZombie = useCallback((from: string, zombieId: number, name: string, dna: number) => {
         if (from === address) {
+            removeEventListener();
             navigate(
                 Paths.ZOMBIE_CREATE_SUCCESS
                     .replace(':id', zombieId.toString())

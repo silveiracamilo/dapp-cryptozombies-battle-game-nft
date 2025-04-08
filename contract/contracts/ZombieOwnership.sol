@@ -1,20 +1,16 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "./ZombieAttack.sol";
+import "./ZombieRanking.sol";
 import "./ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-// import { ERC721URIStorage, ERC721 } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 
 /// @title A contract that manages transfering zombie ownership
 /// @author Camilo da Silveira
-/// @dev Compliant with OpenZeppelin's implementation of the ERC721 spec draft
-contract ZombieOwnership is ZombieAttack, ERC721 {
-// contract ZombieOwnership is ZombieAttack, ERC721URIStorage {
+contract ZombieOwnership is ZombieRanking, ERC721 {
 
     constructor() {}
-    // constructor() ERC721("Zombie", "ZMB") {}
 
     mapping (uint => address) zombieApprovals;
     

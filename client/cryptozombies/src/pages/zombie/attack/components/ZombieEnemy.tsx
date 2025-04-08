@@ -1,10 +1,8 @@
-import { Zombie } from "src/components/zombie/Zombie";
-import { Button, Card } from "antd";
+import { Button, Card, Row } from "antd";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { useZombieAttackContext } from "../context/ZombieAttackContextProvider";
 import { debounce } from "lodash";
-
-const { Meta } = Card;
+import ZombieCard from "src/components/zombie/ZombieCard";
 
 const ZombieEnemy = ({ zombie }: { zombie: IZombie }) => {
     const { attack } = useZombieAttackContext();
@@ -12,15 +10,11 @@ const ZombieEnemy = ({ zombie }: { zombie: IZombie }) => {
     return (
         <Card
             style={{ width: 300 }}
-            cover={zombie ? <Zombie dna={zombie.dna} /> : null}
-            actions={[
-                <Button onClick={debounce(() => attack(zombie.id), 200)}>Attack that</Button>,
-            ]}
+            cover={<ZombieCard zombie={zombie} />}
         >
-            <Meta
-                title={`${zombie?.name} - ${zombie?.dna}`}
-                description={`Level: ${zombie?.level} Score: ${zombie?.score}`}
-            />
+            <Row justify="center">
+                <Button onClick={debounce(() => attack(zombie.id), 200)}>Attack that</Button>
+            </Row>
         </Card>
     )
 }

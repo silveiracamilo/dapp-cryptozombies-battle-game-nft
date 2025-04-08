@@ -18,6 +18,11 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie }) => {
     return (
         <Card>
             <Row style={{ width: '100%', gap: 5, padding: 5 }}>
+                <Stat>
+                    {zombie.id}#{zombie.name}
+                </Stat>
+            </Row>
+            <Row style={{ width: '100%', gap: 5, padding: 5 }}>
                 <Tooltip title="Level">
                     <Stat><FontAwesomeIcon icon={faStairs} /> { zombie.level }</Stat>
                 </Tooltip>
