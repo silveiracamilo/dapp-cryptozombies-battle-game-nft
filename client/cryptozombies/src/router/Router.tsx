@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { LoginPage } from '../pages/login/loadable';
+import { LearnToPlayPage } from '../pages/learnToPlay/loadable';
 import { HomePage } from '../pages/home/loadable';
 import { RankingPage } from '../pages/ranking/loadable';
 import { ZombieCreatePage } from '../pages/zombie/create/loadable';
@@ -20,6 +21,7 @@ const Router: React.FC = () => {
         <BrowserRouter>
             <Routes>
                 <Route path={Paths.LOGIN} element={<LoginPage />} />
+                <Route path={Paths.LEARN_TO_PLAY} element={<LearnToPlayPage />} />
                 <Route path={Paths.HOME} element={<RoutePrivate />}>
                     <Route path={Paths.HOME} element={<HomePage />} />
                     <Route path={Paths.RANKING} element={<RankingPage />} />
