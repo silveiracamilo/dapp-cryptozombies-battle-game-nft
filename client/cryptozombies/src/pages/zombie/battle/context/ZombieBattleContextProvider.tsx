@@ -4,7 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { useParams } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import ContractService from "src/store/services/ContractService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface IZombieBattleContext {
     zombie: IZombie | undefined
@@ -35,7 +35,7 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
 
     const loadAccounts = useCallback(async () => {
         try {
-            const accounts = await ContractService.instance.getAccounts();
+            const accounts = await CryptoZombiesService.instance.getAccounts();
             const accountsFiltered = filter([...accounts], account => account !== address);
             setAccounts(accountsFiltered);
         } catch (error: any) {
@@ -59,11 +59,11 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const getZombieById = useCallback(async (id: number) => {
-        return ContractService.instance.getZombieById(id);
+        return CryptoZombiesService.instance.getZombieById(id);
     }, []);
 
     const getZombiesByOwnerMapped = useCallback(async (accountAddress: string) => {
-        return ContractService.instance.getZombiesByOwnerMapped(accountAddress);
+        return CryptoZombiesService.instance.getZombiesByOwnerMapped(accountAddress);
     }, []);
 
     const contextValue = useMemo(() => ({ zombie, accounts, getZombiesByOwnerMapped }), [zombie, accounts]);

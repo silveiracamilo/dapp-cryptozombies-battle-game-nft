@@ -1,7 +1,7 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ISettings from "src/store/interface/admin/ISettings";
-import ContractService from "src/store/services/ContractService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface ISettingsContext {
     settings: ISettings
@@ -34,7 +34,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
 
     const loadSettings = useCallback(async () => {
         try {
-            const settings = await ContractService.instance.getSettings();
+            const settings = await CryptoZombiesService.instance.getSettings();
             setSettings(settings);
         } catch (error: any) {
             notification.error({
@@ -47,7 +47,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setCooldownTime = useCallback(async (cooldownTime: number) => {
         setLoading(true);
         try {
-            await ContractService.instance.setCooldownTime(cooldownTime);
+            await CryptoZombiesService.instance.setCooldownTime(cooldownTime);
             setSettings(s => ({ ...s as ISettings, cooldownTime }));
         } catch (error: any) {
             notification.error({
@@ -62,7 +62,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setLevelUpFee = useCallback(async (fee: bigint) => {
         setLoading(true);
         try {
-            await ContractService.instance.setLevelUpFee(fee);
+            await CryptoZombiesService.instance.setLevelUpFee(fee);
             setSettings(s => ({ ...s as ISettings, levelUpFee: fee }));
         } catch (error: any) {
             notification.error({
@@ -77,7 +77,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setChangeNameFee = useCallback(async (fee: bigint) => {
         setLoading(true);
         try {
-            await ContractService.instance.setChangeNameFee(fee);
+            await CryptoZombiesService.instance.setChangeNameFee(fee);
             setSettings(s => ({ ...s as ISettings, changeNameFee: fee }));
         } catch (error: any) {
             notification.error({
@@ -92,7 +92,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setChangeDNAFee = useCallback(async (fee: bigint) => {
         setLoading(true);
         try {
-            await ContractService.instance.setChangeDNAFee(fee);
+            await CryptoZombiesService.instance.setChangeDNAFee(fee);
             setSettings(s => ({ ...s as ISettings, changeDNAFee: fee }));
         } catch (error: any) {
             notification.error({
@@ -107,7 +107,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setBaseUrlTokenURI = useCallback(async (baseUrl: string) => {
         setLoading(true);
         try {
-            await ContractService.instance.setBaseUrlTokenURI(baseUrl);
+            await CryptoZombiesService.instance.setBaseUrlTokenURI(baseUrl);
             setSettings(s => ({ ...s as ISettings, baseUrlTokenURI: baseUrl }));
         } catch (error: any) {
             notification.error({
@@ -122,7 +122,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setTax = useCallback(async (tax: bigint) => {
         setLoading(true);
         try {
-            await ContractService.instance.setTax(tax);
+            await CryptoZombiesService.instance.setTax(tax);
             setSettings(s => ({ ...s as ISettings, tax }));
         } catch (error: any) {
             notification.error({
@@ -137,7 +137,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setMinPrice = useCallback(async (price: bigint) => {
         setLoading(true);
         try {
-            await ContractService.instance.setMinPrice(price);
+            await CryptoZombiesService.instance.setMinPrice(price);
             setSettings(s => ({ ...s as ISettings, minPrice: price }));
         } catch (error: any) {
             notification.error({

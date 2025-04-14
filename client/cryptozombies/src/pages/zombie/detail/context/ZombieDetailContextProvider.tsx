@@ -2,7 +2,7 @@ import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import ContractService from "src/store/services/ContractService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
@@ -35,7 +35,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
 
     const getZombieById = useCallback(async () => {
         try {
-            const zombie = await ContractService.instance.getZombieById(+id);
+            const zombie = await CryptoZombiesService.instance.getZombieById(+id);
             setZombie(zombie);
         } catch (error: any) {
             notification.error({
@@ -48,7 +48,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const levelUp = useCallback(async () => {
         setLoading(true);
         try {
-            await ContractService.instance.levelUp(+id);
+            await CryptoZombiesService.instance.levelUp(+id);
             await getZombieById();
         } catch (error: any) {
             notification.error({
@@ -63,7 +63,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const changeName = useCallback(async (newName: string = 'Camilo Novo') => {
         setLoading(true);
         try {
-            await ContractService.instance.changeName(+id, newName);
+            await CryptoZombiesService.instance.changeName(+id, newName);
             await getZombieById();
         } catch (error: any) {
             notification.error({
@@ -78,7 +78,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const changeDna = useCallback(async (newDna: number = 3169225795162389) => {
         setLoading(true);
         try {
-            await ContractService.instance.changeDna(+id, newDna);
+            await CryptoZombiesService.instance.changeDna(+id, newDna);
             await getZombieById();
         } catch (error: any) {
             notification.error({

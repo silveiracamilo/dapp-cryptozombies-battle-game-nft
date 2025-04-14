@@ -2,7 +2,7 @@ import { notification } from "antd";
 import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IRanking } from "src/store/interface/ranking/IRanking";
-import ContractService from "src/store/services/ContractService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface IRankingContext {
     ranking: IRanking[]
@@ -27,7 +27,7 @@ const RankingContextProvider = ({ children }: { children: ReactNode }) => {
 
     const loadRanking = useCallback(async () => {
         try {
-            const ranking = await ContractService.instance.getRanking();
+            const ranking = await CryptoZombiesService.instance.getRanking();
             
             setRanking(
                 orderBy(ranking, ['score'], ['desc'])

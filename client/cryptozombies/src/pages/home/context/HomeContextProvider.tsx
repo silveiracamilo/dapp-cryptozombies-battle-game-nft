@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import ContractService from "src/store/services/ContractService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface IHomeContext {
     zombiesId: number[]
@@ -36,7 +36,7 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
 
     const start = useCallback(async () => {
         try {
-            const zombies = await ContractService.instance.getZombiesByOwner(address);
+            const zombies = await CryptoZombiesService.instance.getZombiesByOwner(address);
             if (!zombies?.length) {
                 navigate(Paths.ZOMBIE_CREATE);
             } else {
@@ -52,7 +52,7 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const getZombieById = useCallback(async (id: number) => {
-        return ContractService.instance.getZombieById(id);
+        return CryptoZombiesService.instance.getZombieById(id);
     }, []);
 
     const contextValue = useMemo(() => ({ zombiesId, getZombieById }), [zombiesId]);

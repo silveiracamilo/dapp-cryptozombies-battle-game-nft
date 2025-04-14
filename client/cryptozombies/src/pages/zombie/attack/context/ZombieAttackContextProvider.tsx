@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import ContractService from "src/store/services/ContractService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface IZombieAttackContext {
     zombie: IZombie | undefined
@@ -53,7 +53,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     }, [id]);
 
     const addEventListener = useCallback(async () => {
-        const ctct = await ContractService.instance.getContract();
+        const ctct = await CryptoZombiesService.instance.getContract();
 
         ctct.on('onAttackVitory', handleOnAttackVitory);
         ctct.on('onAttackDefeat', handleOnAttackDefeat);
@@ -103,7 +103,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
 
     const start = useCallback(async () => {
         try {
-            const zombies = await ContractService.instance.getZombiesByOwnerMapped(addressEnemie);
+            const zombies = await CryptoZombiesService.instance.getZombiesByOwnerMapped(addressEnemie);
             setZombies([...zombies]);
         } catch (error: any) {
             notification.error({
@@ -114,13 +114,13 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const getZombieById = useCallback(async (id: number) => {
-        return ContractService.instance.getZombieById(id);
+        return CryptoZombiesService.instance.getZombieById(id);
     }, []);
 
     const attack = useCallback(async (targetId: number) => {
         setLoading(true);
         try {
-            await ContractService.instance.attack(parseInt(id), targetId);
+            await CryptoZombiesService.instance.attack(parseInt(id), targetId);
         } catch (error: any) {
             notification.error({
                 message: 'Error attack zombie',

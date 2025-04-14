@@ -4,7 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
-import ContractService from "src/store/services/ContractService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface IZombieCreateContext {
     create: (name: string) => void
@@ -35,12 +35,12 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const addEventListener = useCallback(async () => {
-        const ctct = await ContractService.instance.getContract();
+        const ctct = await CryptoZombiesService.instance.getContract();
 
         // const eventTopic = ethers.id("NewZombie(address,uint,string,uint)");
         // const ownerAddress = address; // Endereço do owner
         // const filter = {
-        //     address: ContractService.instance.contractAddress, // Opcional: filtra eventos apenas deste contrato
+        //     address: CryptoZombiesService.instance.contractAddress, // Opcional: filtra eventos apenas deste contrato
         //     topics: [
         //         eventTopic, // Tópico do evento
         //         ethers.zeroPadValue(ownerAddress, 32) // Filtra eventos onde `from == owner`
@@ -49,7 +49,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
 
 
         ctct.on('NewZombie', handleNewZombie);
-        // ContractService.instance.provider.on(filter, handleNewZombie);
+        // CryptoZombiesService.instance.provider.on(filter, handleNewZombie);
         contract.current = ctct;
     }, []);
 
@@ -75,7 +75,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
     const create = useCallback(async (name: string) => {
         setLoading(true);
         try {
-            await ContractService.instance.createRandomZombie(name);
+            await CryptoZombiesService.instance.createRandomZombie(name);
         } catch (error: any) {
             notification.error({
                 message: 'Error in create zombie',
