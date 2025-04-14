@@ -5,6 +5,7 @@ import { IZombie } from '../interface/zombie/IZombie';
 import { map } from 'lodash';
 import { rankingMapper } from '../mapper/ranking/RankingMapper';
 import { IRanking } from '../interface/ranking/IRanking';
+import ISettings from '../interface/admin/ISettings';
 
 class ContractService {
     static _instance: ContractService;
@@ -99,6 +100,104 @@ class ContractService {
         return map(ranking, rankingMapper);
     }
 
+    public async getCooldownTime() {
+        const contract = await this.getContract();
+        return contract.cooldownTime();
+    }
+
+    public async getLevelUpFee() {
+        const contract = await this.getContract();
+        return contract.levelUpFee();
+    }
+
+    public async getChangeNameFee() {
+        const contract = await this.getContract();
+        return contract.changeNameFee();
+    }
+
+    public async getChangeDNAFee() {
+        const contract = await this.getContract();
+        return contract.changeDNAFee();
+    }
+
+    public async getBaseUrlTokenURI() {
+        const contract = await this.getContract();
+        return contract.baseUrlTokenURI();
+    }
+
+    public async getTax() {
+        const contract = await this.getContract();
+        return contract.tax();
+    }
+
+    public async getMinPrice() {
+        const contract = await this.getContract();
+        return contract.minPrice();
+    }
+    
+    public async getSettings(): Promise<ISettings> {
+        const settingsList = await Promise.all([
+            this.getCooldownTime(),
+            this.getLevelUpFee(),
+            this.getChangeNameFee(),
+            this.getChangeDNAFee(),
+            this.getBaseUrlTokenURI(),
+            this.getTax(),
+            this.getMinPrice(),
+        ]);
+
+        return {
+            cooldownTime: parseInt(settingsList[0]),
+            levelUpFee: settingsList[1],
+            changeNameFee: settingsList[2],
+            changeDNAFee: settingsList[3],
+            baseUrlTokenURI: settingsList[4],
+            tax: settingsList[5],
+            minPrice: settingsList[6],
+        };
+    }
+
+    public async setCooldownTime(cooldownTime: number) {
+        const contract = await this.getContract();
+        const tx = await contract.setCooldownTime(cooldownTime);
+        return tx.wait();
+    }
+
+    public async setLevelUpFee(fee: bigint) {
+        const contract = await this.getContract();
+        const tx = await contract.setLevelUpFee(fee);
+        return tx.wait();
+    }
+    
+    public async setChangeNameFee(fee: bigint) {
+        const contract = await this.getContract();
+        const tx = await contract.setChangeNameFee(fee);
+        return tx.wait();
+    }
+
+    public async setChangeDNAFee(fee: bigint) {
+        const contract = await this.getContract();
+        const tx = await contract.setChangeDNAFee(fee);
+        return tx.wait();
+    }
+    
+    public async setBaseUrlTokenURI(baseUrl: string) {
+        const contract = await this.getContract();
+        const tx = await contract.setBaseUrlTokenURI(baseUrl);
+        return tx.wait();
+    }
+    
+    public async setTax(tax: bigint) {
+        const contract = await this.getContract();
+        const tx = await contract.setTax(tax);
+        return tx.wait();
+    }
+    
+    public async setMinPrice(price: bigint) {
+        const contract = await this.getContract();
+        const tx = await contract.setMinPrice(price);
+        return tx.wait();
+    }
 } 
 
 export default ContractService;

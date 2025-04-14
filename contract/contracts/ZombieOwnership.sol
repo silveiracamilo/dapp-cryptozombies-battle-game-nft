@@ -9,7 +9,8 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 /// @title A contract that manages transfering zombie ownership
 /// @author Camilo da Silveira
 contract ZombieOwnership is ZombieRanking, ERC721 {
-
+    string public baseUrlTokenURI = "http://localhost:3333/zombie/uri/";
+    
     constructor() {}
 
     mapping (uint => address) zombieApprovals;
@@ -43,12 +44,16 @@ contract ZombieOwnership is ZombieRanking, ERC721 {
     function tokenURI(uint256 _tokenId) public view returns (string memory) {
         Zombie storage zombie = zombies[_tokenId];
         return string.concat(
-            "http://localhost:3333/zombie/uri/",
+            baseUrlTokenURI,
             Strings.toString(_tokenId),
             "/",
             zombie.name,
             "/",
             Strings.toString(zombie.dna)
         );
+    }
+
+    function setBaseUrlTokenURI(string memory _baseUrlTokenURI) external onlyOwner {
+        baseUrlTokenURI = _baseUrlTokenURI;
     }
 }

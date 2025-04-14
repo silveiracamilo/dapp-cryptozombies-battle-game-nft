@@ -1,22 +1,22 @@
-import { isEmpty } from "lodash";
 import { ReactElement } from "react";
 import { Navigate, Outlet } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import LayoutAuthentication from "src/template/LayoutAuthentication";
 import { Paths } from "./RouteConsts";
+import { OWNER_ADDRESS } from "src/store/Constants";
 
 const withLayoutAuthentication = (children: ReactElement) => {
     return <LayoutAuthentication>{children}</LayoutAuthentication>;
 }
 
-const RoutePrivate = () => {
+const RoutePrivateAdmin = () => {
     const { address } = useAuthContext();
 
-    if (isEmpty(address)) {
-        return <Navigate to={Paths.LOGIN} replace={true} />;
+    if (address !== OWNER_ADDRESS) {
+        return <Navigate to={Paths.HOME} replace={true} />;
     }
 
     return withLayoutAuthentication(<Outlet />);
 }
 
-export default RoutePrivate;
+export default RoutePrivateAdmin;

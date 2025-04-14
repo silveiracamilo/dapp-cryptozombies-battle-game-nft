@@ -13,8 +13,10 @@ import { ZombieAttackPage } from '../pages/zombie/attack/loadable';
 import { ZombieAttackVitoryPage } from '../pages/zombie/attackVitory/loadable';
 import { ZombieAttackDefeatPage } from '../pages/zombie/attackDefeat/loadable';
 import { ZombieBattlePage } from '../pages/zombie/battle/loadable';
+import { SettingsPage } from 'pages/admin/settings/loadable';
 import { Paths } from './RouteConsts';
 import RoutePrivate from './RoutePrivate';
+import RoutePrivateAdmin from './RoutePrivateAdmin';
 
 const Router: React.FC = () => {
     return (
@@ -34,6 +36,9 @@ const Router: React.FC = () => {
                     <Route path={Paths.ZOMBIE_ATTACK} element={<ZombieAttackPage />} />
                     <Route path={Paths.ZOMBIE_ATTACK_VITORY} element={<ZombieAttackVitoryPage />} />
                     <Route path={Paths.ZOMBIE_ATTACK_DEFEAT} element={<ZombieAttackDefeatPage />} />
+                </Route>
+                <Route path={Paths.ADMIN_SETTINGS} element={<RoutePrivateAdmin />}>
+                    <Route path={Paths.ADMIN_SETTINGS} element={<SettingsPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -7,6 +7,7 @@ contract ZombieRanking is ZombieAttack {
 
     struct Ranking {
         address account;
+        uint position;
         uint score;
         uint zombieCount;
         uint16 winCount;
@@ -33,7 +34,7 @@ contract ZombieRanking is ZombieAttack {
                 lossCount += zombie.lossCount;
             }
 
-            allRankings[i] = Ranking(account, score, zombieIds.length, winCount, lossCount);
+            allRankings[i] = Ranking(account, i, score, zombieIds.length, winCount, lossCount);
         }
 
         _sortByScore(allRankings);

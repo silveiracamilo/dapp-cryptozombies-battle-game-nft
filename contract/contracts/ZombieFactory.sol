@@ -10,7 +10,7 @@ contract ZombieFactory is Ownable {
     uint dnaDigits = 16;
     uint dnaModulus = 10 ** dnaDigits;
     // uint cooldownTime = 1 days;
-    uint cooldownTime = 1 minutes;
+    uint public cooldownTime = 1 minutes;
 
     struct Zombie {
         string name;
@@ -54,5 +54,9 @@ contract ZombieFactory is Ownable {
         uint agility = 50 + ((_dna / 100) % 50); // Agilidade entre 50-99
         uint resilience = 50 + ((_dna / 10000) % 50); // Resistência entre 50-99
         return (strength, agility, resilience);
+    }
+
+    function setCooldownTime(uint _cooldownTime) external onlyOwner {
+        cooldownTime = _cooldownTime;
     }
 }

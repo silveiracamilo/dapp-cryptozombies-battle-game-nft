@@ -17,10 +17,26 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const themeStyle = {
-    colors: {
-      background: '#0f0f0f',
-      primary: '#FFF',
-      danger: '#ff4d4f',
-      text: '#ffffff',
+  colors: {
+    background: '#0f0f0f',
+    primary: '#FFF',
+    danger: '#ff4d4f',
+    text: '#FFF',
+  },
+  token: {
+    colorPrimary: '#b6a764',
+    text: '#FFF',
+  },
+  components: {
+    Form: {
+      labelColor: '#FFF'
     },
+    Result: {
+      colorTextDescription: '#FFF',
+      colorTextHeading: '#FFF',
+    },
+    Tabs: {
+      itemColor: '#FFF'
+    }
+  }
 };

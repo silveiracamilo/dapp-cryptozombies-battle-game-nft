@@ -72,7 +72,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie }) => {
 const Card = styled.div`
     border-radius: 8px;
     background: url("src/assets/images/textured-paper.png");
-    background-color: #86835dCC;
+    background-color: #86835d88;
     background-blend-mode: darken;
     background-position: center;
     background-size: cover;

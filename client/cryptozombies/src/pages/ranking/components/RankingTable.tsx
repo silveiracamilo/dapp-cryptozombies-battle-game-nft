@@ -2,19 +2,18 @@ import { useMemo } from "react";
 import { Image, Row, Spin, Table } from "antd";
 import { useRankingContext } from "../context/RankingContextProvider";
 import { isEmpty } from "lodash";
-import { IRanking } from "src/store/interface/ranking/IRanking";
 import { addressFormat } from "utils/formatter";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 
 const RankingTable = () => {
     const { address } = useAuthContext();
-    const { ranking } = useRankingContext();
+    const { ranking } = useRankingContext();    
     const columns = useMemo(() => [
         {
             title: 'Position',
+            dataIndex: 'position',
             key: 'position',
-            // @ts-ignore
-            render: (v: any, r: IRanking, index: number) => `${index + 1}º`,
+            render: (position: number) => `${position + 1}º`,
             width: 150,
         },
         {

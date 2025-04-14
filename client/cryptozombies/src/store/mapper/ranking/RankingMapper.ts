@@ -3,9 +3,10 @@ import { IRanking } from "src/store/interface/ranking/IRanking";
 export const rankingMapper = (ranking: (string | number)[]): IRanking => {
     return {
         account: `${ranking[0]}`,
-        score: +ranking[1].toString(),
-        zombieCount: +ranking[2].toString(),
-        winCount: +ranking[3].toString(),
-        lossCount: +ranking[4].toString(),
+        position: +ranking[1].toString(),
+        score: +ranking[2].toString(),
+        zombieCount: +ranking[3].toString(),
+        winCount: +ranking[4].toString(),
+        lossCount: +ranking[5].toString(),
     };
 };
