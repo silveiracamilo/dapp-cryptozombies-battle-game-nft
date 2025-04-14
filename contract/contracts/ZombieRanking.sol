@@ -68,7 +68,7 @@ contract ZombieRanking is ZombieAttack {
             for (uint i = 0; i < allRankings.length; i++) {
                 if (allRankings[i].account == currentAccount) {
                     // override 11º position
-                    result[11] = allRankings[i]; 
+                    result[10] = allRankings[i]; 
                     break;
                 }
             }
