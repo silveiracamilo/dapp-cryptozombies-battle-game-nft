@@ -40,8 +40,6 @@ const RankingContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    console.log('ranking: ', ranking);
-
     const contextValue = useMemo(() => ({ ranking }), [ranking]);
 
     return (

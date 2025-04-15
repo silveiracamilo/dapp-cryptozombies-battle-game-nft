@@ -18,6 +18,7 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
     const [selectedKeys, setSelectedKeys] = useState<string[]>(['1']);
     const items = useMemo(() => [
         { label: "Army", route: Paths.HOME },
+        { label: "Marketplace", route: Paths.MARKETPLACE },
         { label: "Ranking", route: Paths.RANKING },
         { label: "Learn to play", route: Paths.LEARN_TO_PLAY },
         ...(address === OWNER_ADDRESS ? [

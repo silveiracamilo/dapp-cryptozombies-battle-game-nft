@@ -14,19 +14,25 @@ import { ZombieAttackVitoryPage } from '../pages/zombie/attackVitory/loadable';
 import { ZombieAttackDefeatPage } from '../pages/zombie/attackDefeat/loadable';
 import { ZombieBattlePage } from '../pages/zombie/battle/loadable';
 import { SettingsPage } from 'pages/admin/settings/loadable';
+import { MarketplacePage } from 'pages/marketplace/loadable';
 import { Paths } from './RouteConsts';
 import RoutePrivate from './RoutePrivate';
 import RoutePrivateAdmin from './RoutePrivateAdmin';
+import RoutePublic from './RoutePublic';
 
 const Router: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path={Paths.LOGIN} element={<LoginPage />} />
-                <Route path={Paths.LEARN_TO_PLAY} element={<LearnToPlayPage />} />
-                <Route path={Paths.HOME} element={<RoutePrivate />}>
-                    <Route path={Paths.HOME} element={<HomePage />} />
+                <Route element={<RoutePublic />}>
+                    <Route path={Paths.LOGIN} element={<LoginPage />} />
+                    <Route path={Paths.MARKETPLACE} element={<MarketplacePage />} />
                     <Route path={Paths.RANKING} element={<RankingPage />} />
+                    <Route path={Paths.LEARN_TO_PLAY} element={<LearnToPlayPage />} />
+                </Route>
+
+                <Route element={<RoutePrivate />}>
+                    <Route path={Paths.HOME} element={<HomePage />} />
                     <Route path={Paths.ZOMBIE_CREATE} element={<ZombieCreatePage />} />
                     <Route path={Paths.ZOMBIE_CREATE_SUCCESS} element={<ZombieCreateSuccessPage />} />
                     <Route path={Paths.ZOMBIE_DETAIL} element={<ZombieDetailPage />} />
@@ -37,7 +43,8 @@ const Router: React.FC = () => {
                     <Route path={Paths.ZOMBIE_ATTACK_VITORY} element={<ZombieAttackVitoryPage />} />
                     <Route path={Paths.ZOMBIE_ATTACK_DEFEAT} element={<ZombieAttackDefeatPage />} />
                 </Route>
-                <Route path={Paths.ADMIN_SETTINGS} element={<RoutePrivateAdmin />}>
+
+                <Route element={<RoutePrivateAdmin />}>
                     <Route path={Paths.ADMIN_SETTINGS} element={<SettingsPage />} />
                 </Route>
             </Routes>

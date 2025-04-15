@@ -1,28 +1,31 @@
 import IZombieFees from "src/store/interface/zombie/IZombieFees";
 import OwnershipService from "./OwnershipService";
+import { map } from "lodash";
+import { zombieSaleMapper } from "src/store/mapper/marketplace/zombieSaleMapper";
+import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 
 class MarketService extends OwnershipService {
     
     public async saleMyZombie(zombieId: number, price: bigint) {
-        const contract = await this.getContract();
+        const contract = await this.getContract(true);
         const tx = await contract.saleMyZombie(zombieId, price);
         return tx.wait();
     }
 
-    public async buyShopZombie(zombieId: number, price: number) {
-        const contract = await this.getContract();
+    public async buyShopZombie(zombieId: number, price: bigint) {
+        const contract = await this.getContract(true);
         const tx = await contract.buyShopZombie(zombieId, { value: price });
         return tx.wait();
     }
 
     public async setTax(tax: bigint) {
-        const contract = await this.getContract();
+        const contract = await this.getContract(true);
         const tx = await contract.setTax(tax);
         return tx.wait();
     }
     
     public async setMinPrice(price: bigint) {
-        const contract = await this.getContract();
+        const contract = await this.getContract(true);
         const tx = await contract.setMinPrice(price);
         return tx.wait();
     }
@@ -42,9 +45,10 @@ class MarketService extends OwnershipService {
         return contract.getZombieInShop(zombieId);
     }
     
-    public async getAllZombiesInShop() {
+    public async getAllZombiesInShop(): Promise<IZombieSale[]> {
         const contract = await this.getContract();
-        return contract.getAllZombiesInShop();
+        const result = await contract.getAllZombiesInShop();
+        return map(result, zombieSaleMapper);
     }
 
     public async getFees(): Promise<IZombieFees> {

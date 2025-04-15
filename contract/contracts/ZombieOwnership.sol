@@ -15,6 +15,10 @@ contract ZombieOwnership is ZombieRanking, ERC721 {
 
     mapping (uint => address) zombieApprovals;
     
+    function balance() external view onlyOwner returns (uint256) {
+        return address(this).balance;
+    }
+
     function balanceOf(address _owner) override external view returns (uint256) {
         return ownerZombieCount[_owner];
     }

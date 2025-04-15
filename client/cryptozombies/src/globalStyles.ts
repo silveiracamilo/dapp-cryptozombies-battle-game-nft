@@ -11,6 +11,11 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
+  #root {
+    width: 100%;
+    height: 100%;
+  }
+
   * {
     box-sizing: border-box;
   }

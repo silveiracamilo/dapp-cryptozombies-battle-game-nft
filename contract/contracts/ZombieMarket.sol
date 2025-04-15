@@ -12,6 +12,12 @@ contract ZombieMarket is ZombieOwnership {
         address payable seller;
         uint price;
     }
+    
+    struct ZombieSale {
+        address payable seller;
+        uint zombieId;
+        uint price;
+    }
 
     uint[] public zombieShopKeys;
 
@@ -65,11 +71,13 @@ contract ZombieMarket is ZombieOwnership {
         return zombieShop[_zombieId];
     }
 
-    function getAllZombiesInShop() public view returns (ZombieSales[] memory) {
+    function getAllZombiesInShop() public view returns (ZombieSale[] memory) {
         uint length = zombieShopKeys.length;
-        ZombieSales[] memory items = new ZombieSales[](length);
+        ZombieSale[] memory items = new ZombieSale[](length);
         for (uint i = 0; i < length; i++) {
-            items[i] = zombieShop[zombieShopKeys[i]];
+            uint zombieId = zombieShopKeys[i];
+            ZombieSales memory item = zombieShop[zombieId];
+            items[i] = ZombieSale(item.seller, zombieId, item.price);
         }
         return items;
     }

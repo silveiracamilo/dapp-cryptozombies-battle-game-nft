@@ -4,7 +4,7 @@ import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
 class FactoryService extends ContractService {
 
     public async createRandomZombie(name: string) {
-        const contract = await this.getContract();
+        const contract = await this.getContract(true);
         const tx = await contract.createRandomZombie(name);
         return tx.wait();
     }
@@ -16,7 +16,7 @@ class FactoryService extends ContractService {
     }
 
     public async setCooldownTime(cooldownTime: number) {
-        const contract = await this.getContract();
+        const contract = await this.getContract(true);
         const tx = await contract.setCooldownTime(cooldownTime);
         return tx.wait();
     }

@@ -5,9 +5,11 @@ import { ConfigProvider, Progress, Row } from "antd";
 
 interface IZombieCard {
     zombie: IZombie
+    zombieHeight?: number
+    zombieScale?: number
 }
 
-const ZombieCard: React.FC<IZombieCard> = ({ zombie }) => {
+const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieScale = 1 }) => {
     
     if (!zombie) {
         return <></>;
@@ -15,8 +17,10 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie }) => {
 
     return (
         <Card>
-            <Row justify="center">
-                <Zombie dna={zombie.dna} />
+            <Row justify="center" style={{ height: `${zombieHeight}px` }}>
+                <div style={{ transform: `scale(${zombieScale})`, transformOrigin: 'top' }}>
+                    <Zombie dna={zombie.dna} />
+                </div>
             </Row>
             <ConfigProvider
                 theme={{

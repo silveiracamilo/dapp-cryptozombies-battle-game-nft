@@ -4,9 +4,15 @@ import HelperForm from "./forms/HelperForm";
 import OwnershipForm from "./forms/OwnershipForm";
 import MarketForm from "./forms/MarketForm";
 import { useMemo } from "react";
+import DashboardForm from "./forms/DashboardForm";
 
 const SettingsTabs = () => {
     const items: TabsProps['items'] = useMemo(() =>[
+        {
+          key: 'dashboard',
+          label: 'Dashboard',
+          children: <DashboardForm />,
+        },
         {
           key: 'factory',
           label: 'Factory',
@@ -30,7 +36,7 @@ const SettingsTabs = () => {
     ], []);
 
     return (
-        <Tabs style={{ width: '100%' }} items={items} defaultActiveKey="factory" />
+        <Tabs style={{ width: '100%' }} items={items} defaultActiveKey="dashboard" />
     )
 }
 

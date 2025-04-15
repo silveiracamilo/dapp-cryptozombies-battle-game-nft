@@ -5,6 +5,7 @@ import CryptoZombiesService from "src/store/services/contract/cryptoZombie/Crypt
 
 interface ISettingsContext {
     settings: ISettings
+    withdraw: () => Promise<void>
     setCooldownTime: (cooldownTime: number) => Promise<void>
     setLevelUpFee: (fee: bigint) => Promise<void>
     setChangeNameFee: (fee: bigint) => Promise<void>
@@ -12,6 +13,7 @@ interface ISettingsContext {
     setBaseUrlTokenURI: (baseUrl: string) => Promise<void>
     setTax: (tax: bigint) => Promise<void>
     setMinPrice: (price: bigint) => Promise<void>
+    balance: bigint
 }
 
 const SettingsContext = createContext<ISettingsContext>({} as ISettingsContext);
@@ -27,9 +29,11 @@ export const useSettingsContext = () => {
 const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState<ISettings>({} as ISettings);
+    const [balance, setBalance] = useState<bigint>(0n);
 
     useEffect(() => {
         loadSettings();
+        getBalance();
     }, []);
 
     const loadSettings = useCallback(async () => {
@@ -41,6 +45,33 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
                 message: 'Error in get settings',
                 description: error.reason || 'Error generic'
             });
+        }
+    }, []);
+
+    const getBalance = useCallback(async () => {
+        try {
+            const balance = await CryptoZombiesService.instance.getBalance();
+            setBalance(balance);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get balance',
+                description: error.reason || 'Error generic'
+            });
+        }
+    }, []);
+
+    const withdraw = useCallback(async () => {
+        setLoading(true);
+        try {
+            await CryptoZombiesService.instance.withdraw();
+            getBalance();
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in update Min Price',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
         }
     }, []);
     
@@ -151,7 +182,9 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
 
 
     const contextValue = useMemo(() => ({ 
+        balance,
         settings,
+        withdraw,
         setCooldownTime,
         setLevelUpFee,
         setChangeNameFee,
@@ -159,7 +192,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         setBaseUrlTokenURI,
         setTax,
         setMinPrice,
-    }), [settings]);
+    }), [settings, balance]);
 
     return (
         <SettingsContext.Provider value={contextValue}>

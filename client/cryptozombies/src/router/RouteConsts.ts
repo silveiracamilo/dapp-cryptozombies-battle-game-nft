@@ -13,4 +13,5 @@ export enum Paths {
     ZOMBIE_ATTACK_DEFEAT = '/zombie/attack/defeat/:fromId/:targetId',
     ZOMBIE_BATTLE = '/zombie/battle/:id',
     ADMIN_SETTINGS = '/admin/settings',
+    MARKETPLACE = '/marketplace',
 }
