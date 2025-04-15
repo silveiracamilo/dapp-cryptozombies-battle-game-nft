@@ -13,6 +13,8 @@ contract ZombieMarket is ZombieOwnership {
         uint price;
     }
 
+    uint[] public zombieShopKeys;
+
     mapping (uint => ZombieSales) public zombieShop;
 
     event SaleZombie(uint indexed zombieId, uint indexed price);
@@ -22,6 +24,7 @@ contract ZombieMarket is ZombieOwnership {
         require(price >= tax + minPrice, "Your price is too low");
 
         zombieShop[zombieId] = ZombieSales(payable(msg.sender), price);
+        zombieShopKeys.push(zombieId);
         emit SaleZombie(zombieId, price);
     }
 
@@ -34,8 +37,20 @@ contract ZombieMarket is ZombieOwnership {
 
         zombieSales.seller.transfer(msg.value - tax);
 
-        delete zombieShop[zombieId];
+        _removeZombieFromShop(zombieId);
         emit BuyShopZombie(zombieId, msg.sender, zombieSales.seller);
+    }
+
+    function _removeZombieFromShop(uint zombieId) internal {
+        delete zombieShop[zombieId];
+
+        for (uint i = 0; i < zombieShopKeys.length; i++) {
+            if (zombieShopKeys[i] == zombieId) {
+                zombieShopKeys[i] = zombieShopKeys[zombieShopKeys.length - 1];
+                zombieShopKeys.pop();
+                break;
+            }
+        }
     }
 
     function setTax(uint value) external onlyOwner {
@@ -44,5 +59,18 @@ contract ZombieMarket is ZombieOwnership {
 
     function setMinPrice(uint value) external onlyOwner {
         minPrice = value;
+    }
+
+    function getZombieInShop(uint _zombieId) public view returns (ZombieSales memory) {
+        return zombieShop[_zombieId];
+    }
+
+    function getAllZombiesInShop() public view returns (ZombieSales[] memory) {
+        uint length = zombieShopKeys.length;
+        ZombieSales[] memory items = new ZombieSales[](length);
+        for (uint i = 0; i < length; i++) {
+            items[i] = zombieShop[zombieShopKeys[i]];
+        }
+        return items;
     }
 }

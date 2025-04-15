@@ -5,11 +5,12 @@ import { useZombieDetailContext } from './context/ZombieDetailContextProvider';
 import moment from 'moment';
 import { debounce } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowsToEye, faArrowUp, faCat, faCircleInfo, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faPerson, faPersonRays, faRadiation, faSignature, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowsToEye, faArrowUp, faCat, faCircleInfo, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faMoneyCheckDollar, faPerson, faPersonRays, faRadiation, faSignature, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
 import { Paths } from 'src/router/RouteConsts';
 import { useNavigate, useParams } from 'react-router';
 import ChangeNameModal from './components/ChangeNameModal';
 import ChangeDNAModal from './components/ChangeDNAModal';
+import PutForSaleModal from './components/PutForSaleModal';
 
 const ZombieDetail: React.FC = () => {
     const { zombie, levelUp } = useZombieDetailContext();
@@ -17,6 +18,7 @@ const ZombieDetail: React.FC = () => {
     const navigate = useNavigate();
     const [showChangeNameModal, setShowChangeNameModal] = useState(false);
     const [showChangeDNAModal, setShowChangeDNAModal] = useState(false);
+    const [showPutForSaleModal, setShowPutForSaleModal] = useState(false);
     
     const parseReadyTime = useMemo(
         () => (zombie ? moment(zombie.readyTime * 1000) : moment()).fromNow(), 
@@ -60,6 +62,12 @@ const ZombieDetail: React.FC = () => {
                     <Button icon={<FontAwesomeIcon icon={faDna} />} onClick={() => setShowChangeDNAModal(true)}>
                         Change DNA
                         <Tooltip title={'Price 0.004 ether'}>
+                            <FontAwesomeIcon icon={faCircleInfo} />
+                        </Tooltip>
+                    </Button>
+                    <Button icon={<FontAwesomeIcon icon={faMoneyCheckDollar} />} onClick={() => setShowPutForSaleModal(true)}>
+                        Put for Sale
+                        <Tooltip title={'Price 0.0001 ether'}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
                     </Button>
@@ -217,6 +225,7 @@ const ZombieDetail: React.FC = () => {
         </Row>
         <ChangeNameModal showChangeNameModal={showChangeNameModal} setShowChangeNameModal={setShowChangeNameModal} />
         <ChangeDNAModal showChangeDNAModal={showChangeDNAModal} setShowChangeDNAModal={setShowChangeDNAModal} />
+        <PutForSaleModal showPutForSaleModal={showPutForSaleModal} setShowPutForSaleModal={setShowPutForSaleModal} />
         </>
     )
 }

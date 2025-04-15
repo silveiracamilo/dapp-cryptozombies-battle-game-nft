@@ -12,6 +12,7 @@ class OwnershipService extends RankingService {
         const contract = await this.getContract();
         return contract.baseUrlTokenURI();
     }
+    
 }
 
 export default OwnershipService;
