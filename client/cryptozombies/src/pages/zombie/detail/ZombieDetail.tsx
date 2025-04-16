@@ -11,9 +11,10 @@ import { useNavigate, useParams } from 'react-router';
 import ChangeNameModal from './components/ChangeNameModal';
 import ChangeDNAModal from './components/ChangeDNAModal';
 import PutForSaleModal from './components/PutForSaleModal';
+import { formatEther } from 'ethers';
 
 const ZombieDetail: React.FC = () => {
-    const { zombie, levelUp } = useZombieDetailContext();
+    const { zombie, hasZombieInShop, levelUp, fees } = useZombieDetailContext();
     const { id = '' } = useParams();
     const navigate = useNavigate();
     const [showChangeNameModal, setShowChangeNameModal] = useState(false);
@@ -41,7 +42,7 @@ const ZombieDetail: React.FC = () => {
         <>
         <Row justify="space-evenly" align="middle" gutter={30}>
             <Col span={8}>
-                <h1 style={{ color: '#b6a764' }}>{zombie.id}#{zombie.name} </h1>
+                <h1 style={{ color: '#b6a764' }}>{zombie.id}#{zombie.name}</h1>
             </Col>
             <Col span={16} style={{ textAlign: 'right' }}>
                 <Row style={{ gap: 16 }} justify="end">
@@ -49,27 +50,36 @@ const ZombieDetail: React.FC = () => {
                     <Button icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>Battle</Button>
                     <Button icon={<FontAwesomeIcon icon={faArrowUp} />} onClick={debounce(levelUp, 200)}>
                         Level Up
-                        <Tooltip title={'Price 0.001 ether'}>
+                        <Tooltip title={`Price ${ formatEther(fees.levelUpFee) } ETH`}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
                     </Button>
                     <Button icon={<FontAwesomeIcon icon={faSignature} />} onClick={() => setShowChangeNameModal(true)}>
                         Change Name
-                        <Tooltip title={'Price 0.002 ether'}>
+                        <Tooltip title={`Price ${ formatEther(fees.changeNameFee) } ETH`}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
                     </Button>
                     <Button icon={<FontAwesomeIcon icon={faDna} />} onClick={() => setShowChangeDNAModal(true)}>
                         Change DNA
-                        <Tooltip title={'Price 0.004 ether'}>
+                        <Tooltip title={`Price ${ formatEther(fees.changeDNAFee) } ETH`}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
                     </Button>
-                    <Button icon={<FontAwesomeIcon icon={faMoneyCheckDollar} />} onClick={() => setShowPutForSaleModal(true)}>
-                        Put for Sale
-                        <Tooltip title={'Price 0.0001 ether'}>
-                            <FontAwesomeIcon icon={faCircleInfo} />
-                        </Tooltip>
+                    <Button 
+                        icon={<FontAwesomeIcon icon={faMoneyCheckDollar} />}
+                        onClick={() => setShowPutForSaleModal(true)}
+                        disabled={hasZombieInShop}
+                    >
+                        { !hasZombieInShop
+                        ? <>
+                            Put for Sale
+                            &nbsp;
+                            <Tooltip title={`Price ${ formatEther(fees.tax) } ETH`}>
+                                <FontAwesomeIcon icon={faCircleInfo} />
+                            </Tooltip>
+                        </> 
+                        : '$ For Sale $'}
                     </Button>
                 </Row>
             </Col>

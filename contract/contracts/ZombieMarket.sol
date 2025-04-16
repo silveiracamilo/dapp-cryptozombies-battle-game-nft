@@ -36,7 +36,8 @@ contract ZombieMarket is ZombieOwnership {
 
     function buyShopZombie(uint zombieId) external payable {
         ZombieSales memory zombieSales = zombieShop[zombieId];
-        require(address(0) != zombieSales.seller, "Zombie are not on sale.");
+        require(address(0) != zombieSales.seller, "Zombie are not on sale");
+        require(msg.sender != zombieSales.seller, "Can't buy, you are the seller");
         require(msg.value >= zombieSales.price, "Your price is too low");
 
         _transfer(zombieSales.seller, msg.sender, zombieId);
@@ -67,8 +68,9 @@ contract ZombieMarket is ZombieOwnership {
         minPrice = value;
     }
 
-    function getZombieInShop(uint _zombieId) public view returns (ZombieSales memory) {
-        return zombieShop[_zombieId];
+    function hasZombieInShop(uint _zombieId) public view returns (bool) {
+        ZombieSales memory item = zombieShop[_zombieId];
+        return item.seller != address(0);
     }
 
     function getAllZombiesInShop() public view returns (ZombieSale[] memory) {

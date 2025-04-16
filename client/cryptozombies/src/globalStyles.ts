@@ -42,6 +42,9 @@ export const themeStyle = {
     },
     Tabs: {
       itemColor: '#FFF'
+    },
+    Button: {
+      colorTextDisabled: '#666'
     }
   }
 };

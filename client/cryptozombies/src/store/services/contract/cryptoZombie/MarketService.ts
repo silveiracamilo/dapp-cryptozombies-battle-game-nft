@@ -40,9 +40,9 @@ class MarketService extends OwnershipService {
         return contract.minPrice();
     }
     
-    public async getZombieInShop(zombieId: number) {
+    public async hasZombieInShop(zombieId: number): Promise<boolean> {
         const contract = await this.getContract();
-        return contract.getZombieInShop(zombieId);
+        return await contract.hasZombieInShop(zombieId);
     }
     
     public async getAllZombiesInShop(): Promise<IZombieSale[]> {

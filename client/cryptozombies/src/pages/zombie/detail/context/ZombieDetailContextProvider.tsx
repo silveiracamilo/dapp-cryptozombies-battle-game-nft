@@ -8,6 +8,7 @@ import CryptoZombiesService from "src/store/services/contract/cryptoZombie/Crypt
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
+    hasZombieInShop: boolean
     fees: IZombieFees
     loading: boolean;
     levelUp: () => Promise<void>
@@ -29,14 +30,23 @@ export const useZombieDetailContext = () => {
 const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const { id = '' } = useParams();
     const [zombie, setZombie] = useState<IZombie>();
-    const [fees, setFees] = useState<IZombieFees>({ tax: parseEther('0.00001'), minPrice: parseEther('0.000015') } as IZombieFees);
+    const [fees, setFees] = useState<IZombieFees>({ 
+        tax: parseEther('0.00001'),
+        minPrice: parseEther('0.000015'),
+        levelUpFee: parseEther('0.001'),
+        changeNameFee: parseEther('0.002'),
+        changeDNAFee: parseEther('0.004'),
+    } as IZombieFees);
     const [loading, setLoading] = useState(false);
-    const [zombieForSale, setZombieForSale] = useState();
+    const [hasZombieInShop, setHasZombieInShop] = useState(true);
+
+    useEffect(() => {
+        getFees();
+    }, []);
 
     useEffect(() => {
         if (id) {
             getZombieById();
-            getFees();
         }
     }, [id]);
 
@@ -45,17 +55,15 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
             const zombie = await CryptoZombiesService.instance.getZombieById(+id);
             setZombie(zombie);
 
-            const zombieInShop = await CryptoZombiesService.instance.getZombieInShop(zombie.id);
-            if (zombieInShop) {
-                setZombieForSale(zombieInShop);
-            }
+            const hasZombieInShop = await CryptoZombiesService.instance.hasZombieInShop(zombie.id);
+            setHasZombieInShop(hasZombieInShop);
         } catch (error: any) {
             notification.error({
                 message: 'Error in get zombie',
                 description: error.reason || 'Error generic'
             });
         }
-    }, []);
+    }, [id]);
     
     const getFees = useCallback(async () => {
         try {
@@ -131,13 +139,14 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
 
     const contextValue = useMemo(() => ({ 
         zombie,
+        hasZombieInShop,
         fees,
         loading,
         levelUp,
         changeName,
         changeDna,
         saleMyZombie,
-     }), [zombie, fees, loading]);
+     }), [zombie, hasZombieInShop, fees, loading]);
 
     return (
         <ZombieDetailContext.Provider value={contextValue}>
