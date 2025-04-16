@@ -39,9 +39,9 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
             const zombies = await CryptoZombiesService.instance.getZombiesByOwner(address);
             if (!zombies?.length) {
                 navigate(Paths.ZOMBIE_CREATE);
-            } else {
-                setZombiesId([...zombies]);
-            }
+                return;
+            } 
+            setZombiesId([...zombies]);
         } catch (error: any) {
             notification.error({
                 message: 'Error in get zombies',

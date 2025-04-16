@@ -23,21 +23,18 @@ const LoginContextProvider = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
 
     const doAuth = useCallback(async () => {
-        let signer = null;
-        let provider;
         if (typeof window.ethereum === 'undefined') {
             notification.warning({
-                message: 'MetaMask not installed.',
-                description: <p>Please install MetaMask.</p>
+                message: 'No Ethereum provider found',
+                description: <p>Please install a browser wallet, something like: Metamask, Taho, Phantom, Coinbase and TrustWallet</p>
             });
-            // provider = ethers.getDefaultProvider();
-        } else {
-            provider = new ethers.BrowserProvider(window.ethereum);
-            signer = await provider.getSigner();
-            const myAddress = await signer.getAddress();
-            setAddress(myAddress);
-            navigate('/');
-        }
+            return;
+        } 
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const myAddress = await signer.getAddress();
+        setAddress(myAddress);
+        navigate('/');
     }, [setAddress]);
 
     const contextValue = useMemo(() => ({ doAuth }), [doAuth]);
