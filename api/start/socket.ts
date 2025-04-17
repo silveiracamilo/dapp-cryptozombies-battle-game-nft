@@ -18,6 +18,9 @@ export function setupWebsocket() {
 
     socket.on('join-room', function(room) {
       console.log(`Client joined room: ${room} ${socket.id}`)
+      if(rooms[socket.id]) {
+        socket.leave(rooms[socket.id]);
+      }
       rooms[socket.id] = room;
       socket.join(room);
     });
