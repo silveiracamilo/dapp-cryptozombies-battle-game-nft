@@ -1,8 +1,11 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { notification } from "antd";
+import { ethers } from "ethers";
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
 
 interface IAuthContext {
-    address: string;
-    setAddress: React.Dispatch<React.SetStateAction<string>>;
+    address: string
+    setAddress: React.Dispatch<React.SetStateAction<string>>
+    doAuth: () => Promise<void>
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -18,10 +21,21 @@ export const useAuthContext = () => {
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const [address, setAddress] = useState<string>("");
 
-    const contextValue = useMemo(
-        () => ({ address, setAddress }), 
-        [address, setAddress]
-    );
+    const doAuth = useCallback(async () => {
+        if (typeof window.ethereum === 'undefined') {
+            notification.warning({
+                message: 'No Ethereum provider found',
+                description: <p>Please install a browser wallet, something like: Metamask, Taho, Phantom, Coinbase and TrustWallet</p>
+            });
+            return;
+        } 
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const myAddress = await signer.getAddress();
+        setAddress(myAddress);
+    }, [setAddress]);
+
+    const contextValue = useMemo(() => ({ address, setAddress, doAuth }), [address, setAddress]);
 
     return (
         <AuthContext.Provider value={contextValue}>

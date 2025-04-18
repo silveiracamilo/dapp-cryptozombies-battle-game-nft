@@ -18,6 +18,12 @@ export const ZombieContainer = styled.div`
   width: 410px;
 `
 
+export const DnaStyled = styled.div`
+  position: fixed;
+  color: #000;
+  font-size: 10px;
+`;
+
 const MainImg = styled.img`
   user-select: none;
   -webkit-user-drag: none;

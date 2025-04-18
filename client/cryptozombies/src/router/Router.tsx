@@ -30,12 +30,12 @@ const Router: React.FC = () => {
                     <Route path={Paths.MARKETPLACE} element={<MarketplacePage />} />
                     <Route path={Paths.RANKING} element={<RankingPage />} />
                     <Route path={Paths.LEARN_TO_PLAY} element={<LearnToPlayPage />} />
+                    <Route path={Paths.ZOMBIE_MINT_FREE} element={<ZombieMintFreePage />} />
                 </Route>
 
                 <Route element={<RoutePrivate />}>
                     <Route path={Paths.HOME} element={<HomePage />} />
                     <Route path={Paths.ZOMBIE_MINT} element={<ZombieMintPage />} />
-                    <Route path={Paths.ZOMBIE_MINT_FREE} element={<ZombieMintFreePage />} />
                     <Route path={Paths.ZOMBIE_MINTED} element={<ZombieMintedPage />} />
                     <Route path={Paths.ZOMBIE_DETAIL} element={<ZombieDetailPage />} />
                     <Route path={Paths.ZOMBIE_FEED} element={<ZombieFeedPage />} />

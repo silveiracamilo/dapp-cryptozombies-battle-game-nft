@@ -12,7 +12,7 @@ const Login: React.FC = () => {
         <Row style={{ width: '100vw', height: '100vh' }} align="middle"  justify="center">
             <Row style={{ width: '400px' }} justify="center">
                 <Image src={logo} width={400} preview={false} />
-                <ButtonAction onClick={debounce(doAuth, 150)} style={{marginTop: '40px'}}>Connect Wallet to Play</ButtonAction>
+                <ButtonAction onClick={debounce(doAuth, 200)} style={{marginTop: '40px'}}>Connect Wallet to Play</ButtonAction>
             </Row>
         </Row>
     )
