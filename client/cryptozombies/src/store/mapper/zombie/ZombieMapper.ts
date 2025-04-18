@@ -14,8 +14,7 @@ export const zombieMapper = (id: number, zombie: (string | number)[]): IZombie =
     const fedReadyTime = +zombie[6].toString();
     const winCount = +zombie[7].toString();
     const lossCount = +zombie[8].toString();
-    const attackVictoryCount = +zombie[9].toString();
-    const fedCount = +zombie[10].toString();
+    const fedCount = +zombie[9].toString();
     return {
         id: parseInt(id.toString()),
         name,
@@ -27,7 +26,6 @@ export const zombieMapper = (id: number, zombie: (string | number)[]): IZombie =
         fedReadyTime,
         winCount,
         lossCount,
-        attackVictoryCount,
         fedCount,
         ...zombieGenesMapper(dna),
     };

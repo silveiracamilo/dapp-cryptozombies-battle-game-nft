@@ -9,7 +9,7 @@ import { formatEther, parseEther } from "ethers";
 interface IFormFields {
     cooldownTimeAttack: number
     cooldownTimeFeeding: number
-    createZombieFee: string
+    mintFee: string
     totalAttackVictoryToGetReward: number
     totalFedToGetReward: number
 }
@@ -19,7 +19,7 @@ const FactoryForm = () => {
         settings,
         setCooldownTimeAttack,
         setCooldownTimeFeeding,
-        setCreateZombieFee,
+        setMintFee,
         setTotalAttackVictoryToGetReward,
         setTotalFedToGetReward,
     } = useSettingsContext();
@@ -27,17 +27,17 @@ const FactoryForm = () => {
     const {
         cooldownTimeAttack,
         cooldownTimeFeeding,
-        createZombieFee,
+        mintFee,
         totalAttackVictoryToGetReward,
         totalFedToGetReward,
     } = settings;
     const initialValues = useMemo(() => ({
         cooldownTimeAttack,
         cooldownTimeFeeding: cooldownTimeFeeding,
-        createZombieFee: formatEther(createZombieFee.toString()),
+        mintFee: formatEther(mintFee.toString()),
         totalAttackVictoryToGetReward,
         totalFedToGetReward,
-    }), [cooldownTimeAttack, cooldownTimeFeeding, createZombieFee, totalAttackVictoryToGetReward, totalFedToGetReward]);
+    }), [cooldownTimeAttack, cooldownTimeFeeding, mintFee, totalAttackVictoryToGetReward, totalFedToGetReward]);
 
     const onFinishCooldownTimeAttack = useCallback(({ cooldownTimeAttack }: IFormFields) => {
         if (cooldownTimeAttack === settings?.cooldownTimeAttack) {
@@ -61,15 +61,15 @@ const FactoryForm = () => {
         setCooldownTimeFeeding(cooldownTimeFeeding);
     }, [settings]);
 
-    const onFinishCreateZombieFee = useCallback(({ createZombieFee }: IFormFields) => {
-        if (parseEther(createZombieFee.toString()) === settings?.createZombieFee) {
+    const onFinishMintFee = useCallback(({ mintFee }: IFormFields) => {
+        if (parseEther(mintFee.toString()) === settings?.mintFee) {
             notification.error({
                 message: 'Error in update cooldown time',
                 description: 'Cooldown time is the same as the current one',
             });
             return;
         }
-        setCreateZombieFee(parseEther(createZombieFee.toString()));
+        setMintFee(parseEther(mintFee.toString()));
     }, [settings]);
 
     const onFinishTotalAttackVictoryToGetReward = useCallback(({ totalAttackVictoryToGetReward }: IFormFields) => {
@@ -148,15 +148,15 @@ const FactoryForm = () => {
         </Form>
         <Form
             initialValues={initialValues}
-            onFinish={onFinishCreateZombieFee}
+            onFinish={onFinishMintFee}
         >
             <Row align="middle">
                 <Col span={8}>
                     <FormItemStyled
-                        label="Create Zombie Fee (ether)"
-                        name="createZombieFee"
+                        label="Mint Fee (ether)"
+                        name="mintFee"
                         layout="vertical"
-                        rules={[{ required: true, message: 'Please input your "Create Zombie Fee"!' }]}
+                        rules={[{ required: true, message: 'Please input your "Mint Fee"!' }]}
                         
                     >
                         <InputNumberStyled />

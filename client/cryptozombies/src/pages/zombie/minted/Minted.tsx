@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Zombie } from 'src/components/zombie/Zombie';
 import { Paths } from 'src/router/RouteConsts';
 
-const ZombieCreateSuccess: React.FC = () => {
+const ZombieMinted: React.FC = () => {
     const { id, name, dna = ''} = useParams();
     const navigate = useNavigate();
 
@@ -25,4 +25,4 @@ const ZombieCreateSuccess: React.FC = () => {
     )
 }
 
-export default ZombieCreateSuccess;
+export default ZombieMinted;

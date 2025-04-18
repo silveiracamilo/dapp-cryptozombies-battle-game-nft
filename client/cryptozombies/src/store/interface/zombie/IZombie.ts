@@ -9,7 +9,6 @@ export interface IZombie {
     fedReadyTime: number
     winCount: number
     lossCount: number
-    attackVictoryCount: number
     fedCount: number
     head: number
     eye: number

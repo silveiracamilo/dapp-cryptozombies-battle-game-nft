@@ -4,8 +4,9 @@ import { LoginPage } from '../pages/login/loadable';
 import { LearnToPlayPage } from '../pages/learnToPlay/loadable';
 import { HomePage } from '../pages/home/loadable';
 import { RankingPage } from '../pages/ranking/loadable';
-import { ZombieCreatePage } from '../pages/zombie/create/loadable';
-import { ZombieCreateSuccessPage } from '../pages/zombie/createSuccess/loadable';
+import { ZombieMintPage } from '../pages/zombie/mint/loadable';
+import { ZombieMintFreePage } from 'pages/zombie/mintFree/loadable';
+import { ZombieMintedPage } from '../pages/zombie/minted/loadable';
 import { ZombieDetailPage } from '../pages/zombie/detail/loadable';
 import { ZombieFeedPage } from '../pages/zombie/feed/loadable';
 import { ZombieFeedingPage } from '../pages/zombie/feeding/loadable';
@@ -33,8 +34,9 @@ const Router: React.FC = () => {
 
                 <Route element={<RoutePrivate />}>
                     <Route path={Paths.HOME} element={<HomePage />} />
-                    <Route path={Paths.ZOMBIE_CREATE} element={<ZombieCreatePage />} />
-                    <Route path={Paths.ZOMBIE_CREATE_SUCCESS} element={<ZombieCreateSuccessPage />} />
+                    <Route path={Paths.ZOMBIE_MINT} element={<ZombieMintPage />} />
+                    <Route path={Paths.ZOMBIE_MINT_FREE} element={<ZombieMintFreePage />} />
+                    <Route path={Paths.ZOMBIE_MINTED} element={<ZombieMintedPage />} />
                     <Route path={Paths.ZOMBIE_DETAIL} element={<ZombieDetailPage />} />
                     <Route path={Paths.ZOMBIE_FEED} element={<ZombieFeedPage />} />
                     <Route path={Paths.ZOMBIE_FEEDING} element={<ZombieFeedingPage />} />

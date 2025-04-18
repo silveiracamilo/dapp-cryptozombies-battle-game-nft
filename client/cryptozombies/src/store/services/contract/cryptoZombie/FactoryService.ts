@@ -3,10 +3,16 @@ import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
 
 class FactoryService extends ContractService {
 
-    public async createRandomZombie(name: string) {
+    public async mint(name: string) {
         const contract = await this.getContract(true);
-        const createFee = await this.getCreateZombieFee();
-        const tx = await contract.createRandomZombie(name, { value: createFee });
+        const mintFee = await this.getMintFee();
+        const tx = await contract.mint(name, { value: mintFee });
+        return tx.wait();
+    }
+    
+    public async mintFree() {
+        const contract = await this.getContract(true);
+        const tx = await contract.mintFree();
         return tx.wait();
     }
 
@@ -38,15 +44,15 @@ class FactoryService extends ContractService {
         return contract.cooldownTimeFeeding();
     }
 
-    public async setCreateZombieFee(fee: bigint) {
+    public async setMintFee(fee: bigint) {
         const contract = await this.getContract(true);
-        const tx = await contract.setCreateZombieFee(fee);
+        const tx = await contract.setMintFee(fee);
         return tx.wait();
     }
 
-    public async getCreateZombieFee() {
+    public async getMintFee(): Promise<bigint> {
         const contract = await this.getContract();
-        return contract.createZombieFee();
+        return contract.mintFee();
     }
 
     public async setTotalAttackVictoryToGetReward(total: number) {
@@ -69,6 +75,16 @@ class FactoryService extends ContractService {
     public async getTotalFedToGetReward() {
         const contract = await this.getContract();
         return contract.totalFedToGetReward();
+    }
+    
+    public async getMintFreeLimit() {
+        const contract = await this.getContract();
+        return contract.mintFreeLimit();
+    }
+    
+    public async getMintedFreeCount() {
+        const contract = await this.getContract();
+        return contract.mintedFreeCount();
     }
 }
 

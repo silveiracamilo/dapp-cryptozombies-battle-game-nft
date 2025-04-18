@@ -36,6 +36,7 @@ contract ZombieMarket is ZombieOwnership {
 
     function buyShopZombie(uint zombieId) external payable {
         ZombieSales memory zombieSales = zombieShop[zombieId];
+
         require(address(0) != zombieSales.seller, "Zombie are not on sale");
         require(msg.sender != zombieSales.seller, "Can't buy, you are the seller");
         require(msg.value >= zombieSales.price, "Your price is too low");
@@ -45,6 +46,8 @@ contract ZombieMarket is ZombieOwnership {
         zombieSales.seller.transfer(msg.value - tax);
 
         _removeZombieFromShop(zombieId);
+        _triggerAccountAdd(msg.sender);
+        
         emit BuyShopZombie(zombieId, msg.sender, zombieSales.seller);
     }
 

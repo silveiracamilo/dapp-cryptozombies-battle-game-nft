@@ -2,7 +2,8 @@ import { createContext, ReactNode, useCallback, useContext, useMemo } from "reac
 import { ethers } from 'ethers';
 import { notification } from 'antd';
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
+import { Paths } from "src/router/RouteConsts";
 
 interface ILoginContext {
     doAuth: () => void;
@@ -20,7 +21,9 @@ export const useLoginContext = () => {
 
 const LoginContextProvider = ({ children }: { children: ReactNode }) => {
     const { setAddress } = useAuthContext();
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const returnTo = searchParams.get('returnTo');
 
     const doAuth = useCallback(async () => {
         if (typeof window.ethereum === 'undefined') {
@@ -34,7 +37,7 @@ const LoginContextProvider = ({ children }: { children: ReactNode }) => {
         const signer = await provider.getSigner();
         const myAddress = await signer.getAddress();
         setAddress(myAddress);
-        navigate('/');
+        navigate(returnTo ? returnTo : Paths.HOME);
     }, [setAddress]);
 
     const contextValue = useMemo(() => ({ doAuth }), [doAuth]);

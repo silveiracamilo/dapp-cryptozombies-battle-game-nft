@@ -1,33 +1,36 @@
 import { notification, Spin } from "antd";
-import { Contract } from "ethers";
+import { Contract, formatEther } from "ethers";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
-interface IZombieCreateContext {
-    create: (name: string) => void
+interface IZombieMintContext {
+    mintFee: string
+    mint: (name: string) => void
 }
 
-const ZombieCreateContext = createContext<IZombieCreateContext>({} as IZombieCreateContext);
+const ZombieMintContext = createContext<IZombieMintContext>({} as IZombieMintContext);
 
-export const useZombieCreateContext = () => {
-    const context = useContext(ZombieCreateContext);
+export const useZombieMintContext = () => {
+    const context = useContext(ZombieMintContext);
     if (!context) {
-        throw new Error("useZombieCreateContext must be used within an ZombieCreateContextProvider");
+        throw new Error("useZombieMintContext must be used within an ZombieMintContextProvider");
     }
     return context;
 }
 
-const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
+const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
     const { address } = useAuthContext();
     const navigate = useNavigate();
     const contract = useRef<Contract>();
     const [loading, setLoading] = useState(false);
+    const [mintFee, setMintFee] = useState('');
 
     useEffect(() => {
         addEventListener();
+        getMintFee();
         
         return () => {
             removeEventListener();
@@ -63,7 +66,7 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
         if (from === address) {
             removeEventListener();
             navigate(
-                Paths.ZOMBIE_CREATE_SUCCESS
+                Paths.ZOMBIE_MINTED
                     .replace(':id', zombieId.toString())
                     .replace(':name', name)
                     .replace(':dna', dna.toString())
@@ -71,29 +74,43 @@ const ZombieCreateContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
     
-
-    const create = useCallback(async (name: string) => {
+    const getMintFee = useCallback(async () => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.createRandomZombie(name);
+            const mintFee = await CryptoZombiesService.instance.getMintFee();
+            setMintFee(formatEther(mintFee));
         } catch (error: any) {
             notification.error({
-                message: 'Error in create zombie',
+                message: 'Error in get mint fee',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const mint = useCallback(async (name: string) => {
+        setLoading(true);
+        try {
+            await CryptoZombiesService.instance.mint(name);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in mint zombie',
                 description: error.reason || 'Error generic'
             });
             setLoading(false);
         }
     }, []);
 
-    const contextValue = useMemo(() => ({ create }), []);
+    const contextValue = useMemo(() => ({ mintFee, mint }), [mintFee]);
 
     return (
-        <ZombieCreateContext.Provider value={contextValue}>
+        <ZombieMintContext.Provider value={contextValue}>
             <Spin spinning={loading}>
                 {children}
             </Spin>
-        </ZombieCreateContext.Provider>
+        </ZombieMintContext.Provider>
     )
 }
 
-export default ZombieCreateContextProvider;
+export default ZombieMintContextProvider;

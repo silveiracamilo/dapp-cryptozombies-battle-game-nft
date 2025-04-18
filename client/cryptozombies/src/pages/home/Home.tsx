@@ -1,11 +1,47 @@
-import { Col, Row } from 'antd';
+import { Col, Row, Tooltip } from 'antd';
 import { map } from 'lodash';
 import React from 'react';
 import { useHomeContext } from './context/HomeContextProvider';
 import ZombieArmy from './components/ZombieArmy';
+import { useNavigate } from 'react-router';
+import { Paths } from 'src/router/RouteConsts';
+import CardButtonAction from 'src/components/button/CardButtonAction';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 const Home: React.FC = () => {
-    const { zombiesId } = useHomeContext();
+    const { zombiesId, mintFreeDisponible, mintFreeLeft } = useHomeContext();
+    const navigate = useNavigate();
+
+    if (!zombiesId.length) {
+        return (
+            <Row align="middle" style={{ height: '65vh' }}>
+                <Row justify="center" style={{ width: '100%' }}>
+                    <h1 style={{ color: '#b6a764' }}>To play you need a Zombie NFT</h1>
+                </Row>
+                <Row justify="center" style={{ width: '100%' }}>
+                    <CardButtonAction onClick={() => navigate(Paths.MARKETPLACE)}>
+                        Buy some zombies
+                    </CardButtonAction>
+                </Row>
+                <Row justify="center" style={{ width: '100%' }}>
+                    <CardButtonAction onClick={() => navigate(Paths.ZOMBIE_MINT)}>
+                        Mint your zombie
+                    </CardButtonAction>
+                </Row>
+                {mintFreeDisponible &&
+                <Row justify="center" style={{ width: '100%' }}>
+                    <CardButtonAction onClick={() => navigate(Paths.ZOMBIE_MINT_FREE)}>
+                        Mint Free your zombie
+                        <Tooltip title={`hurry up only ${mintFreeLeft} left`}>
+                            <FontAwesomeIcon icon={faCircleInfo} />
+                        </Tooltip>
+                    </CardButtonAction>
+                </Row>
+                }
+            </Row>
+        );
+    }
 
     return (
         <>

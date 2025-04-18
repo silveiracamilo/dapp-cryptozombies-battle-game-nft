@@ -11,13 +11,14 @@ contract ZombieFactory is Ownable {
     uint private nonce = 0;
     uint dnaDigits = 16;
     uint dnaModulus = 10 ** dnaDigits;
-    uint public createZombieFee = 0.003 ether;
+    uint public mintFreeLimit = 5000;
+    uint public mintedFreeCount = 0;
+    uint public mintFee = 0.003 ether;
     uint public cooldownTimeAttack = 1 minutes;
     uint public cooldownTimeFeeding = 1 minutes;
     uint8 public totalAttackVictoryToGetReward = 7;
     uint8 public totalFedToGetReward = 10;
-
-
+    
     struct Zombie {
         string name;
         uint dna;
@@ -28,8 +29,7 @@ contract ZombieFactory is Ownable {
         uint32 fedReadyTime;
         uint16 winCount;
         uint16 lossCount;
-        uint8 attackVictoryCount;
-        uint8 fedCount;
+        uint16 fedCount;
     }
 
     Zombie[] public zombies;
@@ -38,7 +38,7 @@ contract ZombieFactory is Ownable {
 
     mapping (uint => address) public zombieToOwner;
     mapping (address => uint) ownerZombieCount;
-    mapping (address => bool) ownerCreatedZombie;
+    mapping (address => bool) ownerMintedFreeZombie;
 
     modifier abovePrice(uint _price) {
         require(msg.value >= _price, string.concat("Price minimum is ", Strings.toString(_price)));
@@ -60,7 +60,6 @@ contract ZombieFactory is Ownable {
             _now,
             0,
             0,
-            0,
             0
         );
         zombies.push(newZombie);
@@ -76,12 +75,25 @@ contract ZombieFactory is Ownable {
         return rand % dnaModulus;
     }
 
-    function createRandomZombie(string memory _name) public payable abovePrice(createZombieFee) {
-        require(!ownerCreatedZombie[msg.sender], "You can only create one zombie per account");
+    function mint(string memory _name) public payable abovePrice(mintFee) {
         uint randDna = _generateRandomDna(_name);
+
         _createZombie(_name, randDna);
-        ownerCreatedZombie[msg.sender] = true;
-        accounts.push(msg.sender);
+        _triggerAccountAdd(msg.sender);
+    }
+
+    function mintFree() public {
+        require(mintedFreeCount < mintFreeLimit, string.concat("Only ", Strings.toString(mintFreeLimit)));
+        require(!ownerMintedFreeZombie[msg.sender], "One mint per account");
+        
+        string memory _name = string.concat("Zombie ", Strings.toString(nonce));
+        uint randDna = _generateRandomDna(_name);
+        
+        _createZombie(_name, randDna);
+        _triggerAccountAdd(msg.sender);
+        
+        ownerMintedFreeZombie[msg.sender] = true;
+        mintedFreeCount++;
     }
 
     function _generateStats(uint _dna) internal pure returns (uint, uint, uint) {
@@ -89,6 +101,23 @@ contract ZombieFactory is Ownable {
         uint agility = 50 + ((_dna / 100) % 50); // Agilidade entre 50-99
         uint resilience = 50 + ((_dna / 10000) % 50); // Resistência entre 50-99
         return (strength, agility, resilience);
+    }
+
+    function _includesAccount(address _account) internal view returns (bool) {
+        bool found = false;
+        for (uint i = 0; i < accounts.length; i++) {
+            if (accounts[i] == _account) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    function _triggerAccountAdd(address _account) internal {
+        if (!_includesAccount(_account)) {
+            accounts.push(_account);
+        }
     }
 
     function setCooldownTimeAttack(uint _cooldownTime) external onlyOwner {
@@ -99,8 +128,8 @@ contract ZombieFactory is Ownable {
         cooldownTimeFeeding = _cooldownTime;
     }
     
-    function setCreateZombieFee(uint _createZombieFee) external onlyOwner {
-        createZombieFee = _createZombieFee;
+    function setMintFee(uint _mintFee) external onlyOwner {
+        mintFee = _mintFee;
     }
 
     function setTotalAttackVictoryToGetReward(uint8 _totalAttackVictoryToGetReward) external onlyOwner {

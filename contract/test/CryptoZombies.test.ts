@@ -14,10 +14,10 @@ describe("CryptoZombies", function () {
   }
 
   describe("ZombieFactory", function () {
-    it("Should createRandomZombie", async function () {
+    it("Should mint", async function () {
       const { contract, owner } = await loadFixture(deployCryptoZombiesFixture);
 
-      await contract.createRandomZombie('Camilo', { value: parseEther('0.003') });
+      await contract.mint('Camilo', { value: parseEther('0.003') });
 
       const zombies = await contract.getZombiesByOwner(owner.address);
       const zombie = await contract.zombies(zombies[0]);

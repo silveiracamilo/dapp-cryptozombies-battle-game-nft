@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { ReactElement } from "react";
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import LayoutAuthentication from "src/template/LayoutAuthentication";
 import { Paths } from "./RouteConsts";
@@ -11,9 +11,10 @@ const withLayoutAuthentication = (children: ReactElement) => {
 
 const RoutePrivate = () => {
     const { address } = useAuthContext();
+    const { pathname } = useLocation();
 
     if (isEmpty(address)) {
-        return <Navigate to={Paths.LOGIN} replace={true} />;
+        return <Navigate to={`${Paths.LOGIN}${pathname ? `?returnTo=${pathname}` : ''}`} replace={true} />;
     }
 
     return withLayoutAuthentication(<Outlet />);

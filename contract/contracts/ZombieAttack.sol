@@ -65,13 +65,9 @@ contract ZombieAttack is ZombieHelper {
             _triggerUpdateScore(enemyZombie);
 
             uint newDna = 0;
-            if (myZombie.attackVictoryCount == totalAttackVictoryToGetReward) {
+            if (myZombie.winCount % totalAttackVictoryToGetReward == 0) {
                 newDna = _multiply(myZombie.dna, enemyZombie.dna, "zombie");
-                myZombie.attackVictoryCount = 0;
-            } else {
-                myZombie.attackVictoryCount++;
-            }
-
+            } 
 
             emit onAttackVitory(msg.sender, _zombieId, _targetId, newDna);
         } else {

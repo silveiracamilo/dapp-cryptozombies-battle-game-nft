@@ -60,12 +60,10 @@ contract ZombieFeeding is ZombieFactory {
 
         uint newDna = 0;
 
-        if (myZombie.fedCount == totalFedToGetReward) {
-            newDna = _multiply(myZombie.dna, _targetDna, _species);
+        myZombie.fedCount++; 
 
-            myZombie.fedCount = 0;
-        } else {
-            myZombie.fedCount++;
+        if (myZombie.fedCount % totalFedToGetReward == 0) {
+            newDna = _multiply(myZombie.dna, _targetDna, _species);
         }
 
         _triggerCooldownFeeding(myZombie);
@@ -83,10 +81,4 @@ contract ZombieFeeding is ZombieFactory {
     //     (,,,,,,,,,kittyDna) = KittyInterface(_kittyContractAddress).getKitty(_kittyId);
     //     feedAndMultiply(_zombieId, kittyDna, "kitty");
     // }
-    // function feedOnKitty(uint _zombieId, uint _kittyId) public {
-    //     uint kittyDna;
-    //     (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
-    //     feedAndMultiply(_zombieId, kittyDna, "kitty");
-    // }
-    
 }

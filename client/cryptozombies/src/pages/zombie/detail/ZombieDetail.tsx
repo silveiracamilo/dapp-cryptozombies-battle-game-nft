@@ -5,7 +5,7 @@ import { useZombieDetailContext } from './context/ZombieDetailContextProvider';
 import moment from 'moment';
 import { debounce } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowsToEye, faArrowUp, faCat, faCircleInfo, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faMoneyCheckDollar, faPerson, faPersonRays, faRadiation, faSignature, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowsToEye, faArrowUp, faBirthdayCake, faCat, faCircleInfo, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faMoneyCheckDollar, faPerson, faPersonRays, faRadiation, faSignature, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
 import { Paths } from 'src/router/RouteConsts';
 import { useNavigate, useParams } from 'react-router';
 import ChangeNameModal from './components/ChangeNameModal';
@@ -21,6 +21,11 @@ const ZombieDetail: React.FC = () => {
     const [showChangeDNAModal, setShowChangeDNAModal] = useState(false);
     const [showPutForSaleModal, setShowPutForSaleModal] = useState(false);
     
+    const parseBirthTime = useMemo(
+        () => (zombie ? moment(zombie.birthTime * 1000) : moment()).format('lll'), 
+        [zombie]
+    );
+
     const parseAttackReadyTime = useMemo(
         () => (zombie ? moment(zombie.attackReadyTime * 1000) : moment()).fromNow(), 
         [zombie]
@@ -102,6 +107,16 @@ const ZombieDetail: React.FC = () => {
                                 value={zombie.dna}
                                 formatter={v => v}
                                 prefix={<FontAwesomeIcon icon={faDna} />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col span={6}>
+                        <Card variant="borderless">
+                            <Statistic
+                                title="Birth"
+                                value={parseBirthTime}
+                                formatter={v => v}
+                                prefix={<FontAwesomeIcon icon={faBirthdayCake} />}
                             />
                         </Card>
                     </Col>

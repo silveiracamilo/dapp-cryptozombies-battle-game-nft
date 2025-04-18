@@ -7,7 +7,7 @@ class AdminService extends MarketService {
         const settingsList = await Promise.all([
             this.getCooldownTimeAttack(),
             this.getCooldownTimeFeeding(),
-            this.getCreateZombieFee(),
+            this.getMintFee(),
             this.getTotalAttackVictoryToGetReward(),
             this.getTotalFedToGetReward(),
             this.getLevelUpFee(),
@@ -21,7 +21,7 @@ class AdminService extends MarketService {
         return {
             cooldownTimeAttack: parseInt(settingsList[0]),
             cooldownTimeFeeding: parseInt(settingsList[1]),
-            createZombieFee: settingsList[2],
+            mintFee: settingsList[2],
             totalAttackVictoryToGetReward: parseInt(settingsList[3]),
             totalFedToGetReward: parseInt(settingsList[4]),
             levelUpFee: settingsList[5],

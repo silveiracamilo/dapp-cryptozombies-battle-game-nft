@@ -17,7 +17,9 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
     const { pathname } = useLocation();
     const [selectedKeys, setSelectedKeys] = useState<string[]>(['1']);
     const items = useMemo(() => [
-        { label: "Army", route: Paths.HOME },
+        { label: "Play to Earn", route: Paths.HOME },
+        { label: "Mint", route: Paths.ZOMBIE_MINT },
+        { label: "Mint Free", route: Paths.ZOMBIE_MINT_FREE },
         { label: "Marketplace", route: Paths.MARKETPLACE },
         { label: "Ranking", route: Paths.RANKING },
         { label: "Learn to play", route: Paths.LEARN_TO_PLAY },
@@ -88,9 +90,7 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
 export default LayoutAuthentication;
 
 const LayoutStyled = styled(Layout)`
-    min-width: 100vw;
     width: 100%;
-    width: 100vw;
     min-height: 100vh;
     height: 100%;
 `;

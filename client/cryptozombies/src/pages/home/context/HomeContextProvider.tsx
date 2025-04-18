@@ -1,13 +1,13 @@
-import { notification } from "antd";
+import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import { Paths } from "src/router/RouteConsts";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
 
 interface IHomeContext {
     zombiesId: number[]
+    mintFreeDisponible: boolean
+    mintFreeLeft: number
     getZombieById: (id: number) => Promise<IZombie>
 }
 
@@ -23,13 +23,16 @@ export const useHomeContext = () => {
 
 const HomeContextProvider = ({ children }: { children: ReactNode }) => {
     const { address } = useAuthContext();
-    const navigate = useNavigate();
     const [zombiesId, setZombiesId] = useState<number[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [mintFreeDisponible, setMintFreeDisponible] = useState(false);
+    const [mintFreeLeft, setMintFreeLeft] = useState(0);
     const isFirst = useRef(true);
 
     useEffect(() => {
         if (isFirst.current) {
             start();
+            getMintFreeDisponible();
             isFirst.current = false;
         }
     }, []);
@@ -37,29 +40,49 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
     const start = useCallback(async () => {
         try {
             const zombies = await CryptoZombiesService.instance.getZombiesByOwner(address);
-            if (!zombies?.length) {
-                navigate(Paths.ZOMBIE_CREATE);
-                return;
-            } 
             setZombiesId([...zombies]);
         } catch (error: any) {
             notification.error({
                 message: 'Error in get zombies',
                 description: error.reason || 'Error generic'
             });
-            navigate(Paths.ZOMBIE_CREATE);
         }
     }, []);
+
+    const getMintFreeDisponible = useCallback(async () => {
+        setLoading(true);
+        try {
+            const mintFreeLimit = await CryptoZombiesService.instance.getMintFreeLimit();
+            const mintedFreeCount = await CryptoZombiesService.instance.getMintedFreeCount();
+            setMintFreeDisponible(mintFreeLimit > mintedFreeCount);
+            setMintFreeLeft(mintFreeLimit - mintedFreeCount);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get mint free disponible',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
 
     const getZombieById = useCallback(async (id: number) => {
         return CryptoZombiesService.instance.getZombieById(id);
     }, []);
 
-    const contextValue = useMemo(() => ({ zombiesId, getZombieById }), [zombiesId]);
+    const contextValue = useMemo(() => ({ 
+        zombiesId,
+        mintFreeDisponible,
+        mintFreeLeft,
+        getZombieById 
+    }), [zombiesId, mintFreeDisponible, mintFreeLeft]);
 
     return (
         <HomeContext.Provider value={contextValue}>
-            {children}
+            <Spin spinning={loading}>
+                {children}
+            </Spin>
         </HomeContext.Provider>
     )
 }

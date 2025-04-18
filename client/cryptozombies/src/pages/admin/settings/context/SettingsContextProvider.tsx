@@ -8,7 +8,7 @@ interface ISettingsContext {
     withdraw: () => Promise<void>
     setCooldownTimeAttack: (cooldownTimeAttack: number) => Promise<void>
     setCooldownTimeFeeding: (cooldownTimeFeeding: number) => Promise<void>
-    setCreateZombieFee: (createZombieFee: bigint) => Promise<void>
+    setMintFee: (mintFee: bigint) => Promise<void>
     setTotalAttackVictoryToGetReward: (totalAttackVictoryToGetReward: number) => Promise<void>
     setTotalFedToGetReward: (totalFedToGetReward: number) => Promise<void>
     setLevelUpFee: (fee: bigint) => Promise<void>
@@ -109,11 +109,11 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
     
-    const setCreateZombieFee = useCallback(async (createZombieFee: bigint) => {
+    const setMintFee = useCallback(async (mintFee: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setCreateZombieFee(createZombieFee);
-            setSettings(s => ({ ...s as ISettings, createZombieFee }));
+            await CryptoZombiesService.instance.setMintFee(mintFee);
+            setSettings(s => ({ ...s as ISettings, mintFee }));
         } catch (error: any) {
             notification.error({
                 message: 'Error in update create zombie fee',
@@ -251,7 +251,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         withdraw,
         setCooldownTimeAttack,
         setCooldownTimeFeeding,
-        setCreateZombieFee,
+        setMintFee,
         setTotalAttackVictoryToGetReward,
         setTotalFedToGetReward,
         setLevelUpFee,

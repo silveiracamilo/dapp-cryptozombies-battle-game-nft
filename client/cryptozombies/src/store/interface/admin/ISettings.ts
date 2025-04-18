@@ -1,7 +1,7 @@
 interface ISettings {
     cooldownTimeAttack: number
     cooldownTimeFeeding: number
-    createZombieFee: bigint
+    mintFee: bigint
     totalAttackVictoryToGetReward: number
     totalFedToGetReward: number
     levelUpFee: bigint
