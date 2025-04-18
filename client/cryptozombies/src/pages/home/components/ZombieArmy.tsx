@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { notification, Row } from "antd";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { notification, Row, Statistic } from "antd";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { useNavigate } from "react-router";
 import { Paths } from "src/router/RouteConsts";
@@ -10,10 +10,14 @@ import styled from "styled-components";
 import ZombieCard from "src/components/zombie/ZombieCard";
 import CardButtonAction from "src/components/button/CardButtonAction";
 
+const { Countdown } = Statistic;
+
 const ZombieArmy = ({ id }: { id: number }) => {
     const { getZombieById } = useHomeContext();
     const navigate = useNavigate();
     const [zombie, setZombie] = useState<IZombie>();
+    const [fedDisabled, setFedDisabled] = useState(true);
+    const [battleDisabled, setBattleDisabled] = useState(true);
 
     useEffect(() => {
         handleGetZombieById();
@@ -43,17 +47,44 @@ const ZombieArmy = ({ id }: { id: number }) => {
         navigate(Paths.ZOMBIE_DETAIL.replace(':id', id.toString()));
     }, []);
 
+    const fedReadyTime = useMemo(() => (zombie?.fedReadyTime || 1) * 1000, [zombie]);
+
+    useEffect(() => {
+        setFedDisabled(Date.now() < fedReadyTime);
+    }, [fedReadyTime]);
+
+    const fedCountdownFinish = useCallback(() => {
+        setFedDisabled(false);
+    }, []);
+    
+    const attackReadyTime = useMemo(() => (zombie?.attackReadyTime || 1) * 1000, [zombie]);
+
+    useEffect(() => {
+        setBattleDisabled(Date.now() < attackReadyTime);
+    }, [attackReadyTime]);
+
+    const attackCountdownFinish = useCallback(() => {
+        setBattleDisabled(false);
+    }, []);
+
     return (
         <CardStyle>
             <ZombieCard zombie={zombie as IZombie} />
             <CardFooterStyle justify="space-between">
-                <CardButtonAction icon={<FontAwesomeIcon icon={faCat} />} onClick={feed}>
-                    Feed
+                <CardButtonAction icon={<FontAwesomeIcon icon={faCat} />} onClick={fedDisabled ? undefined : feed} size="small">
+                    {!fedDisabled ?
+                    'Feed' :
+                    <Countdown value={fedReadyTime} valueStyle={{ fontSize: 13 }} onFinish={fedCountdownFinish} />
+                    }
                 </CardButtonAction>
-                <CardButtonAction icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>
-                    Battle
+                <CardButtonAction icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battleDisabled ? undefined : battle} size="small">
+                    {!battleDisabled ?
+                    'Battle' :
+                    <Countdown value={attackReadyTime} valueStyle={{ fontSize: 13 }} onFinish={attackCountdownFinish} />
+                    }
+                    
                 </CardButtonAction>
-                <CardButtonAction icon={<FontAwesomeIcon icon={faAddressCard} />} onClick={detail}>
+                <CardButtonAction icon={<FontAwesomeIcon icon={faAddressCard} />} onClick={detail} size="small">
                     Detail
                 </CardButtonAction>
             </CardFooterStyle>

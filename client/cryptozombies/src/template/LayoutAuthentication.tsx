@@ -42,7 +42,7 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
     const onClickMenu: MenuProps['onClick'] = useCallback((e: any) => {
         const item = items[+e.key - 1];
         item && navigate(item.route);
-    }, []);
+    }, [items]);
 
     const goHome = () => {
         navigate(Paths.HOME);
