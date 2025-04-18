@@ -1,5 +1,5 @@
 import { Button, Card, Col, Image, Row } from 'antd';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Zombie } from 'src/components/zombie/Zombie';
 import { Paths } from 'src/router/RouteConsts';
@@ -7,11 +7,12 @@ import { Paths } from 'src/router/RouteConsts';
 const ZombieFeeding: React.FC = () => {
     const { fromDna = '', targetDna = '', kittyId = '', newDna = '' } = useParams();
     const navigate = useNavigate();
+    const hasNewZombie = useMemo(() => +newDna !== 0, [newDna]);
     
     return (
         <>
         <Row justify="center">
-            <h1 style={{ color: '#b6a764' }}>Zombie fed, and created new zombie</h1>
+            <h1 style={{ color: '#b6a764' }}>Zombie feeding {hasNewZombie && ', and created new zombie'}</h1>
         </Row>
         <Row justify="center" align="middle">
             <Col span={5}>
@@ -19,13 +20,14 @@ const ZombieFeeding: React.FC = () => {
             </Col>
             <Col span={1} style={{ fontSize: 40 }}>+</Col>
             <Col span={5}>
-                {/* <Zombie dna={targetDna} /> */}
                 <Image 
                     src={`https://img.cn.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${kittyId}.svg`} 
                     width={250} 
                     preview={false}
                 />
             </Col>
+            { hasNewZombie &&
+            <>
             <Col span={1} style={{ fontSize: 40 }}>=</Col>
             <Col span={5}>
                 <Zombie dna={newDna} />
@@ -42,6 +44,8 @@ const ZombieFeeding: React.FC = () => {
                     {newDna}
                 </Card>
             </Col>
+            </>
+            }
         </Row>
         <Row justify="center" style={{ marginTop: 60 }}>
             <Button type="primary" key="army" onClick={() => navigate(Paths.HOME)}>

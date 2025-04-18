@@ -6,7 +6,11 @@ import CryptoZombiesService from "src/store/services/contract/cryptoZombie/Crypt
 interface ISettingsContext {
     settings: ISettings
     withdraw: () => Promise<void>
-    setCooldownTime: (cooldownTime: number) => Promise<void>
+    setCooldownTimeAttack: (cooldownTimeAttack: number) => Promise<void>
+    setCooldownTimeFeeding: (cooldownTimeFeeding: number) => Promise<void>
+    setCreateZombieFee: (createZombieFee: bigint) => Promise<void>
+    setTotalAttackVictoryToGetReward: (totalAttackVictoryToGetReward: number) => Promise<void>
+    setTotalFedToGetReward: (totalFedToGetReward: number) => Promise<void>
     setLevelUpFee: (fee: bigint) => Promise<void>
     setChangeNameFee: (fee: bigint) => Promise<void>
     setChangeDNAFee: (fee: bigint) => Promise<void>
@@ -75,14 +79,74 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
     
-    const setCooldownTime = useCallback(async (cooldownTime: number) => {
+    const setCooldownTimeAttack = useCallback(async (cooldownTimeAttack: number) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setCooldownTime(cooldownTime);
-            setSettings(s => ({ ...s as ISettings, cooldownTime }));
+            await CryptoZombiesService.instance.setCooldownTimeAttack(cooldownTimeAttack);
+            setSettings(s => ({ ...s as ISettings, cooldownTimeAttack }));
         } catch (error: any) {
             notification.error({
-                message: 'Error in update cooldown time',
+                message: 'Error in update cooldown time attack',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
+    const setCooldownTimeFeeding = useCallback(async (cooldownTimeFeeding: number) => {
+        setLoading(true);
+        try {
+            await CryptoZombiesService.instance.setCooldownTimeFeeding(cooldownTimeFeeding);
+            setSettings(s => ({ ...s as ISettings, cooldownTimeFeeding }));
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in update cooldown time feeding',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
+    const setCreateZombieFee = useCallback(async (createZombieFee: bigint) => {
+        setLoading(true);
+        try {
+            await CryptoZombiesService.instance.setCreateZombieFee(createZombieFee);
+            setSettings(s => ({ ...s as ISettings, createZombieFee }));
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in update create zombie fee',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
+    const setTotalAttackVictoryToGetReward = useCallback(async (totalAttackVictoryToGetReward: number) => {
+        setLoading(true);
+        try {
+            await CryptoZombiesService.instance.setTotalAttackVictoryToGetReward(totalAttackVictoryToGetReward);
+            setSettings(s => ({ ...s as ISettings, totalAttackVictoryToGetReward }));
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in update total attack victory to get reward',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
+    const setTotalFedToGetReward = useCallback(async (totalFedToGetReward: number) => {
+        setLoading(true);
+        try {
+            await CryptoZombiesService.instance.setTotalFedToGetReward(totalFedToGetReward);
+            setSettings(s => ({ ...s as ISettings, totalFedToGetReward }));
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in update total fed to get reward',
                 description: error.reason || 'Error generic'
             });
         } finally {
@@ -185,7 +249,11 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         balance,
         settings,
         withdraw,
-        setCooldownTime,
+        setCooldownTimeAttack,
+        setCooldownTimeFeeding,
+        setCreateZombieFee,
+        setTotalAttackVictoryToGetReward,
+        setTotalFedToGetReward,
         setLevelUpFee,
         setChangeNameFee,
         setChangeDNAFee,

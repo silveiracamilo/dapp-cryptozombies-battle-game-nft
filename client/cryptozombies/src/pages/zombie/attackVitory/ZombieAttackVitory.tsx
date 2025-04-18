@@ -1,5 +1,5 @@
 import { Card, Col, Row } from 'antd';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Zombie } from 'src/components/zombie/Zombie';
 import { useZombieAttackVitoryContext } from './context/ZombieAttackVitoryContextProvider';
 import { useNavigate, useParams } from 'react-router';
@@ -16,11 +16,14 @@ const ZombieAttackVitory: React.FC = () => {
     const { zombieFrom, zombieTarget } = useZombieAttackVitoryContext();
     const { newDna = '' } = useParams();
     const navigate = useNavigate();
+    const hasNewZombie = useMemo(() => +newDna !== 0, [newDna]);
 
     return (
         <>
         <Row justify="center">
-            <h1 style={{ color: '#b6a764' }}>You Victory! Now you can to see, a new zombie.</h1>
+            <h1 style={{ color: '#b6a764' }}>
+                You Victory! {hasNewZombie && ' Now you can to see, a new zombie.'}
+            </h1>
         </Row>
         <Row justify="center" align="middle">
             <Col span={5}>
@@ -46,6 +49,8 @@ const ZombieAttackVitory: React.FC = () => {
                     />
                 </Card>
             </Col>
+            {hasNewZombie && 
+            <>
             <Col span={1} style={{ fontSize: 40 }}>=</Col>
             <Col span={5}>
                 <Zombie dna={newDna} />
@@ -62,6 +67,8 @@ const ZombieAttackVitory: React.FC = () => {
                     {newDna}
                 </Card>
             </Col>
+            </>
+            }
         </Row>
         <Row justify="center" style={{ marginTop: 60 }}>
             <CardButtonAction onClick={() => navigate(Paths.HOME)}>

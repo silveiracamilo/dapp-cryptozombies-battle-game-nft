@@ -21,8 +21,13 @@ const ZombieDetail: React.FC = () => {
     const [showChangeDNAModal, setShowChangeDNAModal] = useState(false);
     const [showPutForSaleModal, setShowPutForSaleModal] = useState(false);
     
-    const parseReadyTime = useMemo(
-        () => (zombie ? moment(zombie.readyTime * 1000) : moment()).fromNow(), 
+    const parseAttackReadyTime = useMemo(
+        () => (zombie ? moment(zombie.attackReadyTime * 1000) : moment()).fromNow(), 
+        [zombie]
+    );
+    
+    const parseFedReadyTime = useMemo(
+        () => (zombie ? moment(zombie.fedReadyTime * 1000) : moment()).fromNow(), 
         [zombie]
     );
 
@@ -89,7 +94,7 @@ const ZombieDetail: React.FC = () => {
                 <Zombie dna={zombie.dna} />
             </Col>
             <Col span={20}>
-                <Row gutter={16}>
+                <Row gutter={[16, 16]}>
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic
@@ -103,8 +108,18 @@ const ZombieDetail: React.FC = () => {
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic
-                                title="Ready Time"
-                                value={parseReadyTime}
+                                title="Attack Ready Time"
+                                value={parseAttackReadyTime}
+                                formatter={v => v}
+                                prefix={<FontAwesomeIcon icon={faStopwatch} />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col span={6}>
+                        <Card variant="borderless">
+                            <Statistic
+                                title="Fed Ready Time"
+                                value={parseFedReadyTime}
                                 formatter={v => v}
                                 prefix={<FontAwesomeIcon icon={faStopwatch} />}
                             />
@@ -128,8 +143,8 @@ const ZombieDetail: React.FC = () => {
                             />
                         </Card>
                     </Col>
-                </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}>
+                {/* </Row>
+                <Row gutter={16} style={{ marginTop: 16 }}> */}
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic
@@ -167,8 +182,8 @@ const ZombieDetail: React.FC = () => {
                             />
                         </Card>
                     </Col>
-                </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}>
+                {/* </Row>
+                <Row gutter={16} style={{ marginTop: 16 }}> */}
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic
@@ -198,8 +213,8 @@ const ZombieDetail: React.FC = () => {
                             />
                         </Card>
                     </Col>
-                </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}>
+                {/* </Row>
+                <Row gutter={16} style={{ marginTop: 16 }}> */}
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic

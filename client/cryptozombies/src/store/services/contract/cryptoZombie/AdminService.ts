@@ -5,7 +5,11 @@ class AdminService extends MarketService {
 
     public async getSettings(): Promise<ISettings> {
         const settingsList = await Promise.all([
-            this.getCooldownTime(),
+            this.getCooldownTimeAttack(),
+            this.getCooldownTimeFeeding(),
+            this.getCreateZombieFee(),
+            this.getTotalAttackVictoryToGetReward(),
+            this.getTotalFedToGetReward(),
             this.getLevelUpFee(),
             this.getChangeNameFee(),
             this.getChangeDNAFee(),
@@ -15,13 +19,17 @@ class AdminService extends MarketService {
         ]);
 
         return {
-            cooldownTime: parseInt(settingsList[0]),
-            levelUpFee: settingsList[1],
-            changeNameFee: settingsList[2],
-            changeDNAFee: settingsList[3],
-            baseUrlTokenURI: settingsList[4],
-            tax: settingsList[5],
-            minPrice: settingsList[6],
+            cooldownTimeAttack: parseInt(settingsList[0]),
+            cooldownTimeFeeding: parseInt(settingsList[1]),
+            createZombieFee: settingsList[2],
+            totalAttackVictoryToGetReward: parseInt(settingsList[3]),
+            totalFedToGetReward: parseInt(settingsList[4]),
+            levelUpFee: settingsList[5],
+            changeNameFee: settingsList[6],
+            changeDNAFee: settingsList[7],
+            baseUrlTokenURI: settingsList[8],
+            tax: settingsList[9],
+            minPrice: settingsList[10],
         };
     }
 }

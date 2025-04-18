@@ -1,5 +1,6 @@
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
+import { parseEther } from "ethers";
 import hre from "hardhat";
 
 describe("CryptoZombies", function () {
@@ -16,7 +17,7 @@ describe("CryptoZombies", function () {
     it("Should createRandomZombie", async function () {
       const { contract, owner } = await loadFixture(deployCryptoZombiesFixture);
 
-      await contract.createRandomZombie('Camilo');
+      await contract.createRandomZombie('Camilo', { value: parseEther('0.003') });
 
       const zombies = await contract.getZombiesByOwner(owner.address);
       const zombie = await contract.zombies(zombies[0]);

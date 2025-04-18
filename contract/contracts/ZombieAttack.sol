@@ -11,6 +11,14 @@ contract ZombieAttack is ZombieHelper {
     uint randNonce = 0;
     uint attackVictoryProbability = 50;
 
+    function _isReadyAttack(Zombie storage _zombie) internal view returns (bool) {
+        return (_zombie.attackReadyTime <= block.timestamp);
+    }
+
+    function _triggerCooldownAttack(Zombie storage _zombie) internal {
+        _zombie.attackReadyTime = uint32(block.timestamp + cooldownTimeAttack);
+    }
+
     function randMod(uint _modulus) internal returns (uint) {
         randNonce = randNonce + 1;
         return uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % _modulus;
@@ -40,6 +48,9 @@ contract ZombieAttack is ZombieHelper {
 
     function attack(uint _zombieId, uint _targetId) external onlyOwnerOf(_zombieId) {
         Zombie storage myZombie = zombies[_zombieId];
+
+        require(_isReadyAttack(myZombie), "Zombie is not ready to attack");
+
         Zombie storage enemyZombie = zombies[_targetId];
 
         uint victoryChance = _calculateVictoryChance(myZombie, enemyZombie);
@@ -50,25 +61,32 @@ contract ZombieAttack is ZombieHelper {
             myZombie.level++;
             enemyZombie.lossCount++;
 
-            calculateScore(myZombie);
-            calculateScore(enemyZombie);
+            _triggerUpdateScore(myZombie);
+            _triggerUpdateScore(enemyZombie);
 
-            uint newDna = feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+            uint newDna = 0;
+            if (myZombie.attackVictoryCount == totalAttackVictoryToGetReward) {
+                newDna = _multiply(myZombie.dna, enemyZombie.dna, "zombie");
+                myZombie.attackVictoryCount = 0;
+            } else {
+                myZombie.attackVictoryCount++;
+            }
+
+
             emit onAttackVitory(msg.sender, _zombieId, _targetId, newDna);
         } else {
             myZombie.lossCount++;
             enemyZombie.winCount++;
             
-            calculateScore(myZombie);
-            calculateScore(enemyZombie);
-
-            _triggerCooldown(myZombie);
+            _triggerUpdateScore(myZombie);
+            _triggerUpdateScore(enemyZombie);
+            _triggerCooldownAttack(myZombie);
             
             emit onAttackDefeat(msg.sender, _zombieId, _targetId);
         }
     }
 
-    function calculateScore(Zombie storage zombie) internal {
+    function _triggerUpdateScore(Zombie storage zombie) internal {
         uint32 zombieScore = (zombie.level * 10) + (zombie.winCount * 5) - (zombie.lossCount * 3);
         if (zombieScore < 10) {
             zombieScore = 10;

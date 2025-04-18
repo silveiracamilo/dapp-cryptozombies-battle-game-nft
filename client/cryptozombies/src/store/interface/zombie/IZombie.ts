@@ -2,11 +2,15 @@ export interface IZombie {
     id: number
     name: string
     dna: string
+    score: number
+    birthTime: number
     level: number
-    readyTime: number
+    attackReadyTime: number
+    fedReadyTime: number
     winCount: number
     lossCount: number
-    score: number
+    attackVictoryCount: number
+    fedCount: number
     head: number
     eye: number
     shirt: number

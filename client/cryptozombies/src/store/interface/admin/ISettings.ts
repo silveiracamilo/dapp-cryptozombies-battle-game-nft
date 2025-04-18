@@ -1,5 +1,9 @@
 interface ISettings {
-    cooldownTime: number
+    cooldownTimeAttack: number
+    cooldownTimeFeeding: number
+    createZombieFee: bigint
+    totalAttackVictoryToGetReward: number
+    totalFedToGetReward: number
     levelUpFee: bigint
     changeNameFee: bigint
     changeDNAFee: bigint

@@ -15,11 +15,6 @@ contract ZombieHelper is ZombieFeeding {
         _;
     }
 
-    modifier abovePrice(uint _price) {
-        require(msg.value >= _price, string.concat("Price minimum is ", Strings.toString(_price)));
-        _;
-    }
-
     function withdraw() external onlyOwner {
         address payable _owner = payable(owner());
         _owner.transfer(address(this).balance);
