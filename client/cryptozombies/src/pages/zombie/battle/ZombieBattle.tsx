@@ -1,16 +1,28 @@
-import { Col, Row } from 'antd';
-import React from 'react';
+import { Breadcrumb, Col, Row } from 'antd';
+import React, { useMemo } from 'react';
 import { useZombieBattleContext } from './context/ZombieBattleContextProvider';
 import { map } from 'lodash';
 import AccountEnemie from './components/AccountEnemie';
 import ZombieCard from 'src/components/zombie/ZombieCard';
 import { IZombie } from 'src/store/interface/zombie/IZombie';
+import { Paths } from 'src/router/RouteConsts';
+import { useNavigate } from 'react-router';
 
 const ZombieBattle: React.FC = () => {
     const { zombie, accounts } = useZombieBattleContext();
+    const navigate = useNavigate();
+    const breadcrumbItems = useMemo(() => [
+        {
+            title: <a onClick={() => navigate(Paths.HOME)}>Play to earn</a>,
+        },
+        {
+            title: 'Battle',
+        },
+    ], []);
 
     return (
         <>
+        <Breadcrumb items={breadcrumbItems} />
         <Row>
             <h1 style={{ color: '#b6a764' }}>Choose a account to fight {zombie?.name}</h1>
         </Row>

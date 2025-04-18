@@ -45,6 +45,13 @@ export const themeStyle = {
     },
     Button: {
       colorTextDisabled: '#666'
+    },
+    Breadcrumb: {
+      linkColor: '#FFF',
+      linkHoverColor: '#CCC',
+      itemColor: '#FFF',
+      separatorColor: '#FFF',
+      lastItemColor: '#CCC',
     }
   }
 };

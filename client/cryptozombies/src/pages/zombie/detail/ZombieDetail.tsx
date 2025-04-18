@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Statistic, Tooltip } from 'antd';
+import { Breadcrumb, Button, Card, Col, Row, Statistic, Tooltip } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Zombie } from 'src/components/zombie/Zombie';
 import { useZombieDetailContext } from './context/ZombieDetailContextProvider';
@@ -20,6 +20,14 @@ const ZombieDetail: React.FC = () => {
     const [showChangeNameModal, setShowChangeNameModal] = useState(false);
     const [showChangeDNAModal, setShowChangeDNAModal] = useState(false);
     const [showPutForSaleModal, setShowPutForSaleModal] = useState(false);
+    const breadcrumbItems = useMemo(() => [
+        {
+            title: <a onClick={() => navigate(Paths.HOME)}>Play to earn</a>,
+        },
+        {
+            title: 'Zombie Detail',
+        },
+    ], []);
     
     const parseBirthTime = useMemo(
         () => (zombie ? moment(zombie.birthTime * 1000) : moment()).format('lll'), 
@@ -50,6 +58,7 @@ const ZombieDetail: React.FC = () => {
 
     return (
         <>
+        <Breadcrumb items={breadcrumbItems} />
         <Row justify="space-evenly" align="middle" gutter={30}>
             <Col span={8}>
                 <h1 style={{ color: '#b6a764' }}>{zombie.id}#{zombie.name}</h1>

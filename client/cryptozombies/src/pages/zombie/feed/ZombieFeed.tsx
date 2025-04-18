@@ -1,16 +1,28 @@
-import React from 'react';
-import { Button, Card, Col, Image, Row } from 'antd';
+import React, { useMemo } from 'react';
+import { Breadcrumb, Button, Card, Col, Image, Row } from 'antd';
 import { debounce, map } from 'lodash';
 import { useZombieFeedContext } from './context/ZombieFeedContextProvider';
 import { Zombie } from 'src/components/zombie/Zombie';
+import { Paths } from 'src/router/RouteConsts';
+import { useNavigate } from 'react-router';
 
 const { Meta } = Card;
 
 const ZombieFeed: React.FC = () => {
     const { zombie, kitties, feedOnKitty } = useZombieFeedContext();
+    const navigate = useNavigate();
+    const breadcrumbItems = useMemo(() => [
+        {
+            title: <a onClick={() => navigate(Paths.HOME)}>Play to earn</a>,
+        },
+        {
+            title: 'Feed',
+        },
+    ], []);
 
     return (
         <>
+            <Breadcrumb items={breadcrumbItems} />
             <Row>
                 <h1 style={{ color: '#b6a764' }}>Feed zombie {zombie?.name} with CryptoKitties</h1>
             </Row>
