@@ -11,7 +11,7 @@ export const Zombie: React.FC<IZombie> = ({ dna }) => {
 
   return (
     <S.ExternalContainer>
-      <S.DnaStyled>DNA: {dna}</S.DnaStyled>
+      <S.Dna>DNA: {dna}</S.Dna>
       <S.ZombieContainer>
         {!genes.catMode && (
           <>

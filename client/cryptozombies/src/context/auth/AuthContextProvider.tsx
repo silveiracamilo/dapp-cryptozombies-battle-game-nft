@@ -4,7 +4,6 @@ import { createContext, ReactNode, useCallback, useContext, useMemo, useState } 
 
 interface IAuthContext {
     address: string
-    setAddress: React.Dispatch<React.SetStateAction<string>>
     doAuth: () => Promise<void>
 }
 
@@ -28,14 +27,14 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 description: <p>Please install a browser wallet, something like: Metamask, Taho, Phantom, Coinbase and TrustWallet</p>
             });
             return;
-        } 
+        }
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const myAddress = await signer.getAddress();
         setAddress(myAddress);
-    }, [setAddress]);
+    }, []);
 
-    const contextValue = useMemo(() => ({ address, setAddress, doAuth }), [address, setAddress]);
+    const contextValue = useMemo(() => ({ address, doAuth }), [address]);
 
     return (
         <AuthContext.Provider value={contextValue}>

@@ -18,7 +18,7 @@ export const ZombieContainer = styled.div`
   width: 410px;
 `
 
-export const DnaStyled = styled.div`
+export const Dna = styled.div`
   position: fixed;
   color: #000;
   font-size: 10px;
