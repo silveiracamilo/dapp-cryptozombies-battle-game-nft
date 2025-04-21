@@ -51,18 +51,21 @@ contract CryptoZombiesRanking is Ownable {
         for (uint i = 0; i < accountLenght; i++) {
             address account = accounts[i];
             uint[] memory zombieIds = cryptoZombiesContract.getZombiesByOwner(account);
-            uint score = 0;
-            uint16 winCount = 0;
-            uint16 lossCount = 0;
+            uint scoreSum = 0;
+            uint16 winCountSum = 0;
+            uint16 lossCountSum = 0;
 
             for (uint z = 0; z < zombieIds.length; z++) {
+                uint score;
+                uint16 winCount;
+                uint16 lossCount;
                 (,,score,,,,,winCount,lossCount,) = cryptoZombiesContract.zombies(zombieIds[z]);
-                score += score;
-                winCount += winCount;
-                lossCount += lossCount;
+                scoreSum += score;
+                winCountSum += winCount;
+                lossCountSum += lossCount;
             }
 
-            allRankings[i] = Ranking(account, i, score, zombieIds.length, winCount, lossCount);
+            allRankings[i] = Ranking(account, i, scoreSum, zombieIds.length, winCountSum, lossCountSum);
         }
 
         _sortByScore(allRankings);

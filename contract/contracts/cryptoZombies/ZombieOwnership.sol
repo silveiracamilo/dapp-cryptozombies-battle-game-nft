@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-// import "./ZombieRanking.sol";
 import "./ZombieAttack.sol";
 import "./ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -9,7 +8,6 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 /// @title A contract that manages transfering zombie ownership
 /// @author Camilo da Silveira
-// contract ZombieOwnership is ZombieRanking, ERC721 {
 contract ZombieOwnership is ZombieAttack, ERC721 {
     string public baseUrlTokenURI = "http://localhost:3333/zombie/uri/";
     
