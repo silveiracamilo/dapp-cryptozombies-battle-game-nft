@@ -2,12 +2,12 @@ import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptoZombiesService";
 
 interface IMarketplaceContext {
     allZombiesInShop: IZombieSale[]
     getZombieById: (id: number) => Promise<IZombie>
-    buyShopZombie: (zombieId: number, price: bigint) => Promise<void>
+    buyZombie: (zombieId: number, price: bigint) => Promise<void>
 }
 
 const MarketplaceContext = createContext<IMarketplaceContext>({} as IMarketplaceContext);
@@ -44,10 +44,10 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    const buyShopZombie = useCallback(async (zombieId: number, price: bigint) => {
+    const buyZombie = useCallback(async (zombieId: number, price: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.buyShopZombie(zombieId, price);
+            await CryptoZombiesService.instance.buyZombie(zombieId, price);
             getAllZombiesInShop();
         } catch (error: any) {
             notification.error({
@@ -64,7 +64,7 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
         return CryptoZombiesService.instance.getZombieById(id);
     }, []);
 
-    const contextValue = useMemo(() => ({ allZombiesInShop, getZombieById, buyShopZombie }), [allZombiesInShop]);
+    const contextValue = useMemo(() => ({ allZombiesInShop, getZombieById, buyZombie }), [allZombiesInShop]);
 
     return (
         <MarketplaceContext.Provider value={contextValue}>

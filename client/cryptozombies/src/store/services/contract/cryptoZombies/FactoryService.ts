@@ -1,5 +1,8 @@
+import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
 import ContractService from "./ContractService";
 import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
+import { toBeHex, zeroPadValue } from "ethers";
+import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
 
 class FactoryService extends ContractService {
 
@@ -85,6 +88,37 @@ class FactoryService extends ContractService {
     public async getMintedFreeCount() {
         const contract = await this.getContract();
         return contract.mintedFreeCount();
+    }
+
+    public async getLogsNewZombieByZombieId(zombieId: number): Promise<INewZombie[]> {
+        const contractInterface = (await this.getContract()).interface;
+        const eventTopic = contractInterface.getEvent('NewZombie')?.topicHash || '';
+        const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
+        const filter = {
+            address: this.contractAddress,
+            fromBlock: 0, // TODO update block number when started contract
+            toBlock: 'latest',
+            topics: [eventTopic, null, topicZombieId]
+        };
+        const logs = await this.provider.getLogs(filter);
+        const logsMapped = await Promise.all(
+            logs.map(async (log) => {
+                const parsed = contractInterface.parseLog(log);
+                const block = await this.provider.getBlock(log.blockHash);
+                const date = new Date((block?.timestamp || 1) * 1000);
+
+                return {
+                    event: ZombieEventTypes.NewZombie,
+                    zombieId: parsed?.args.zombieId,
+                    from: parsed?.args.from,
+                    name: parsed?.args.name,
+                    dna: parsed?.args.dna,
+                    timestamp: block?.timestamp || 0,
+                    date: date.toISOString(),
+                };
+            })
+        );
+        return logsMapped;
     }
 }
 

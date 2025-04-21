@@ -18,7 +18,7 @@ interface IZombieSaleProps {
 }
 
 const ZombieSale: React.FC<IZombieSaleProps> = ({ zombieSale }) => {
-    const { getZombieById, buyShopZombie } = useMarketplaceContext();
+    const { getZombieById, buyZombie } = useMarketplaceContext();
     // const navigate = useNavigate();
     const [zombie, setZombie] = useState<IZombie>();
 
@@ -48,7 +48,7 @@ const ZombieSale: React.FC<IZombieSaleProps> = ({ zombieSale }) => {
             actions={[
                 <CardButtonAction 
                     icon={<FontAwesomeIcon icon={faTag} />}
-                    onClick={debounce(() => buyShopZombie(zombieSale.zombieId, zombieSale.price), 200)}
+                    onClick={debounce(() => buyZombie(zombieSale.zombieId, zombieSale.price), 200)}
                 >
                     Buy with ETH
                 </CardButtonAction>,

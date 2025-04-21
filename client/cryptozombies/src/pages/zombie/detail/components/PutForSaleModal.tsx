@@ -13,7 +13,7 @@ interface IPutForSaleModal {
 }
 
 const PutForSaleModal: React.FC<IPutForSaleModal> = ({ showPutForSaleModal, setShowPutForSaleModal }) => {
-    const { zombie, fees, saleMyZombie, loading } = useZombieDetailContext();
+    const { zombie, fees, saleZombie, loading } = useZombieDetailContext();
     const minPrice = useMemo(() => {
         const tax = +formatEther(fees.tax);
         const mPrice = +formatEther(fees.minPrice);
@@ -30,7 +30,7 @@ const PutForSaleModal: React.FC<IPutForSaleModal> = ({ showPutForSaleModal, setS
             return;
         }
 
-        await saleMyZombie(zombie?.id as number, parseEther(price.toString()));
+        await saleZombie(zombie?.id as number, parseEther(price.toString()));
         handleCancel();
     }, [price]);
 
@@ -46,7 +46,7 @@ const PutForSaleModal: React.FC<IPutForSaleModal> = ({ showPutForSaleModal, setS
                     <Zombie dna={zombie?.dna || ''} />
                 </Col>
                 <Col span={16}>
-                    <p>
+                    <p style={{ color: '#000' }}>
                         Min price: {minPrice}
                         &nbsp;&nbsp;
                         <Tooltip 

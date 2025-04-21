@@ -1,12 +1,12 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "./Ownable.sol";
+import "../common/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract ZombieFactory is Ownable {
 
-    event NewZombie(address indexed from, uint zombieId, string name, uint dna);
+    event NewZombie(address indexed from, uint indexed zombieId, string name, uint dna);
 
     uint private nonce = 0;
     uint dnaDigits = 16;
@@ -34,7 +34,7 @@ contract ZombieFactory is Ownable {
 
     Zombie[] public zombies;
     
-    address[] accounts;
+    address[] public accounts;
 
     mapping (uint => address) public zombieToOwner;
     mapping (address => uint) ownerZombieCount;

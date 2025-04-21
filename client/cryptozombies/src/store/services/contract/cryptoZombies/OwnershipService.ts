@@ -1,6 +1,7 @@
-import RankingService from "./RankingService";
+import AttackService from "./AttackService";
 
-class OwnershipService extends RankingService {
+// class OwnershipService extends RankingService {
+class OwnershipService extends AttackService {
     
     public async setBaseUrlTokenURI(baseUrl: string) {
         const contract = await this.getContract(true);

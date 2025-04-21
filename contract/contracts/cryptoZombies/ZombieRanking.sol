@@ -88,5 +88,4 @@ contract ZombieRanking is ZombieAttack {
 
         return items;
     }
-
 }

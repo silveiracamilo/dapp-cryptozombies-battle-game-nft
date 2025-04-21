@@ -12,6 +12,7 @@ import ChangeNameModal from './components/ChangeNameModal';
 import ChangeDNAModal from './components/ChangeDNAModal';
 import PutForSaleModal from './components/PutForSaleModal';
 import { formatEther } from 'ethers';
+import Activities from './components/Activities';
 
 const ZombieDetail: React.FC = () => {
     const { zombie, hasZombieInShop, levelUp, fees } = useZombieDetailContext();
@@ -167,8 +168,6 @@ const ZombieDetail: React.FC = () => {
                             />
                         </Card>
                     </Col>
-                {/* </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}> */}
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic
@@ -206,8 +205,6 @@ const ZombieDetail: React.FC = () => {
                             />
                         </Card>
                     </Col>
-                {/* </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}> */}
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic
@@ -237,8 +234,6 @@ const ZombieDetail: React.FC = () => {
                             />
                         </Card>
                     </Col>
-                {/* </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}> */}
                     <Col span={6}>
                         <Card variant="borderless">
                             <Statistic
@@ -271,6 +266,9 @@ const ZombieDetail: React.FC = () => {
                     </Col>
                 </Row>
             </Col>
+        </Row>
+        <Row style={{ width: '100%', marginLeft: 30, marginTop: 32 }}>
+            <Activities />
         </Row>
         <ChangeNameModal showChangeNameModal={showChangeNameModal} setShowChangeNameModal={setShowChangeNameModal} />
         <ChangeDNAModal showChangeDNAModal={showChangeDNAModal} setShowChangeDNAModal={setShowChangeDNAModal} />

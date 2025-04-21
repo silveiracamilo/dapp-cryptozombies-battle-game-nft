@@ -4,7 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptoZombiesService";
 
 interface IZombieMintFreeContext {
     mintFree: () => void

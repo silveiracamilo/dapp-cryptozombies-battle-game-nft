@@ -11,7 +11,7 @@ contract ZombieHelper is ZombieFeeding {
     uint public changeDNAFee = 0.004 ether;
 
     modifier aboveLevel(uint _level, uint _zombieId) {
-        require(zombies[_zombieId].level >= _level, string.concat("Level minimum is ", Strings.toString(_level)));
+        require(zombies[_zombieId].level >= _level, string.concat("Level min. is ", Strings.toString(_level)));
         _;
     }
 
@@ -62,13 +62,7 @@ contract ZombieHelper is ZombieFeeding {
     }
 
     function getAccounts() external view returns (address[] memory) {
-        address[] memory result = new address[](accounts.length);
-
-        for (uint i = 0; i < accounts.length; i++) {
-            result[i] = accounts[i];
-        }
-        
-        return result;
+        return accounts;
     }
 
 }

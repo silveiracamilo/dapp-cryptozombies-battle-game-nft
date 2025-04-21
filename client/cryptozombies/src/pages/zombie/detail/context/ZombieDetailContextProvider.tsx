@@ -1,10 +1,13 @@
 import { notification, Spin } from "antd";
 import { parseEther } from "ethers";
+import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
+import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import IZombieFees from "src/store/interface/zombie/IZombieFees";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
+import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptoZombiesService";
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
@@ -14,7 +17,8 @@ interface IZombieDetailContext {
     levelUp: () => Promise<void>
     changeName: (newName: string) => Promise<void>
     changeDna: (newDna: number) => Promise<void>
-    saleMyZombie: (zombieId: number, price: bigint) => Promise<void>
+    saleZombie: (zombieId: number, price: bigint) => Promise<void>
+    activities: (ISale | IBuy | INewZombie)[]
 }
 
 const ZombieDetailContext = createContext<IZombieDetailContext>({} as IZombieDetailContext);
@@ -39,6 +43,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     } as IZombieFees);
     const [loading, setLoading] = useState(false);
     const [hasZombieInShop, setHasZombieInShop] = useState(true);
+    const [activities, setActivities] = useState<(INewZombie | ISale | IBuy)[]>([]);
 
     useEffect(() => {
         getFees();
@@ -49,6 +54,12 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
             getZombieById();
         }
     }, [id]);
+
+    useEffect(() => {
+        if (zombie) {
+            getSalesAndBuys();
+        }
+    }, [zombie])
 
     const getZombieById = useCallback(async () => {
         try {
@@ -122,10 +133,10 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
     
-    const saleMyZombie = useCallback(async (zombieId: number, price: bigint) => {
+    const saleZombie = useCallback(async (zombieId: number, price: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.saleMyZombie(zombieId, price);
+            await CryptoZombiesService.instance.saleZombie(zombieId, price);
         } catch (error: any) {
             notification.error({
                 message: 'Error in sale my zombie',
@@ -136,6 +147,30 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
+    const getSalesAndBuys = useCallback(async () => {
+        setLoading(true);
+        try {
+            const newZombie = await CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id);
+            const sales = await CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id);
+            const buys = await CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id);
+
+            setActivities(
+                orderBy([
+                    ...newZombie,
+                    ...sales, 
+                    ...buys,
+                ], ['timestamp'], ['asc'])
+            );
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get activities',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, [id, zombie]);
+
 
     const contextValue = useMemo(() => ({ 
         zombie,
@@ -145,8 +180,9 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         levelUp,
         changeName,
         changeDna,
-        saleMyZombie,
-     }), [zombie, hasZombieInShop, fees, loading]);
+        saleZombie,
+        activities,
+     }), [zombie, hasZombieInShop, fees, loading, activities]);
 
     return (
         <ZombieDetailContext.Provider value={contextValue}>

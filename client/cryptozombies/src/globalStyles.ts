@@ -31,6 +31,7 @@ export const themeStyle = {
   token: {
     colorPrimary: '#b6a764',
     text: '#FFF',
+    // colorText: '#FFF',
   },
   components: {
     Form: {
@@ -52,6 +53,11 @@ export const themeStyle = {
       itemColor: '#FFF',
       separatorColor: '#FFF',
       lastItemColor: '#CCC',
+    },
+    Timeline: {
+      colorText: '#FFF',
+      dotBg: '#FFFFFF00',
+      tailColor: '#FFFFFF55'
     }
   }
 };

@@ -1,7 +1,7 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ISettings from "src/store/interface/admin/ISettings";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombie/CryptoZombiesService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptoZombiesService";
 
 interface ISettingsContext {
     settings: ISettings

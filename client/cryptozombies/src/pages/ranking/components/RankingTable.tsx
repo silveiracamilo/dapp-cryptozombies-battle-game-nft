@@ -70,7 +70,7 @@ const RankingTable = () => {
                 dataSource={ranking}
                 virtual
                 pagination={false}
-                scroll={{ x: '100vw', y: 0 }}
+                scroll={{ x: 700, y: 0 }}
             />
         </Row>
     );

@@ -49,7 +49,7 @@ contract ZombieAttack is ZombieHelper {
     function attack(uint _zombieId, uint _targetId) external onlyOwnerOf(_zombieId) {
         Zombie storage myZombie = zombies[_zombieId];
 
-        require(_isReadyAttack(myZombie), "Zombie is not ready to attack");
+        require(_isReadyAttack(myZombie), "It's not ready to attack");
 
         Zombie storage enemyZombie = zombies[_targetId];
 

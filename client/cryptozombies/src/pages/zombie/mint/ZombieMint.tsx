@@ -28,7 +28,7 @@ const ZombieMint: React.FC = () => {
                             label="Name"
                             name="name"
                             layout="vertical"
-                            normalize={value => value.replace(/[^a-zA-Z0-9 ]/g, '').trim()}
+                            normalize={value => value.replace(/[^a-zA-Z0-9 ]/g, '')}
                             rules={[
                                 { required: true, message: 'Please input your Zombie Name!' },
                                 { pattern: new RegExp(/^[a-zA-Z0-9 ]*$/), message: "No Special Characters Allowed" }
