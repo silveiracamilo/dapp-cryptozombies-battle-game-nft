@@ -2,6 +2,7 @@ export enum ZombieEventTypes {
     NewZombie = 'NewZombie',
     SaleZombie = 'SaleZombie',
     BuyZombie = 'BuyZombie',
+    CancelSaleZombie = 'CancelSaleZombie',
 }
 
 type ZombieEventType = keyof typeof ZombieEventTypes;

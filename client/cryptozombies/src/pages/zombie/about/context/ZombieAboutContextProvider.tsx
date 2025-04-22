@@ -3,7 +3,7 @@ import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
-import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
+import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
 import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptoZombiesService";
@@ -12,7 +12,7 @@ interface IZombieAboutContext {
     zombie: IZombie | undefined;
     zombieSale: IZombieSale | undefined
     loading: boolean;
-    activities: (ISale | IBuy | INewZombie)[]
+    activities: (ISale | ICancelSale | IBuy | INewZombie)[]
     buyZombie: (zombieId: number, price: bigint) => Promise<void>
 }
 
@@ -30,7 +30,7 @@ const ZombieAboutContextProvider = ({ children }: { children: ReactNode }) => {
     const { id = '' } = useParams();
     const [zombie, setZombie] = useState<IZombie>();
     const [loading, setLoading] = useState(false);
-    const [activities, setActivities] = useState<(INewZombie | ISale | IBuy)[]>([]);
+    const [activities, setActivities] = useState<(INewZombie | ISale | ICancelSale | IBuy)[]>([]);
     const [zombieSale, setZombieSale] = useState<IZombieSale>();
 
     useEffect(() => {
@@ -67,12 +67,14 @@ const ZombieAboutContextProvider = ({ children }: { children: ReactNode }) => {
         try {
             const newZombie = await CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id);
             const sales = await CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id);
+            const cancelSales = await CryptoZombiesService.instance.getLogsCancelSaleByZombieId(+id);
             const buys = await CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id);
 
             setActivities(
                 orderBy([
                     ...newZombie,
                     ...sales, 
+                    ...cancelSales,
                     ...buys,
                 ], ['timestamp'], ['asc'])
             );

@@ -6,6 +6,11 @@ export interface ISale extends IZombieEvent {
     seller: string
 }
 
+export interface ICancelSale extends IZombieEvent {
+    zombieId: bigint
+    seller: string
+}
+
 export interface IBuy extends IZombieEvent {
     zombieId: bigint
     buyer: string

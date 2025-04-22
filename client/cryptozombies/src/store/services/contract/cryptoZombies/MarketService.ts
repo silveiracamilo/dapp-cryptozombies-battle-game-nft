@@ -4,7 +4,7 @@ import { map } from "lodash";
 import { zombieSaleMapper } from "src/store/mapper/marketplace/zombieSaleMapper";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { toBeHex, zeroPadValue } from "ethers";
-import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
+import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
 
 class MarketService extends OwnershipService {
@@ -114,7 +114,7 @@ class MarketService extends OwnershipService {
         return logsMapped;
     }
 
-    public async getLogsCancelSaleByZombieId(zombieId: number): Promise<ISale[]> {
+    public async getLogsCancelSaleByZombieId(zombieId: number): Promise<ICancelSale[]> {
         const contractInterface = (await this.getContract()).interface;
         const eventTopic = contractInterface.getEvent('CancelSaleZombie')?.topicHash || '';
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
@@ -132,9 +132,8 @@ class MarketService extends OwnershipService {
               const date = new Date((block?.timestamp || 1) * 1000);
 
               return {
-                event: ZombieEventTypes.SaleZombie,
+                event: ZombieEventTypes.CancelSaleZombie,
                 zombieId: parsed?.args.zombieId,
-                price: parsed?.args.price,
                 seller: parsed?.args.seller,
                 timestamp: block?.timestamp || 0,
                 date: date.toISOString(),

@@ -5,7 +5,7 @@ import { useZombieDetailContext } from './context/ZombieDetailContextProvider';
 import moment from 'moment';
 import { debounce, isNil } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowsToEye, faArrowUp, faBirthdayCake, faCat, faCircleInfo, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faMoneyCheckDollar, faPerson, faPersonRays, faRadiation, faSignature, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowsToEye, faArrowUp, faBirthdayCake, faCat, faCircleInfo, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faPerson, faPersonRays, faRadiation, faSignature, faStairs, faStopwatch, faTag, faTShirt } from '@fortawesome/free-solid-svg-icons';
 import { Paths } from 'src/router/RouteConsts';
 import { useNavigate, useParams } from 'react-router';
 import ChangeNameModal from './components/ChangeNameModal';
@@ -15,7 +15,7 @@ import { formatEther } from 'ethers';
 import Activities from './components/Activities';
 
 const ZombieDetail: React.FC = () => {
-    const { zombie, zombieSale, levelUp, fees } = useZombieDetailContext();
+    const { zombie, zombieSale, cancelSaleZombie, levelUp, fees } = useZombieDetailContext();
     const { id = '' } = useParams();
     const navigate = useNavigate();
     const [showChangeNameModal, setShowChangeNameModal] = useState(false);
@@ -86,21 +86,28 @@ const ZombieDetail: React.FC = () => {
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
                     </Button>
+                    {isNil(zombieSale) &&
                     <Button 
-                        icon={<FontAwesomeIcon icon={faMoneyCheckDollar} />}
+                        icon={<FontAwesomeIcon icon={faTag} />}
                         onClick={() => setShowPutForSaleModal(true)}
                         disabled={!isNil(zombieSale)}
                     >
-                        { isNil(zombieSale)
-                        ? <>
-                            Put for Sale
-                            &nbsp;
-                            <Tooltip title={`Price ${ formatEther(fees.tax) } ETH`}>
-                                <FontAwesomeIcon icon={faCircleInfo} />
-                            </Tooltip>
-                        </> 
-                        : '$ For Sale $'}
+                        Put for Sale
+                        &nbsp;
+                        <Tooltip title={`Price ${ formatEther(fees.tax) } ETH`}>
+                            <FontAwesomeIcon icon={faCircleInfo} />
+                        </Tooltip>
                     </Button>
+                    }
+                    {!isNil(zombieSale) &&
+                    <Button 
+                        icon={<FontAwesomeIcon icon={faTag} />}
+                        onClick={debounce(() => cancelSaleZombie(zombieSale.zombieId), 200)}
+                        disabled={isNil(zombieSale)}
+                    >
+                        Cancel Sale
+                    </Button>
+                    }
                 </Row>
             </Col>
         </Row>

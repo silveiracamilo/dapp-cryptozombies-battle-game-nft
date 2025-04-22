@@ -4,7 +4,7 @@ import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
-import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
+import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import IZombieFees from "src/store/interface/zombie/IZombieFees";
 import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
@@ -19,7 +19,8 @@ interface IZombieDetailContext {
     changeName: (newName: string) => Promise<void>
     changeDna: (newDna: number) => Promise<void>
     saleZombie: (zombieId: number, price: bigint) => Promise<void>
-    activities: (ISale | IBuy | INewZombie)[]
+    cancelSaleZombie: (zombieId: number) => Promise<void>
+    activities: (ISale | ICancelSale | IBuy | INewZombie)[]
 }
 
 const ZombieDetailContext = createContext<IZombieDetailContext>({} as IZombieDetailContext);
@@ -44,7 +45,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     } as IZombieFees);
     const [loading, setLoading] = useState(false);
     const [zombieSale, setZombieSale] = useState<IZombieSale>();
-    const [activities, setActivities] = useState<(INewZombie | ISale | IBuy)[]>([]);
+    const [activities, setActivities] = useState<(INewZombie | ISale | ICancelSale | IBuy)[]>([]);
 
     useEffect(() => {
         getFees();
@@ -151,18 +152,36 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
             setLoading(false);
         }
     }, []);
+    
+    const cancelSaleZombie = useCallback(async (zombieId: number) => {
+        setLoading(true);
+        try {
+            await CryptoZombiesService.instance.cancelSaleZombie(zombieId);
+            getZombieById();
+            getSalesAndBuys();
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in sale my zombie',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     const getSalesAndBuys = useCallback(async () => {
         setLoading(true);
         try {
             const newZombie = await CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id);
             const sales = await CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id);
+            const cancelSales = await CryptoZombiesService.instance.getLogsCancelSaleByZombieId(+id);
             const buys = await CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id);
 
             setActivities(
                 orderBy([
                     ...newZombie,
                     ...sales, 
+                    ...cancelSales,
                     ...buys,
                 ], ['timestamp'], ['asc'])
             );
@@ -186,6 +205,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         changeName,
         changeDna,
         saleZombie,
+        cancelSaleZombie,
         activities,
      }), [zombie, zombieSale, fees, loading, activities]);
 

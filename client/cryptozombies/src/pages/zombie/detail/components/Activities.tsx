@@ -1,15 +1,15 @@
 import { useMemo } from "react";
-import { useZombieDetailContext } from "../context/ZombieDetailContextProvider";
 import { map } from "lodash";
 import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBirthdayCake, faMoneyCheckDollar, faTag } from "@fortawesome/free-solid-svg-icons";
+import { faBirthdayCake, faCancel, faMoneyCheckDollar, faTag } from "@fortawesome/free-solid-svg-icons";
 import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { formatEther } from "ethers";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
 import { Timeline } from "antd";
 import moment from "moment";
 import { addressFormat } from "utils/formatter";
+import { useZombieDetailContext } from "../context/ZombieDetailContextProvider";
 
 const dateFormat = (date: string) => moment(date).format('LLL');
 
@@ -21,6 +21,10 @@ const itemMapper = {
     [ZombieEventTypes.SaleZombie]: {
         children: (event: ISale) => `${dateFormat(event.date)} : Sale ${formatEther(event.price)} ETH by ${addressFormat(event.seller)}`,
         dot: <FontAwesomeIcon icon={faTag} color="#FFF" />
+    },
+    [ZombieEventTypes.CancelSaleZombie]: {
+        children: (event: ISale) => `${dateFormat(event.date)} : Cancel Sale by ${addressFormat(event.seller)}`,
+        dot: <FontAwesomeIcon icon={faCancel} color="#FFF" />
     },
     [ZombieEventTypes.BuyZombie]: {
         children: (event: IBuy) => `${dateFormat(event.date)} : Buy by ${addressFormat(event.buyer)}`,
