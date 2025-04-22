@@ -8,6 +8,8 @@ import store from './store/store';
 import { GlobalStyle, themeStyle } from './globalStyles';
 
 function App() {
+  console.log(import.meta.env.VITE_API_BASE_URL)
+
   return (
     <ConfigProvider theme={{ hashed: false, ...themeStyle }}>
       <ErrorBoundary FallbackComponent={FallbackErrorBoundary}>

@@ -4,7 +4,7 @@ import CryptoZombies from './CryptoZombies.json';
 
 class ContractService {
     private _provider!: BrowserProvider;
-    public contractAddress: string = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+    public contractAddress: string = import.meta.env.VITE_CRYPTOZOMBIES_BATTLE_CONTRACT_ADDRESS;
 
     protected constructor() {}
     

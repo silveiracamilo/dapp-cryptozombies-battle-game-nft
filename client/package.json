@@ -1,11 +1,13 @@
 {
-  "name": "cryptozombies",
+  "name": "cryptozombiesbattle",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start:prod": "vite --mode=production",
     "build": "tsc -b && vite build",
+    "build:dev": "tsc -b && vite build --mode=local",
     "lint": "eslint .",
     "preview": "vite preview"
   },
