@@ -1,10 +1,11 @@
 
 import { BrowserProvider, Contract } from 'ethers';
-import CryptoZombies from './CryptoZombies.json';
+import CryptozombiesBattle from './CryptozombiesBattle.json';
 
 class ContractService {
     private _provider!: BrowserProvider;
     public contractAddress: string = import.meta.env.VITE_CRYPTOZOMBIES_BATTLE_CONTRACT_ADDRESS;
+    protected pageSize = 20;
 
     protected constructor() {}
     
@@ -20,7 +21,7 @@ class ContractService {
 
     public async getContract(isTransaction: boolean = false): Promise<Contract> {
         const provider = isTransaction ? await this.provider.getSigner() : this.provider;
-        return new Contract(this.contractAddress, CryptoZombies.abi, provider);
+        return new Contract(this.contractAddress, CryptozombiesBattle.abi, provider);
     }
 } 
 

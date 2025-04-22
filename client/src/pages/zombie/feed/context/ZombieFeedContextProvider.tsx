@@ -7,7 +7,7 @@ import { Paths } from "src/router/RouteConsts";
 import { useGetKittiesQuery } from "src/store/cryptokitties/api";
 import { IKitty } from "src/store/interface/cryptokitties/IKitty";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptoZombiesService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
 
 interface IZombieFeedContext {
     zombie: IZombie | undefined

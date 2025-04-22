@@ -6,7 +6,7 @@ import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptoZombiesService";
+import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
 
 interface IZombieAboutContext {
     zombie: IZombie | undefined;

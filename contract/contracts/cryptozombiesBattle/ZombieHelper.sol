@@ -44,11 +44,8 @@ contract ZombieHelper is ZombieFeeding {
         zombies[_zombieId].dna = _newDna;
     }
 
-    function getZombiesByOwner(address _owner) external view returns (uint[] memory) {
-        return _getZombiesByOwner(_owner);
-    }
 
-    function _getZombiesByOwner(address _owner) internal view returns (uint[] memory) {
+    function getZombiesByOwner(address _owner) public view returns (uint[] memory) {
         uint[] memory result = new uint[](ownerZombieCount[_owner]);
         uint counter = 0;
 
@@ -61,8 +58,63 @@ contract ZombieHelper is ZombieFeeding {
         return result;
     }
 
+    function getZombiesByOwnerPaginated(
+        address _owner,
+        uint256 _page,
+        uint256 _pageSize
+    ) public view returns (uint[] memory) {
+        (uint start, uint resultCount, uint end) = _getPaginationStat(ownerZombieCount[_owner], _page, _pageSize);
+        uint[] memory result = new uint[](resultCount);
+        uint256 counter = 0;
+        uint256 matchCount = 0;
+
+        for (uint256 i = 0; i < zombies.length && counter < resultCount; i++) {
+            if (zombieToOwner[i] == _owner) {
+                if (matchCount >= start && matchCount < end) {
+                    result[counter] = i;
+                    counter++;
+                }
+                matchCount++;
+            }
+        }
+
+        return result;
+    }
+
     function getAccounts() external view returns (address[] memory) {
         return accounts;
+    }
+
+    function getAccountsTotal() public view returns (uint) {
+        return accounts.length;
+    }
+
+    function getAccountsPaginated(
+        uint256 _page,
+        uint256 _pageSize
+    ) public view returns (address[] memory) {
+        (uint start, uint resultCount,) = _getPaginationStat(accounts.length, _page, _pageSize);
+        address[] memory result = new address[](resultCount);
+
+        for (uint256 i = 0; i < resultCount; i++) {
+            result[i] = accounts[start + i];
+        }
+
+        return result;
+    }
+
+    function _getPaginationStat(uint _total, uint _page, uint _pageSize) internal pure returns(uint, uint, uint) {
+        uint start = _page * _pageSize;
+        require(start < _total, "Page out of range");
+
+        uint end = start + _pageSize;
+        if (end > _total) {
+            end = _total;
+        }
+
+        uint resultCount = end - start;
+
+        return (start, resultCount, end);
     }
 
 }

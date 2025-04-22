@@ -2,7 +2,7 @@ import { notification } from "antd";
 import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IRanking } from "src/store/interface/ranking/IRanking";
-import CryptoZombiesRankingService from "src/store/services/contract/cryptoZombiesRanking/CryptoZombiesRankingService";
+import CryptoZombiesRankingService from "src/store/services/contract/cryptoZombiesRanking/CryptozombiesBattleRankingService";
 
 interface IRankingContext {
     ranking: IRanking[]

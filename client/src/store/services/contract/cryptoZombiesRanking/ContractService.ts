@@ -1,6 +1,6 @@
 
 import { BrowserProvider, Contract } from 'ethers';
-import CryptoZombiesRanking from './CryptoZombiesRanking.json';
+import CryptozombiesBattleRanking from './CryptozombiesBattleRanking.json';
 
 class ContractService {
     private _provider!: BrowserProvider;
@@ -20,7 +20,7 @@ class ContractService {
 
     public async getContract(isTransaction: boolean = false): Promise<Contract> {
         const provider = isTransaction ? await this.provider.getSigner() : this.provider;
-        return new Contract(this.contractAddress, CryptoZombiesRanking.abi, provider);
+        return new Contract(this.contractAddress, CryptozombiesBattleRanking.abi, provider);
     }
 } 
 

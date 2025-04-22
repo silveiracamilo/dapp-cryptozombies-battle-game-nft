@@ -5,7 +5,7 @@ class HelperService extends FeedingService {
 
     public async getZombiesByOwner(owner: string) {
         const contract = await this.getContract();
-        return contract.getZombiesByOwner(owner);
+        return contract.getZombiesByOwnerPaginated(owner, 0, this.pageSize);
     }
 
     public async getZombiesByOwnerMapped(accountAddress: string)  {
@@ -16,7 +16,7 @@ class HelperService extends FeedingService {
 
     public async getAccounts() {
         const contract = await this.getContract();
-        return contract.getAccounts();
+        return contract.getAccountsPaginated(0, this.pageSize);
     }
 
     public async levelUp(zombieId: number) {

@@ -56,10 +56,7 @@ contract CryptozombiesBattleRanking is Ownable {
             uint16 lossCountSum = 0;
 
             for (uint z = 0; z < zombieIds.length; z++) {
-                uint score;
-                uint16 winCount;
-                uint16 lossCount;
-                (,,score,,,,,winCount,lossCount,) = cryptozombiesBattleContract.zombies(zombieIds[z]);
+                (,,uint score,,,,,uint16 winCount,uint16 lossCount,) = cryptozombiesBattleContract.zombies(zombieIds[z]);
                 scoreSum += score;
                 winCountSum += winCount;
                 lossCountSum += lossCount;

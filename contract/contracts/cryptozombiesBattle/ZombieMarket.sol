@@ -77,14 +77,25 @@ contract ZombieMarket is ZombieOwnership {
         minPrice = value;
     }
 
-    // function hasZombieInShop(uint _zombieId) public view returns (bool) {
-    //     return zombieIdToSale[_zombieId].seller != address(0);
-    // }
     function getZombieByIdInSale(uint _zombieId) public view returns (ZombieSale memory) {
         return zombieIdToSale[_zombieId];
     }
+    
+    function getZombiesInShopTotal() public view returns (uint) {
+        return zombieSales.length;
+    }
 
-    function getAllZombiesInShop() public view returns (ZombieSale[] memory) {
-        return zombieSales;
+    function getZombiesInShopPaginated(
+        uint256 _page,
+        uint256 _pageSize
+    ) public view returns (ZombieSale[] memory) {
+        (uint start, uint resultCount,) = _getPaginationStat(zombieSales.length, _page, _pageSize);
+        ZombieSale[] memory result = new ZombieSale[](resultCount);
+
+        for (uint256 i = 0; i < resultCount; i++) {
+            result[i] = zombieSales[start + i];
+        }
+
+        return result;
     }
 }

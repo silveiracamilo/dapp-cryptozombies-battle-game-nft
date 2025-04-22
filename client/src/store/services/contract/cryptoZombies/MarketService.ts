@@ -49,11 +49,6 @@ class MarketService extends OwnershipService {
         return contract.minPrice();
     }
     
-    // public async hasZombieInShop(zombieId: number): Promise<boolean> {
-    //     const contract = await this.getContract();
-    //     return await contract.hasZombieInShop(zombieId);
-    // }
-    
     public async getZombieByIdInSale(zombieId: number): Promise<IZombieSale> {
         const contract = await this.getContract();
         const zombieSale = await contract.getZombieByIdInSale(zombieId);
@@ -62,7 +57,7 @@ class MarketService extends OwnershipService {
     
     public async getAllZombiesInShop(): Promise<IZombieSale[]> {
         const contract = await this.getContract();
-        const result = await contract.getAllZombiesInShop();
+        const result = await contract.getZombiesInShopPaginated(0, this.pageSize);
         return map(result, zombieSaleMapper);
     }
 
