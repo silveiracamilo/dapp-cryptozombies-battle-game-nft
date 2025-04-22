@@ -18,7 +18,7 @@ export const useLoginContext = () => {
 }
 
 const LoginContextProvider = ({ children }: { children: ReactNode }) => {
-    const { setAddress, doAuth: handleDoAuth } = useAuthContext();
+    const { doAuth: handleDoAuth } = useAuthContext();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const returnTo = searchParams.get('returnTo');
@@ -26,7 +26,7 @@ const LoginContextProvider = ({ children }: { children: ReactNode }) => {
     const doAuth = useCallback(async () => {
         await handleDoAuth();
         navigate(returnTo ? returnTo : Paths.HOME);
-    }, [setAddress]);
+    }, []);
 
     const contextValue = useMemo(() => ({ doAuth }), [doAuth]);
 
