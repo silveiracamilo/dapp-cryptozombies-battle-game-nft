@@ -1,0 +1,21 @@
+export default {
+    apps: [
+        {
+            name: 'web-app',
+            script: '/home/cryptozombiesbattle-api/htdocs/api.cryptozombiesbattle.com/bin/server.js',
+            instances: 'max',
+            exec_mode: 'cluster',
+            autorestart: true,
+            env: {
+                "TZ": "UTC",
+                "PORT": "3333",
+                "HOST": "localhost",
+                "LOG_LEVEL": "info",
+                "APP_KEY": "lEy43VycUIDfHGjFz2LAy2XVERa5dwQC",
+                "NODE_ENV": "production",
+                "API_URL": "https://api.cryptozombiesbattle.com",
+                "CLIENT_URL": "https://cryptozombiesbattle.com",
+            },
+        },
+    ]
+}

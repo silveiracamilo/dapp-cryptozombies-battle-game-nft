@@ -7,12 +7,14 @@
 |
 */
 
+
+import env from '#start/env'
 import ZombieGenesMapper from '#services/ZombieGenesMapper';
 import ZombieImageService from '#services/ZombieImageService';
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async () => {
-  return 'CryptoZombies API V1.0.0'
+  return 'Cryptozombies Battle API V1.0.0'
 })
 
 router.get('/zombie/uri/:id/:name/:dna', async ({ params }) => {
@@ -20,10 +22,9 @@ router.get('/zombie/uri/:id/:name/:dna', async ({ params }) => {
   const attributes = Object.keys(genes).map((key: any) => ({ trait_type: key, value: genes[key] }));
 
   return {
-    description: "Crypto Zombie NFT", 
-    external_url: `https://cryptozombie.silveiracamilo.com.br/${params.id}`, 
-    // image: `https://cryptozombie-api.silveiracamilo.com.br/zombie/image/${params.dna}`, 
-    image: `http://localhost:3333/zombie/image/${params.dna}`, 
+    description: "Cryptozombies Battle NFT", 
+    external_url: `${env.get('CLIENT_URL')}/zombie/about/${params.id}`, 
+    image: `${env.get('API_URL')}/zombie/image/${params.dna}`, 
     name: decodeURI(params.name),
     attributes
   }
