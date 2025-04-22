@@ -9,6 +9,6 @@ npx hardhat help
 npx hardhat test
 REPORT_GAS=true npx hardhat test
 npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/CryptoZombies.ts --network localhost
-npx hardhat ignition deploy ./ignition/modules/CryptoZombiesRanking.ts --network localhost
+npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattle.ts --network localhost
+npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattleRanking.ts --network localhost
 ```

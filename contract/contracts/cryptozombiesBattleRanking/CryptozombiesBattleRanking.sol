@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 import "../common/Ownable.sol";
 
-abstract contract CryptoZombiesInterface {
+abstract contract CryptozombiesBattleInterface {
     function getAccounts() virtual external view returns (address[] memory);
     function getZombiesByOwner(address _owner) virtual external view returns (uint[] memory);
     function zombies(uint _id) virtual external view returns (
@@ -20,9 +20,9 @@ abstract contract CryptoZombiesInterface {
     );
 }
 
-contract CryptoZombiesRanking is Ownable {
+contract CryptozombiesBattleRanking is Ownable {
 
-    CryptoZombiesInterface cryptoZombiesContract;
+    CryptozombiesBattleInterface cryptozombiesBattleContract;
 
     struct Ranking {
         address account;
@@ -33,24 +33,24 @@ contract CryptoZombiesRanking is Ownable {
         uint16 lossCount;
     }
 
-    constructor(address _cryptoZombiesContractAddress) {
-        cryptoZombiesContract = CryptoZombiesInterface(_cryptoZombiesContractAddress);
+    constructor(address _cryptozombiesBattleContractAddress) {
+        cryptozombiesBattleContract = CryptozombiesBattleInterface(_cryptozombiesBattleContractAddress);
     }
 
-    function setCryptoZombiesContractAddress(address _address) external onlyOwner {
-        cryptoZombiesContract = CryptoZombiesInterface(_address);
+    function setCryptozombiesBattleContractAddress(address _address) external onlyOwner {
+        cryptozombiesBattleContract = CryptozombiesBattleInterface(_address);
     }
 
     function getRanking() external view returns (Ranking[] memory) {
         address currentAccount = msg.sender;
-        address[] memory accounts = cryptoZombiesContract.getAccounts();
+        address[] memory accounts = cryptozombiesBattleContract.getAccounts();
         uint accountLenght = accounts.length;
         Ranking[] memory allRankings = new Ranking[](accountLenght);
         uint resultSize = 20;
         
         for (uint i = 0; i < accountLenght; i++) {
             address account = accounts[i];
-            uint[] memory zombieIds = cryptoZombiesContract.getZombiesByOwner(account);
+            uint[] memory zombieIds = cryptozombiesBattleContract.getZombiesByOwner(account);
             uint scoreSum = 0;
             uint16 winCountSum = 0;
             uint16 lossCountSum = 0;
@@ -59,7 +59,7 @@ contract CryptoZombiesRanking is Ownable {
                 uint score;
                 uint16 winCount;
                 uint16 lossCount;
-                (,,score,,,,,winCount,lossCount,) = cryptoZombiesContract.zombies(zombieIds[z]);
+                (,,score,,,,,winCount,lossCount,) = cryptozombiesBattleContract.zombies(zombieIds[z]);
                 scoreSum += score;
                 winCountSum += winCount;
                 lossCountSum += lossCount;

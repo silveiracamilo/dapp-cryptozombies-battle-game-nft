@@ -3,10 +3,10 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const CryptoZombiesRankingModule = buildModule("CryptoZombiesRankingModule", (m) => {
-  const contract = m.contract("CryptoZombiesRanking", ["0x5FbDB2315678afecb367f032d93F642f64180aa3"]);
+const CryptozombiesBattleModule = buildModule("CryptozombiesBattleModule", (m) => {
+  const contract = m.contract("CryptozombiesBattle");
 
   return { contract };
 });
 
-export default CryptoZombiesRankingModule;
+export default CryptozombiesBattleModule;

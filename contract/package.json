@@ -1,10 +1,19 @@
 {
-  "name": "CryptoZombies",
+  "name": "cryptozombies-battle",
   "version": "1.0.0",
   "description": "Game the battle of zombies with NFT in blockchain",
   "main": "index.js",
   "author": "Camilo da Silveira",
   "license": "MIT",
+  "scripts": {
+    "node": "npx hardhat node",
+    "local:czbattle": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattle.ts --network localhost",
+    "local:czbattleranking": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattleRanking.ts --network localhost",
+    "test": "npx hardhat test",
+    "dashboard": "npx truffle dashboard",
+    "test:czbattle": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattle.ts --network dashboard",
+    "test:czbattleranking": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattleRanking.ts --network dashboard"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
