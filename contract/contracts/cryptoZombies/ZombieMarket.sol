@@ -77,8 +77,11 @@ contract ZombieMarket is ZombieOwnership {
         minPrice = value;
     }
 
-    function hasZombieInShop(uint _zombieId) public view returns (bool) {
-        return zombieIdToSale[_zombieId].seller != address(0);
+    // function hasZombieInShop(uint _zombieId) public view returns (bool) {
+    //     return zombieIdToSale[_zombieId].seller != address(0);
+    // }
+    function getZombieByIdInSale(uint _zombieId) public view returns (ZombieSale memory) {
+        return zombieIdToSale[_zombieId];
     }
 
     function getAllZombiesInShop() public view returns (ZombieSale[] memory) {

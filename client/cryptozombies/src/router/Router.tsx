@@ -16,6 +16,7 @@ import { ZombieAttackDefeatPage } from '../pages/zombie/attackDefeat/loadable';
 import { ZombieBattlePage } from '../pages/zombie/battle/loadable';
 import { SettingsPage } from 'pages/admin/settings/loadable';
 import { MarketplacePage } from 'pages/marketplace/loadable';
+import { ZombieAboutPage } from 'pages/zombie/about/loadable';
 import { Paths } from './RouteConsts';
 import RoutePrivate from './RoutePrivate';
 import RoutePrivateAdmin from './RoutePrivateAdmin';
@@ -31,6 +32,7 @@ const Router: React.FC = () => {
                     <Route path={Paths.RANKING} element={<RankingPage />} />
                     <Route path={Paths.LEARN_TO_PLAY} element={<LearnToPlayPage />} />
                     <Route path={Paths.ZOMBIE_MINT_FREE} element={<ZombieMintFreePage />} />
+                    <Route path={Paths.ZOMBIE_ABOUT} element={<ZombieAboutPage />} />
                 </Route>
 
                 <Route element={<RoutePrivate />}>

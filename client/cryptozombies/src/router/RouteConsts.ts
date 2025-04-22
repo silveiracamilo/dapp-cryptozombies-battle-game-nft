@@ -15,4 +15,5 @@ export enum Paths {
     ZOMBIE_BATTLE = '/zombie/battle/:id',
     ADMIN_SETTINGS = '/admin/settings',
     MARKETPLACE = '/marketplace',
+    ZOMBIE_ABOUT = '/zombie/about/:id',
 }

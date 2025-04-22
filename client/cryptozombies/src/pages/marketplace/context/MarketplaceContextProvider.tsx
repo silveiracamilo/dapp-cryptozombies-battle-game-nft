@@ -59,7 +59,6 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-
     const getZombieById = useCallback(async (id: number) => {
         return CryptoZombiesService.instance.getZombieById(id);
     }, []);

@@ -10,6 +10,8 @@ import { addressFormat } from "utils/formatter";
 import { formatEther } from "ethers";
 import { debounce } from "lodash";
 import ZombieCard from "src/components/zombie/ZombieCard";
+import { useNavigate } from "react-router";
+import { Paths } from "src/router/RouteConsts";
 
 const { Meta } = Card;
 
@@ -19,7 +21,7 @@ interface IZombieSaleProps {
 
 const ZombieSale: React.FC<IZombieSaleProps> = ({ zombieSale }) => {
     const { getZombieById, buyZombie } = useMarketplaceContext();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [zombie, setZombie] = useState<IZombie>();
 
     useEffect(() => {
@@ -38,13 +40,15 @@ const ZombieSale: React.FC<IZombieSaleProps> = ({ zombieSale }) => {
         }
     }, [zombieSale]);
 
-    // const detail = useCallback(() => {
-    //     navigate(Paths.ZOMBIE_DETAIL.replace(':id', zombieSale.zombieId.toString()));
-    // }, []);
+    const detail = useCallback(() => {
+        navigate(Paths.ZOMBIE_ABOUT.replace(':id', zombieSale.zombieId.toString()));
+    }, [zombieSale]);
 
     return (
         <Card
-            cover={<ZombieCard zombie={zombie as IZombie} zombieHeight={180} zombieScale={0.5} />}
+            cover={<div onClick={detail} style={{ cursor: 'pointer' }}>
+                <ZombieCard zombie={zombie as IZombie} zombieHeight={180} zombieScale={0.5} />
+            </div>}
             actions={[
                 <CardButtonAction 
                     icon={<FontAwesomeIcon icon={faTag} />}

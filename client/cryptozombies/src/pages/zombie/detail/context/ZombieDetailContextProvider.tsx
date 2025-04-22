@@ -3,6 +3,7 @@ import { parseEther } from "ethers";
 import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
+import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import IZombieFees from "src/store/interface/zombie/IZombieFees";
@@ -11,7 +12,7 @@ import CryptoZombiesService from "src/store/services/contract/cryptoZombies/Cryp
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
-    hasZombieInShop: boolean
+    zombieSale: IZombieSale | undefined
     fees: IZombieFees
     loading: boolean;
     levelUp: () => Promise<void>
@@ -42,7 +43,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         changeDNAFee: parseEther('0.004'),
     } as IZombieFees);
     const [loading, setLoading] = useState(false);
-    const [hasZombieInShop, setHasZombieInShop] = useState(true);
+    const [zombieSale, setZombieSale] = useState<IZombieSale>();
     const [activities, setActivities] = useState<(INewZombie | ISale | IBuy)[]>([]);
 
     useEffect(() => {
@@ -66,8 +67,10 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
             const zombie = await CryptoZombiesService.instance.getZombieById(+id);
             setZombie(zombie);
 
-            const hasZombieInShop = await CryptoZombiesService.instance.hasZombieInShop(zombie.id);
-            setHasZombieInShop(hasZombieInShop);
+            const zombieInShop = await CryptoZombiesService.instance.getZombieByIdInSale(zombie.id);
+            if (zombieInShop.seller != '0x0000000000000000000000000000000000000000') {
+                setZombieSale(zombieInShop);
+            }
         } catch (error: any) {
             notification.error({
                 message: 'Error in get zombie',
@@ -137,6 +140,8 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         try {
             await CryptoZombiesService.instance.saleZombie(zombieId, price);
+            getZombieById();
+            getSalesAndBuys();
         } catch (error: any) {
             notification.error({
                 message: 'Error in sale my zombie',
@@ -174,7 +179,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
 
     const contextValue = useMemo(() => ({ 
         zombie,
-        hasZombieInShop,
+        zombieSale,
         fees,
         loading,
         levelUp,
@@ -182,7 +187,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         changeDna,
         saleZombie,
         activities,
-     }), [zombie, hasZombieInShop, fees, loading, activities]);
+     }), [zombie, zombieSale, fees, loading, activities]);
 
     return (
         <ZombieDetailContext.Provider value={contextValue}>
