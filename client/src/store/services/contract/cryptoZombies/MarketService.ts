@@ -3,10 +3,9 @@ import OwnershipService from "./OwnershipService";
 import { map } from "lodash";
 import { zombieSaleMapper } from "src/store/mapper/marketplace/zombieSaleMapper";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
-import { toBeHex, zeroPadValue } from "ethers";
+import { LogDescription, toBeHex, zeroPadValue } from "ethers";
 import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
-import { FROM_BLOCK } from "src/store/Constants";
 
 class MarketService extends OwnershipService {
     
@@ -81,92 +80,65 @@ class MarketService extends OwnershipService {
     }
 
     public async getLogsSaleZombieByZombieId(zombieId: number): Promise<ISale[]> {
-        const contractInterface = (await this.getContract()).interface;
+        const contract = await this.getContract();
+        const contractInterface = contract.interface;
         const eventTopic = contractInterface.getEvent('SaleZombie')?.topicHash || '';
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
-        const filter = {
-            address: this.contractAddress,
-            fromBlock: FROM_BLOCK,
-            toBlock: 'latest',
-            topics: [eventTopic, topicZombieId]
-        };
-        const logs = await this.provider.getLogs(filter);
-        const logsMapped = await Promise.all(
-            logs.map(async (log) => {
-              const parsed = contractInterface.parseLog(log);
-              const block = await this.provider.getBlock(log.blockHash);
-              const date = new Date((block?.timestamp || 1) * 1000);
+        const topics = [eventTopic, topicZombieId];
 
-              return {
+        const mapper = (v: LogDescription | null, timestamp: number = 0, date: Date): ISale =>  {
+            return {
                 event: ZombieEventTypes.SaleZombie,
-                zombieId: parsed?.args.zombieId,
-                price: parsed?.args.price,
-                seller: parsed?.args.seller,
-                timestamp: block?.timestamp || 0,
+                zombieId: v?.args.zombieId,
+                price: v?.args.price,
+                seller: v?.args.seller,
+                timestamp: timestamp,
                 date: date.toISOString(),
-              };
-            })
-        );
-        return logsMapped;
+            }
+        }
+
+        return this.getLogs<ISale>(topics, mapper);
     }
 
     public async getLogsCancelSaleByZombieId(zombieId: number): Promise<ICancelSale[]> {
-        const contractInterface = (await this.getContract()).interface;
+        const contract = await this.getContract();
+        const contractInterface = contract.interface;
         const eventTopic = contractInterface.getEvent('CancelSaleZombie')?.topicHash || '';
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
-        const filter = {
-            address: this.contractAddress,
-            fromBlock: FROM_BLOCK,
-            toBlock: 'latest',
-            topics: [eventTopic, topicZombieId]
-        };
-        const logs = await this.provider.getLogs(filter);
-        const logsMapped = await Promise.all(
-            logs.map(async (log) => {
-              const parsed = contractInterface.parseLog(log);
-              const block = await this.provider.getBlock(log.blockHash);
-              const date = new Date((block?.timestamp || 1) * 1000);
+        const topics = [eventTopic, topicZombieId];
 
-              return {
+        const mapper = (v: LogDescription | null, timestamp: number = 0, date: Date): ICancelSale =>  {
+            return {
                 event: ZombieEventTypes.CancelSaleZombie,
-                zombieId: parsed?.args.zombieId,
-                seller: parsed?.args.seller,
-                timestamp: block?.timestamp || 0,
+                zombieId: v?.args.zombieId,
+                seller: v?.args.seller,
+                timestamp: timestamp,
                 date: date.toISOString(),
-              };
-            })
-        );
-        return logsMapped;
+            }
+        }
+
+        return this.getLogs<ICancelSale>(topics, mapper);
     }
 
     public async getLogsBuyShopZombieByZombieId(zombieId: number): Promise<IBuy[]> {
-        const contractInterface = (await this.getContract()).interface;
+        const contract = await this.getContract();
+        const contractInterface = contract.interface;
         const eventTopic = contractInterface.getEvent('BuyZombie')?.topicHash || '';
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
-        const filter = {
-            address: this.contractAddress,
-            fromBlock: FROM_BLOCK,
-            toBlock: 'latest',
-            topics: [eventTopic, topicZombieId]
-        };
-        const logs = await this.provider.getLogs(filter);
-        const logsMapped = await Promise.all(
-            logs.map(async (log) => {
-              const parsed = contractInterface.parseLog(log);
-              const block = await this.provider.getBlock(log.blockHash);
-              const date = new Date((block?.timestamp || 1) * 1000);
+        const topics = [eventTopic, topicZombieId];
 
-              return {
+        const mapper = (v: LogDescription | null, timestamp: number = 0, date: Date): IBuy =>  {
+            return {
                 event: ZombieEventTypes.BuyZombie,
-                zombieId: parsed?.args.zombieId,
-                buyer: parsed?.args.buyer,
-                seller: parsed?.args.seller,
-                timestamp: block?.timestamp || 0,
+                zombieId: v?.args.zombieId,
+                buyer: v?.args.buyer,
+                seller: v?.args.seller,
+                timestamp: timestamp,
                 date: date.toISOString(),
-              };
-            })
-        );
-        return logsMapped;
+            }
+        }
+
+        return this.getLogs<IBuy>(topics, mapper);
     }
 }
 

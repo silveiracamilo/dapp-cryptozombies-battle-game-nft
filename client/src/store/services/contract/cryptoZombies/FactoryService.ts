@@ -1,9 +1,8 @@
 import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
 import ContractService from "./ContractService";
 import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
-import { toBeHex, zeroPadValue } from "ethers";
+import { LogDescription, toBeHex, zeroPadValue } from "ethers";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
-import { FROM_BLOCK } from "src/store/Constants";
 
 class FactoryService extends ContractService {
 
@@ -96,31 +95,21 @@ class FactoryService extends ContractService {
         const contractInterface = contract.interface;
         const eventTopic = contractInterface.getEvent('NewZombie')?.topicHash || '';
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
-        const filter = {
-            address: this.contractAddress,
-            fromBlock: FROM_BLOCK,
-            toBlock: 'latest',
-            topics: [eventTopic, null, topicZombieId]
-        };
-        const logs = await this.provider.getLogs(filter);
-        const logsMapped = await Promise.all(
-            logs.map(async (log) => {
-                const parsed = contractInterface.parseLog(log);
-                const block = await this.provider.getBlock(log.blockHash);
-                const date = new Date((block?.timestamp || 1) * 1000);
+        const topics = [eventTopic, null, topicZombieId];
 
-                return {
-                    event: ZombieEventTypes.NewZombie,
-                    zombieId: parsed?.args.zombieId,
-                    from: parsed?.args.from,
-                    name: parsed?.args.name,
-                    dna: parsed?.args.dna,
-                    timestamp: block?.timestamp || 0,
-                    date: date.toISOString(),
-                };
-            })
-        );
-        return logsMapped;
+        const mapper = (v: LogDescription | null, timestamp: number = 0, date: Date): INewZombie =>  {
+            return {
+                event: ZombieEventTypes.NewZombie,
+                zombieId: v?.args.zombieId,
+                from: v?.args.from,
+                name: v?.args.name,
+                dna: v?.args.dna,
+                timestamp: timestamp,
+                date: date.toISOString(),
+            }
+        }
+
+        return this.getLogs<INewZombie>(topics, mapper);
     }
 }
 

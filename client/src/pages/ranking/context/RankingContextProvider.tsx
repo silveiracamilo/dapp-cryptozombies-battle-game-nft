@@ -34,7 +34,7 @@ const RankingContextProvider = ({ children }: { children: ReactNode }) => {
             );
         } catch (error: any) {
             notification.error({
-                message: 'Error in get accounts',
+                message: 'Error in get ranking',
                 description: error.reason || 'Error generic'
             });
         }

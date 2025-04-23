@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
         obfuscator({
           // your javascript-obfuscator options
           // [See more options](https://github.com/javascript-obfuscator/javascript-obfuscator)
-          debugProtection: true,
+          // debugProtection: true,
           stringArrayRotate: true, // Rotaciona valores do array de strings
           stringArray: true, // Insere strings em um array
           stringArrayThreshold: 0.75, // Percentual de strings a serem ofuscadas

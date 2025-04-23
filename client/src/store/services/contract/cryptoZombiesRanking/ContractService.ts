@@ -1,5 +1,5 @@
 
-import { BrowserProvider, Contract } from 'ethers';
+import { BrowserProvider, Contract, JsonRpcProvider } from 'ethers';
 import CryptozombiesBattleRanking from './CryptozombiesBattleRanking.json';
 
 class ContractService {
@@ -19,7 +19,11 @@ class ContractService {
     }    
 
     public async getContract(isTransaction: boolean = false): Promise<Contract> {
-        const provider = isTransaction ? await this.provider.getSigner() : this.provider;
+        // const provider = isTransaction ? await this.provider.getSigner() : this.provider;
+        const provider = isTransaction ? await this.provider.getSigner() : new JsonRpcProvider('https://sepolia.base.org', {
+            name: 'Base Sepolia',
+            chainId: 84532,
+        });
         return new Contract(this.contractAddress, CryptozombiesBattleRanking.abi, provider);
     }
 } 

@@ -7,6 +7,7 @@ interface ImportMetaEnv {
     readonly VITE_CRYPTOZOMBIES_BATTLE_CONTRACT_ADDRESS: string
     readonly VITE_CRYPTOZOMBIES_BATTLE_RANKING_CONTRACT_ADDRESS: string
     readonly VITE_OWNER_ADDRESS: string
+    readonly VITE_FROM_BLOCK: number
   }
   
   interface ImportMeta {

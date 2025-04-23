@@ -12,6 +12,7 @@ interface IZombieAboutContext {
     zombie: IZombie | undefined;
     zombieSale: IZombieSale | undefined
     loading: boolean;
+    loadingActivities: boolean;
     activities: (ISale | ICancelSale | IBuy | INewZombie)[]
     buyZombie: (zombieId: number, price: bigint) => Promise<void>
 }
@@ -30,6 +31,7 @@ const ZombieAboutContextProvider = ({ children }: { children: ReactNode }) => {
     const { id = '' } = useParams();
     const [zombie, setZombie] = useState<IZombie>();
     const [loading, setLoading] = useState(false);
+    const [loadingActivities, setLoadingActivities] = useState(false);
     const [activities, setActivities] = useState<(INewZombie | ISale | ICancelSale | IBuy)[]>([]);
     const [zombieSale, setZombieSale] = useState<IZombieSale>();
 
@@ -63,12 +65,14 @@ const ZombieAboutContextProvider = ({ children }: { children: ReactNode }) => {
     }, [id]);
 
     const getSalesAndBuys = useCallback(async () => {
-        setLoading(true);
+        setLoadingActivities(true);
         try {
-            const newZombie = await CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id);
-            const sales = await CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id);
-            const cancelSales = await CryptoZombiesService.instance.getLogsCancelSaleByZombieId(+id);
-            const buys = await CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id);
+            const [newZombie, sales, cancelSales, buys] = await Promise.all([
+                CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id),
+                CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id),
+                CryptoZombiesService.instance.getLogsCancelSaleByZombieId(+id),
+                CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id),
+            ])
 
             setActivities(
                 orderBy([
@@ -84,7 +88,7 @@ const ZombieAboutContextProvider = ({ children }: { children: ReactNode }) => {
                 description: error.reason || 'Error generic'
             });
         } finally {
-            setLoading(false);
+            setLoadingActivities(false);
         }
     }, [id, zombie]);
 
@@ -110,6 +114,7 @@ const ZombieAboutContextProvider = ({ children }: { children: ReactNode }) => {
         zombie,
         zombieSale,
         loading,
+        loadingActivities,
         activities,
         buyZombie,
      }), [zombie, zombieSale, loading, activities]);

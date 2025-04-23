@@ -7,7 +7,7 @@ import { faBirthdayCake, faCancel, faMoneyCheckDollar, faTag } from "@fortawesom
 import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { formatEther } from "ethers";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
-import { Timeline } from "antd";
+import { Spin, Timeline } from "antd";
 import moment from "moment";
 import { addressFormat } from "utils/formatter";
 
@@ -33,20 +33,20 @@ const itemMapper = {
 };
 
 const Activities = () => {
-    const { activities } = useZombieAboutContext();
+    const { loadingActivities, activities } = useZombieAboutContext();
     const items = useMemo(() => map(activities, activity => ({
         children: itemMapper[activity.event].children(activity as any),
         dot: itemMapper[activity.event].dot,
     })), [activities]);
 
     return (
-        <>
-        <h2>Activities</h2>
-        <Timeline
-            style={{ width: '100%' }}
-            items={items}
-        />
-        </>
+        <Spin spinning={loadingActivities}>
+            <h2>Activities</h2>
+            <Timeline
+                style={{ width: '100%' }}
+                items={items}
+            />
+        </Spin>
     );
 }
 
