@@ -53,7 +53,8 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
             theme={{
                 components: {
                     Layout: {
-                        bodyBg: 'url("src/assets/images/grunge-scratched-cracked-texture-background_dark.jpg")',
+                        // bodyBg: 'url("src/assets/images/grunge-scratched-cracked-texture-background_dark.jpg")',
+                        bodyBg: '#000',
                         colorText: '#FFF'
                     },
                     Menu: {

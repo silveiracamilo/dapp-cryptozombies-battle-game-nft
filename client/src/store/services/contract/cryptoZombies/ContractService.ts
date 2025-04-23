@@ -15,10 +15,11 @@ class ContractService {
             if (typeof window.ethereum === 'undefined') {
                 throw new Error('No Ethereum provider found');
             }
-            this._provider = new JsonRpcProvider('https://sepolia.base.org', {
-                name: 'Base Sepolia',
-                chainId: 84532,
-            });;
+            this._provider = new JsonRpcProvider(import.meta.env.VITE_RPC_URL);
+            // this._provider = new JsonRpcProvider('https://sepolia.base.org', {
+            //     name: 'Base Sepolia',
+            //     chainId: 84532,
+            // });
             // this._provider = new BrowserProvider(window.ethereum);
             // this._provider = new BrowserProvider(window.ethereum, {
             //     name: 'Base Sepolia',

@@ -15,6 +15,7 @@ interface IZombieDetailContext {
     zombieSale: IZombieSale | undefined
     fees: IZombieFees
     loading: boolean;
+    loadingActivities: boolean;
     levelUp: () => Promise<void>
     changeName: (newName: string) => Promise<void>
     changeDna: (newDna: number) => Promise<void>
@@ -44,6 +45,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         changeDNAFee: parseEther('0.004'),
     } as IZombieFees);
     const [loading, setLoading] = useState(false);
+    const [loadingActivities, setLoadingActivities] = useState(false);
     const [zombieSale, setZombieSale] = useState<IZombieSale>();
     const [activities, setActivities] = useState<(INewZombie | ISale | ICancelSale | IBuy)[]>([]);
 
@@ -170,12 +172,14 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const getSalesAndBuys = useCallback(async () => {
-        setLoading(true);
+        setLoadingActivities(true);
         try {
-            const newZombie = await CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id);
-            const sales = await CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id);
-            const cancelSales = await CryptoZombiesService.instance.getLogsCancelSaleByZombieId(+id);
-            const buys = await CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id);
+            const [newZombie, sales, cancelSales, buys] = await Promise.all([
+                CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id),
+                CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id),
+                CryptoZombiesService.instance.getLogsCancelSaleByZombieId(+id),
+                CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id),
+            ])
 
             setActivities(
                 orderBy([
@@ -191,7 +195,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
                 description: error.reason || 'Error generic'
             });
         } finally {
-            setLoading(false);
+            setLoadingActivities(false);
         }
     }, [id, zombie]);
 
@@ -201,6 +205,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         zombieSale,
         fees,
         loading,
+        loadingActivities,
         levelUp,
         changeName,
         changeDna,
