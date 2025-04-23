@@ -6,6 +6,7 @@ import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { toBeHex, zeroPadValue } from "ethers";
 import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
+import { FROM_BLOCK } from "src/store/Constants";
 
 class MarketService extends OwnershipService {
     
@@ -85,7 +86,7 @@ class MarketService extends OwnershipService {
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
         const filter = {
             address: this.contractAddress,
-            fromBlock: 0, // TODO update block number when started contract
+            fromBlock: FROM_BLOCK,
             toBlock: 'latest',
             topics: [eventTopic, topicZombieId]
         };
@@ -115,7 +116,7 @@ class MarketService extends OwnershipService {
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
         const filter = {
             address: this.contractAddress,
-            fromBlock: 0, // TODO update block number when started contract
+            fromBlock: FROM_BLOCK,
             toBlock: 'latest',
             topics: [eventTopic, topicZombieId]
         };
@@ -144,7 +145,7 @@ class MarketService extends OwnershipService {
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
         const filter = {
             address: this.contractAddress,
-            fromBlock: 0, // TODO update block number when started contract
+            fromBlock: FROM_BLOCK,
             toBlock: 'latest',
             topics: [eventTopic, topicZombieId]
         };

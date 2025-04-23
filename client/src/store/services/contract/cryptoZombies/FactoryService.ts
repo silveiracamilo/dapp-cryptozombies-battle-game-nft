@@ -3,6 +3,7 @@ import ContractService from "./ContractService";
 import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
 import { toBeHex, zeroPadValue } from "ethers";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
+import { FROM_BLOCK } from "src/store/Constants";
 
 class FactoryService extends ContractService {
 
@@ -91,12 +92,13 @@ class FactoryService extends ContractService {
     }
 
     public async getLogsNewZombieByZombieId(zombieId: number): Promise<INewZombie[]> {
-        const contractInterface = (await this.getContract()).interface;
+        const contract = await this.getContract();
+        const contractInterface = contract.interface;
         const eventTopic = contractInterface.getEvent('NewZombie')?.topicHash || '';
         const topicZombieId = zeroPadValue(toBeHex(zombieId), 32);
         const filter = {
             address: this.contractAddress,
-            fromBlock: 0, // TODO update block number when started contract
+            fromBlock: FROM_BLOCK,
             toBlock: 'latest',
             topics: [eventTopic, null, topicZombieId]
         };
