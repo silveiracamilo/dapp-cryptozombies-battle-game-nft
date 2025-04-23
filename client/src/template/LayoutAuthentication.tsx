@@ -2,7 +2,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { ConfigProvider, Image, Layout, Menu, MenuProps } from "antd";
 import logo from "assets/images/cryptozombies-logo.png";
 import { useLocation, useNavigate } from "react-router";
-import { findIndex, map } from "lodash";
+import { findIndex, isEmpty, map } from "lodash";
 import { Paths } from "src/router/RouteConsts";
 import AccountDropdown from "src/components/account/AccountDropdown";
 import styled from "styled-components";
@@ -76,7 +76,9 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
                         onClick={onClickMenu}
                         style={{ flex: 1, minWidth: 0, background: '#000' }}
                     />
+                    {!isEmpty(address) &&
                     <AccountDropdown />
+                    }
                 </Header>
                 <Content style={{ padding: 20 }}>{children}</Content>
                 <Footer style={{ textAlign: 'center', background: '#000' }}>
