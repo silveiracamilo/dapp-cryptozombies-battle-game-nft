@@ -11,8 +11,9 @@
     "local:czbattleranking": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattleRanking.ts --network localhost",
     "test": "npx hardhat test",
     "dashboard": "npx truffle dashboard",
-    "test:czbattle": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattle.ts --network dashboard",
-    "test:czbattleranking": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattleRanking.ts --network dashboard"
+    "deploy": "npx hardhat run scripts/deploy.ts --network dashboard",
+    "verify:czbattle": "npx hardhat verify --network dashboard 0xAFDcaba9d11BbbA54F4288a7A261cC70f4EAFf47 --contract contracts/cryptozombiesBattle/CryptozombiesBattle.sol:CryptozombiesBattle",
+    "verify:czbattleranking": "npx hardhat verify --network dashboard 0x7f45227025F2c39491D5e393a380062A4e6fcb7e --contract contracts/cryptozombiesBattleRanking/CryptozombiesBattleRanking.sol:CryptozombiesBattleRanking 0xAFDcaba9d11BbbA54F4288a7A261cC70f4EAFf47"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
