@@ -22,9 +22,9 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     const doAuth = useCallback(async () => {
         if (typeof window.ethereum === 'undefined') {
-            notification.warning({
+            notification.error({
                 message: 'No Ethereum provider found',
-                description: <p>Please install a browser wallet, something like: Metamask, Taho, Phantom, Coinbase and TrustWallet</p>
+                description: 'Please install a browser wallet, something like: Metamask, Taho, Phantom, Coinbase or TrustWallet'
             });
             return;
         }
