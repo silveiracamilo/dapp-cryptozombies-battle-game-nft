@@ -7,6 +7,7 @@ interface IZombieCard {
     zombie: IZombie
     zombieHeight?: number
     zombieScale?: number
+    showWinAndFed?: boolean
 }
 
 const winColors: ProgressProps['strokeColor'] = {
@@ -23,7 +24,7 @@ const fedColors: ProgressProps['strokeColor'] = {
     '100%': '#87d068',
 };
 
-const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieScale = 1 }) => {
+const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieScale = 1, showWinAndFed = true }) => {
 
     if (!zombie) {
         return <></>;
@@ -35,6 +36,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                 <div style={{ transform: `scale(${zombieScale})`, transformOrigin: 'top' }}>
                     <Zombie dna={zombie.dna} />
                 </div>
+                {showWinAndFed &&
                 <div style={{ position: 'absolute', marginLeft: "calc(100% - 65px)", top: 245, textAlign: 'center' }}>
                     <Progress
                         type="dashboard"
@@ -53,6 +55,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                         format={() => <strong style={{ color:'#FFF'}}>Fed</strong>}
                     />
                 </div>
+                }
             </Row>
             <ConfigProvider
                 theme={{

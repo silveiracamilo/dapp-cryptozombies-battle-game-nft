@@ -47,7 +47,7 @@ const ZombieSale: React.FC<IZombieSaleProps> = ({ zombieSale }) => {
     return (
         <Card
             cover={<div onClick={detail} style={{ cursor: 'pointer' }}>
-                <ZombieCard zombie={zombie as IZombie} zombieHeight={180} zombieScale={0.5} />
+                <ZombieCard zombie={zombie as IZombie} zombieHeight={180} zombieScale={0.5} showWinAndFed={false} />
             </div>}
             actions={[
                 <CardButtonAction 
