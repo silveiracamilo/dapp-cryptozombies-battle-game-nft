@@ -23,6 +23,7 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
         { label: "Marketplace", route: Paths.MARKETPLACE },
         { label: "Ranking", route: Paths.RANKING },
         { label: "Learn to play", route: Paths.LEARN_TO_PLAY },
+        { label: "About", route: Paths.ABOUT },
         ...(address === OWNER_ADDRESS ? [
             { label: "Settings", route: Paths.ADMIN_SETTINGS },
         ] : [])

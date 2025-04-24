@@ -1,5 +1,6 @@
 export enum Paths {
     LOGIN = '/login',
+    ABOUT = '/about',
     LEARN_TO_PLAY = '/learn-to-play',
     HOME = '/',
     RANKING = '/ranking',
