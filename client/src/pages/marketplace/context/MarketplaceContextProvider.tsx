@@ -3,6 +3,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IMarketplaceContext {
     allZombiesInShop: IZombieSale[]
@@ -35,10 +36,12 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
             
             setAllZombiesInShop(allZombiesInShop);
         } catch (error: any) {
-            notification.error({
-                message: 'Error in get all zombies in shop',
-                description: error.reason || 'Error generic'
-            });
+            if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
+                notification.error({
+                    message: 'Error in get all zombies in shop',
+                    description: error.reason || 'Error generic'
+                });
+            }
         } finally {
             setLoading(false);
         }

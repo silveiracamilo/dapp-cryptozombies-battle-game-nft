@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IZombieBattleContext {
     zombie: IZombie | undefined
@@ -39,10 +40,12 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
             const accountsFiltered = filter([...accounts], account => account !== address);
             setAccounts(accountsFiltered);
         } catch (error: any) {
-            notification.error({
-                message: 'Error in get accounts',
-                description: error.reason || 'Error generic'
-            });
+            if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
+                notification.error({
+                    message: 'Error in get accounts',
+                    description: error.reason || 'Error generic'
+                });
+            }
         }
     }, []);
 

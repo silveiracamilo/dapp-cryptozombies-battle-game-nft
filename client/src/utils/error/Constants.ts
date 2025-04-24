@@ -1,0 +1,1 @@
+export const ERROR_PAGE_OUT_OF_RANGE = 'Page out of range';

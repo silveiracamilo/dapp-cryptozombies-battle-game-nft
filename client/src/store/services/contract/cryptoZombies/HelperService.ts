@@ -7,9 +7,14 @@ class HelperService extends FeedingService {
         const contract = await this.getContract();
         return contract.getZombiesByOwnerPaginated(owner, 0, this.pageSize);
     }
+    
+    public async getZombiesAllByOwner(owner: string) {
+        const contract = await this.getContract();
+        return contract.getZombiesByOwner(owner);
+    }
 
     public async getZombiesByOwnerMapped(accountAddress: string)  {
-        const zombiesId = await this.getZombiesByOwner(accountAddress);
+        const zombiesId = await this.getZombiesAllByOwner(accountAddress);
         const promiseAllZombies = zombiesId.map((zombieId: number) => this.getZombieById(zombieId))
         return Promise.all<IZombie[]>(promiseAllZombies);
     }

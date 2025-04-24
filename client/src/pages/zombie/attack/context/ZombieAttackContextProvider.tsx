@@ -6,6 +6,7 @@ import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IZombieAttackContext {
     zombie: IZombie | undefined
@@ -106,10 +107,12 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
             const zombies = await CryptoZombiesService.instance.getZombiesByOwnerMapped(addressEnemie);
             setZombies([...zombies]);
         } catch (error: any) {
-            notification.error({
-                message: 'Error in get zombies',
-                description: error.reason || 'Error generic'
-            });
+            if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
+                notification.error({
+                    message: 'Error in get zombies',
+                    description: error.reason || 'Error generic'
+                });
+            }
         }
     }, []);
 

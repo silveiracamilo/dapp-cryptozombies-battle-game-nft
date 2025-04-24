@@ -3,6 +3,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IHomeContext {
     zombiesId: number[]
@@ -42,10 +43,12 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
             const zombies = await CryptoZombiesService.instance.getZombiesByOwner(address);
             setZombiesId([...zombies]);
         } catch (error: any) {
-            notification.error({
-                message: 'Error in get zombies',
-                description: error.reason || 'Error generic'
-            });
+            if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
+                notification.error({
+                    message: 'Error in get zombies',
+                    description: error.reason || 'Error generic'
+                });
+            }
         }
     }, []);
 

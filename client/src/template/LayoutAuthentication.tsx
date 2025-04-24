@@ -1,13 +1,14 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
-import { ConfigProvider, Image, Layout, Menu, MenuProps } from "antd";
+import { ConfigProvider, Image, Layout, Menu, MenuProps, notification } from "antd";
 import logo from "assets/images/cryptozombies-logo.png";
 import { useLocation, useNavigate } from "react-router";
-import { findIndex, isEmpty, map } from "lodash";
+import { findIndex, isEmpty, map, reduce } from "lodash";
 import { Paths } from "src/router/RouteConsts";
 import AccountDropdown from "src/components/account/AccountDropdown";
 import styled from "styled-components";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { OWNER_ADDRESS } from "src/store/Constants";
+import CryptozombiesBattleService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
 
 const { Header, Content, Footer } = Layout;
 
@@ -16,6 +17,7 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
     const { address } = useAuthContext();
     const { pathname } = useLocation();
     const [selectedKeys, setSelectedKeys] = useState<string[]>(['1']);
+    const [accountScore, setAccountScore] = useState(0);
     const items = useMemo(() => [
         { label: "Play to Earn", route: Paths.HOME },
         { label: "Mint", route: Paths.ZOMBIE_MINT },
@@ -39,15 +41,33 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
             setSelectedKeys([(indexItem + 1).toString()]);
         }
     }, [pathname]);
+    
+    useEffect(() => {
+        if (!isEmpty(address)){
+            loadZombiesByOwner();
+        }
+    }, [address]);
+
+    const loadZombiesByOwner = useCallback(async () => {
+        try {
+            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwnerMapped(address);
+            setAccountScore(reduce(zombies, (acc, z) => acc + z.score, 0));
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get zombies by account',
+                description: error.reason || 'Error generic'
+            });
+        }
+    }, [address]);
 
     const onClickMenu: MenuProps['onClick'] = useCallback((e: any) => {
         const item = items[+e.key - 1];
         item && navigate(item.route);
     }, [items]);
 
-    const goHome = () => {
+    const goHome = useCallback(() => {
         navigate(Paths.HOME);
-    }
+    }, []);
 
     return (
         <ConfigProvider
@@ -78,7 +98,10 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
                         style={{ flex: 1, minWidth: 0, background: '#000' }}
                     />
                     {!isEmpty(address) &&
-                    <AccountDropdown />
+                    <>
+                        <span style={{ marginRight: '16px' }}><strong>Score</strong>: {accountScore}</span>
+                        <AccountDropdown />
+                    </>
                     }
                 </Header>
                 <Content style={{ padding: 20 }}>{children}</Content>
