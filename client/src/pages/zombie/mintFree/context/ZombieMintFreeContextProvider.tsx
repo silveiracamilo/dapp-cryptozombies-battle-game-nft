@@ -27,7 +27,7 @@ const ZombieMintFreeContextProvider = ({ children }: { children: ReactNode }) =>
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        addEventListener();
+        // addEventListener();
         
         return () => {
             removeEventListener();
@@ -36,9 +36,8 @@ const ZombieMintFreeContextProvider = ({ children }: { children: ReactNode }) =>
 
     const addEventListener = useCallback(async () => {
         const ctct = await CryptoZombiesService.instance.getContract();
-
-        ctct.on('NewZombie', handleNewZombie);
         contract.current = ctct;
+        ctct.on('NewZombie', handleNewZombie);
     }, []);
 
     const removeEventListener = useCallback(() => {
@@ -62,6 +61,7 @@ const ZombieMintFreeContextProvider = ({ children }: { children: ReactNode }) =>
     const mintFree = useCallback(async () => {
         setLoading(true);
         try {
+            addEventListener();
             await CryptoZombiesService.instance.mintFree();
         } catch (error: any) {
             notification.error({

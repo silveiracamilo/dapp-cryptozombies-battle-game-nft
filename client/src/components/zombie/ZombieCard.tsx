@@ -1,7 +1,7 @@
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { Zombie } from "./Zombie";
 import styled from "styled-components";
-import { ConfigProvider, Progress, Row } from "antd";
+import { ConfigProvider, Progress, ProgressProps, Row } from "antd";
 
 interface IZombieCard {
     zombie: IZombie
@@ -9,8 +9,22 @@ interface IZombieCard {
     zombieScale?: number
 }
 
+const winColors: ProgressProps['strokeColor'] = {
+    '0%': '#108ee9',
+    '40%': '#ffe58f',
+    '60%': '#adfc8e',
+    '100%': '#87d068',
+};
+
+const fedColors: ProgressProps['strokeColor'] = {
+    '0%': '#ffccc7',
+    '40%': '#ffe58f',
+    '60%': '#87d068',
+    '100%': '#87d068',
+};
+
 const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieScale = 1 }) => {
-    
+
     if (!zombie) {
         return <></>;
     }
@@ -20,6 +34,24 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
             <Row justify="center" style={{ height: `${zombieHeight}px` }}>
                 <div style={{ transform: `scale(${zombieScale})`, transformOrigin: 'top' }}>
                     <Zombie dna={zombie.dna} />
+                </div>
+                <div style={{ position: 'absolute', marginLeft: "calc(100% - 65px)", top: 245, textAlign: 'center' }}>
+                    <Progress
+                        type="dashboard"
+                        size={45}
+                        percent={((zombie.winCount % 7) / 7) * 100}
+                        strokeColor={winColors}
+                        trailColor="#00000055"
+                        format={() => <strong style={{ color:'#FFF'}}>Win</strong>}
+                    />
+                    <Progress
+                        type="dashboard"
+                        size={45}
+                        percent={((zombie.fedCount % 10) / 10) * 100}
+                        strokeColor={fedColors}
+                        trailColor="#00000055"
+                        format={() => <strong style={{ color:'#FFF'}}>Fed</strong>}
+                    />
                 </div>
             </Row>
             <ConfigProvider
@@ -40,7 +72,6 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                             percent={+zombie.strength.toPrecision(4)}
                             percentPosition={{ align: 'end', type: 'inner' }}
                             size={['100%', 12]}
-                            // strokeColor="#426613"
                             strokeColor="#7ba149"
                             trailColor="#999"
                         />
@@ -51,7 +82,6 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                             percent={+zombie.agility.toPrecision(4)}
                             percentPosition={{ align: 'end', type: 'inner' }}
                             size={['100%', 12]}
-                            // strokeColor="#1c645d"
                             strokeColor="#16cdbb"
                             trailColor="#999"
                         />
@@ -62,7 +92,6 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                             percent={+zombie.resilience.toPrecision(4)}
                             percentPosition={{ align: 'end', type: 'inner' }}
                             size={['100%', 12]}
-                            // strokeColor="#a15f12"
                             strokeColor="#d17d1b"
                             trailColor="#999"
                         />

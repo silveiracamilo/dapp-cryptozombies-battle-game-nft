@@ -1,20 +1,18 @@
-import { Breadcrumb, Button, Col, Row } from 'antd';
-import React, { useCallback, useMemo, useRef } from 'react';
+import { Breadcrumb, Col, Row } from 'antd';
+import React, { useMemo } from 'react';
 import { useZombieAttackContext } from './context/ZombieAttackContextProvider';
 import { map } from 'lodash';
 import ZombieEnemy from './components/ZombieEnemy';
 import ZombieCard from 'src/components/zombie/ZombieCard';
 import { IZombie } from 'src/store/interface/zombie/IZombie';
-import Chat, { IChatRef } from './components/Chat';
-import { useNavigate, useParams } from 'react-router';
-import { useAuthContext } from 'src/context/auth/AuthContextProvider';
+import { useNavigate } from 'react-router';
 import { Paths } from 'src/router/RouteConsts';
 
 const ZombieAttack: React.FC = () => {
-    const { address } = useAuthContext();
-    const { addressEnemie } = useParams();
+    // const { address } = useAuthContext();
+    // const { addressEnemie } = useParams();
     const { zombie, zombies } = useZombieAttackContext();
-    const chatRef = useRef<IChatRef>(null);
+    // const chatRef = useRef<IChatRef>(null);
     const navigate = useNavigate();
     const breadcrumbItems = useMemo(() => [
         {
@@ -28,18 +26,18 @@ const ZombieAttack: React.FC = () => {
         },
     ], []);
 
-    const showChat = useCallback(() => {
-        chatRef.current?.showChat();
-    }, [chatRef])
+    // const showChat = useCallback(() => {
+    //     chatRef.current?.showChat();
+    // }, [chatRef])
 
     return (
         <>
         <Breadcrumb items={breadcrumbItems} />
         <Row justify="space-between" align="middle">
             <h1 style={{ color: '#b6a764' }}>Choose a zombie to fight {zombie?.name}</h1>
-            <Button onClick={showChat}>
+            {/* <Button onClick={showChat}>
                 Battle Chat
-            </Button>
+            </Button> */}
         </Row>
         <Row>
             <Col span={4}>
@@ -60,7 +58,7 @@ const ZombieAttack: React.FC = () => {
                 }
             </Col>
         </Row>
-        <Chat ref={chatRef} from={address} to={addressEnemie || ''} />
+        {/* <Chat ref={chatRef} from={address} to={addressEnemie || ''} /> */}
         </>
     )
 }

@@ -45,7 +45,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
     }, [id]);
 
     useEffect(() => {
-        addEventListener();
+        // addEventListener();
         
         return () => {
             removeEventListener();
@@ -54,8 +54,8 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
 
     const addEventListener = useCallback(async () => {
         const ctct = await CryptoZombiesService.instance.getContract();
-        ctct.on('onFeed', handleOnFeed);
         contract.current = ctct;
+        ctct.on('onFeed', handleOnFeed);
     }, []);
 
     const removeEventListener = useCallback(() => {
@@ -66,6 +66,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
 
     const handleOnFeed = useCallback((from: string, fromDna: number, targetDna: number, kittyId: number, newDna: number) => {
         if (from === address) {
+            removeEventListener();
             navigate(
                 Paths.ZOMBIE_FEEDING
                     .replace(':fromDna', fromDna.toString())
@@ -91,6 +92,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
     const feedOnKitty = useCallback(async (kittyGenes: string, kittyId: number) => {
         setLoading(true);
         try {
+            addEventListener();
             await CryptoZombiesService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
         } catch (error: any) {
             notification.error({

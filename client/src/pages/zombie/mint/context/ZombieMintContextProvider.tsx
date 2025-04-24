@@ -29,7 +29,7 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
     const [mintFee, setMintFee] = useState('');
 
     useEffect(() => {
-        addEventListener();
+        // addEventListener();
         getMintFee();
         
         return () => {
@@ -39,7 +39,8 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
 
     const addEventListener = useCallback(async () => {
         const ctct = await CryptoZombiesService.instance.getContract();
-
+        contract.current = ctct;
+        ctct.on('NewZombie', handleNewZombie);
         // const eventTopic = ethers.id("NewZombie(address,uint,string,uint)");
         // const ownerAddress = address; // Endereço do owner
         // const filter = {
@@ -49,11 +50,7 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
         //         ethers.zeroPadValue(ownerAddress, 32) // Filtra eventos onde `from == owner`
         //     ]
         // };
-
-
-        ctct.on('NewZombie', handleNewZombie);
         // CryptoZombiesService.instance.provider.on(filter, handleNewZombie);
-        contract.current = ctct;
     }, []);
 
     const removeEventListener = useCallback(() => {
@@ -92,6 +89,7 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
     const mint = useCallback(async (name: string) => {
         setLoading(true);
         try {
+            addEventListener();
             await CryptoZombiesService.instance.mint(name);
         } catch (error: any) {
             notification.error({

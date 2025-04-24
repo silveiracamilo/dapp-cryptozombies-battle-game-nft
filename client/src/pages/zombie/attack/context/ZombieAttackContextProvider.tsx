@@ -38,7 +38,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         if (isFirst.current) {
             start();
-            addEventListener();
+            // addEventListener();
             isFirst.current = false;
         }
         
@@ -55,11 +55,9 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
 
     const addEventListener = useCallback(async () => {
         const ctct = await CryptoZombiesService.instance.getContract();
-
+        contract.current = ctct;
         ctct.on('onAttackVitory', handleOnAttackVitory);
         ctct.on('onAttackDefeat', handleOnAttackDefeat);
-        
-        contract.current = ctct;
     }, []);
 
     const removeEventListener = useCallback(() => {
@@ -70,7 +68,9 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const handleOnAttackVitory = useCallback((from: string, fromId: number, targetId: number, newDna: number) => {
+        console.log("handleOnAttackVitory: ", from, address);
         if (from === address) {
+            removeEventListener();
             navigate(
                 Paths.ZOMBIE_ATTACK_VITORY
                     .replace(':fromId', fromId.toString())
@@ -82,6 +82,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     
     const handleOnAttackDefeat = useCallback((from: string, fromId: number, targetId: number) => {
         if (from === address) {
+            removeEventListener();
             navigate(
                 Paths.ZOMBIE_ATTACK_DEFEAT
                     .replace(':fromId', fromId.toString())
@@ -123,6 +124,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     const attack = useCallback(async (targetId: number) => {
         setLoading(true);
         try {
+            addEventListener();
             await CryptoZombiesService.instance.attack(parseInt(id), targetId);
         } catch (error: any) {
             notification.error({
