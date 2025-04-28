@@ -4,8 +4,6 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: #1a1a1a url('/bg-apocalipse.jpg') no-repeat center center fixed; */
-  /* background-size: cover; */
   min-height: 65vh;
   color: #eee;
 `;
@@ -17,12 +15,12 @@ export const Card = styled.div`
   padding: 40px;
   max-width: 500px;
   text-align: center;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+  filter: drop-shadow(5px 5px 44px #00FF0055);
 `;
 
 export const Title = styled.h1`
   font-size: 32px;
-  color: #ff4040;
+  color: #b6a764;
   margin-bottom: 10px;
 `;
 
@@ -77,5 +75,5 @@ export const Steps = styled.ul`
 export const SectionTitle = styled.h2`
   font-size: 20px;
   margin: 16px 0 8px;
-  color: #f98;
+  color: #b6a764;
 `;

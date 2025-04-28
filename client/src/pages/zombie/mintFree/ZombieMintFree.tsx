@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Card, Container, Description, Info, SectionTitle, Steps, Title } from './styles';
+import { Card, Container, Description, Info, SectionTitle, Steps, Title } from './styles';
 import { useAuthContext } from 'src/context/auth/AuthContextProvider';
 import { debounce, isEmpty } from 'lodash';
 import { useZombieMintFreeContext } from './context/ZombieMintFreeContextProvider';
 import { addressFormat } from 'utils/formatter';
+import ButtonAction from 'src/components/button/ButtonAction';
 
 
 const ZombieMintFree: React.FC = () => {
@@ -15,27 +16,28 @@ const ZombieMintFree: React.FC = () => {
             <Card>
                 <Title>Mint Free Zombie 🧟‍♂️</Title>
                 <Description>
-                Ganhe 1 NFT exclusivo e gratuito do nosso jogo pós-apocalíptico! Siga as instruções abaixo para participar.
+                    Win a free exclusive NFT from our post-apocalyptic game! Follow the instructions below to enter.
                 </Description>
 
-                <SectionTitle>📌 Como Participar</SectionTitle>
+                <SectionTitle>📌 How to take part</SectionTitle>
                 <Steps>
-                    <li>1. Siga o <a href="https://instagram.com/sua_pagina" target="_blank" rel="noreferrer">@sua_pagina</a> no Instagram</li>
-                    <li>2. Curta e comente o post fixado marcando 2 amigos</li>
-                    <li>3. Preencha o <a href="https://seuformulario.com" target="_blank" rel="noreferrer">formulário de participação</a> com sua wallet e Instagram</li>
+                    <li>1. Follow <a href="https://x.com/zombiesbattle" target="_blank" rel="noreferrer">@zombiesbattle</a> on X</li>
+                    <li>2. Like and comment on the pinned post by tagging 2 friends</li>
+                    <li>3. Fill out the <a href="https://seuformulario.com" target="_blank" rel="noreferrer">entry form</a> with your wallet address and X address</li>
+                    <li><i>After submitting the form, wait 24 hours for validation</i></li>
                 </Steps>
 
                 <Info>
-                📅 Participações até: 30 de Abril<br />
-                👾 Mints gratuitos limitados<br />
+                📅 Entries until: June 30th<br />
+                👾 Limited free mints<br />
                 </Info>
 
-                <Button onClick={debounce(doAuth, 150)} disabled={!isEmpty(address)}>
+                <ButtonAction onClick={debounce(doAuth, 150)} disabled={!isEmpty(address)}>
                     {address ? `Connected: ${addressFormat(address)}` : "Connect Wallet"}
-                </Button>
-                <Button onClick={debounce(mintFree, 200)} disabled={!address}>
+                </ButtonAction>
+                <ButtonAction onClick={debounce(mintFree, 200)} disabled={!address}>
                     Mint Free
-                </Button>
+                </ButtonAction>
             </Card>
         </Container>
     )
