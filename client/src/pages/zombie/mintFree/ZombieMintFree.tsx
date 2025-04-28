@@ -23,7 +23,7 @@ const ZombieMintFree: React.FC = () => {
                 <Steps>
                     <li>1. Follow <a href="https://x.com/zombiesbattle" target="_blank" rel="noreferrer">@zombiesbattle</a> on X</li>
                     <li>2. Like and comment on the pinned post by tagging 2 friends</li>
-                    <li>3. Fill out the <a href="https://seuformulario.com" target="_blank" rel="noreferrer">entry form</a> with your wallet address and X address</li>
+                    <li>3. Fill out the <a href="https://docs.google.com/forms/d/e/1FAIpQLSdynCzYM143at1uNEFUkFkbj1MkQxHva-zsdqZpHqzjPxLE3A/viewform?usp=header" target="_blank" rel="noreferrer">entry form</a> with your wallet address and X address</li>
                     <li><i>After submitting the form, wait 24 hours for validation</i></li>
                 </Steps>
 
