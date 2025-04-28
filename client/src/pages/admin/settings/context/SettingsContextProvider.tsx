@@ -1,7 +1,7 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ISettings from "src/store/interface/admin/ISettings";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface ISettingsContext {
     settings: ISettings
@@ -42,7 +42,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
 
     const loadSettings = useCallback(async () => {
         try {
-            const settings = await CryptoZombiesService.instance.getSettings();
+            const settings = await CryptozombiesBattleService.instance.getSettings();
             setSettings(settings);
         } catch (error: any) {
             notification.error({
@@ -54,7 +54,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
 
     const getBalance = useCallback(async () => {
         try {
-            const balance = await CryptoZombiesService.instance.getBalance();
+            const balance = await CryptozombiesBattleService.instance.getBalance();
             setBalance(balance);
         } catch (error: any) {
             notification.error({
@@ -67,7 +67,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const withdraw = useCallback(async () => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.withdraw();
+            await CryptozombiesBattleService.instance.withdraw();
             getBalance();
         } catch (error: any) {
             notification.error({
@@ -82,7 +82,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setCooldownTimeAttack = useCallback(async (cooldownTimeAttack: number) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setCooldownTimeAttack(cooldownTimeAttack);
+            await CryptozombiesBattleService.instance.setCooldownTimeAttack(cooldownTimeAttack);
             setSettings(s => ({ ...s as ISettings, cooldownTimeAttack }));
         } catch (error: any) {
             notification.error({
@@ -97,7 +97,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setCooldownTimeFeeding = useCallback(async (cooldownTimeFeeding: number) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setCooldownTimeFeeding(cooldownTimeFeeding);
+            await CryptozombiesBattleService.instance.setCooldownTimeFeeding(cooldownTimeFeeding);
             setSettings(s => ({ ...s as ISettings, cooldownTimeFeeding }));
         } catch (error: any) {
             notification.error({
@@ -112,7 +112,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setMintFee = useCallback(async (mintFee: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setMintFee(mintFee);
+            await CryptozombiesBattleService.instance.setMintFee(mintFee);
             setSettings(s => ({ ...s as ISettings, mintFee }));
         } catch (error: any) {
             notification.error({
@@ -127,7 +127,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setTotalAttackVictoryToGetReward = useCallback(async (totalAttackVictoryToGetReward: number) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setTotalAttackVictoryToGetReward(totalAttackVictoryToGetReward);
+            await CryptozombiesBattleService.instance.setTotalAttackVictoryToGetReward(totalAttackVictoryToGetReward);
             setSettings(s => ({ ...s as ISettings, totalAttackVictoryToGetReward }));
         } catch (error: any) {
             notification.error({
@@ -142,7 +142,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setTotalFedToGetReward = useCallback(async (totalFedToGetReward: number) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setTotalFedToGetReward(totalFedToGetReward);
+            await CryptozombiesBattleService.instance.setTotalFedToGetReward(totalFedToGetReward);
             setSettings(s => ({ ...s as ISettings, totalFedToGetReward }));
         } catch (error: any) {
             notification.error({
@@ -157,7 +157,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setLevelUpFee = useCallback(async (fee: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setLevelUpFee(fee);
+            await CryptozombiesBattleService.instance.setLevelUpFee(fee);
             setSettings(s => ({ ...s as ISettings, levelUpFee: fee }));
         } catch (error: any) {
             notification.error({
@@ -172,7 +172,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setChangeNameFee = useCallback(async (fee: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setChangeNameFee(fee);
+            await CryptozombiesBattleService.instance.setChangeNameFee(fee);
             setSettings(s => ({ ...s as ISettings, changeNameFee: fee }));
         } catch (error: any) {
             notification.error({
@@ -187,7 +187,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setChangeDNAFee = useCallback(async (fee: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setChangeDNAFee(fee);
+            await CryptozombiesBattleService.instance.setChangeDNAFee(fee);
             setSettings(s => ({ ...s as ISettings, changeDNAFee: fee }));
         } catch (error: any) {
             notification.error({
@@ -202,7 +202,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setBaseUrlTokenURI = useCallback(async (baseUrl: string) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setBaseUrlTokenURI(baseUrl);
+            await CryptozombiesBattleService.instance.setBaseUrlTokenURI(baseUrl);
             setSettings(s => ({ ...s as ISettings, baseUrlTokenURI: baseUrl }));
         } catch (error: any) {
             notification.error({
@@ -217,7 +217,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setTax = useCallback(async (tax: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setTax(tax);
+            await CryptozombiesBattleService.instance.setTax(tax);
             setSettings(s => ({ ...s as ISettings, tax }));
         } catch (error: any) {
             notification.error({
@@ -232,7 +232,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setMinPrice = useCallback(async (price: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.setMinPrice(price);
+            await CryptozombiesBattleService.instance.setMinPrice(price);
             setSettings(s => ({ ...s as ISettings, minPrice: price }));
         } catch (error: any) {
             notification.error({

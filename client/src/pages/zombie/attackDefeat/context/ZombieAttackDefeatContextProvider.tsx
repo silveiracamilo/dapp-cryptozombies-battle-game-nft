@@ -2,7 +2,7 @@ import { notification } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieAttackDefeatContext {
     zombieFrom: IZombie | undefined
@@ -43,7 +43,7 @@ const ZombieAttackDefeatContextProvider = ({ children }: { children: ReactNode }
     }, []);
 
     const getZombieById = useCallback(async (id: number) => {
-        return CryptoZombiesService.instance.getZombieById(id);
+        return CryptozombiesBattleService.instance.getZombieById(id);
     }, []);
 
     const contextValue = useMemo(() => ({ zombieFrom, zombieTarget }), [zombieFrom, zombieTarget]);

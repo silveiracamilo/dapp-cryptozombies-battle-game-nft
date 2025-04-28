@@ -2,7 +2,7 @@ import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IMarketplaceContext {
@@ -32,7 +32,7 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
     const getAllZombiesInShop = useCallback(async () => {
         setLoading(true);
         try {
-            const allZombiesInShop = await CryptoZombiesService.instance.getAllZombiesInShop();
+            const allZombiesInShop = await CryptozombiesBattleService.instance.getAllZombiesInShop();
             
             setAllZombiesInShop(allZombiesInShop);
         } catch (error: any) {
@@ -50,7 +50,7 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
     const buyZombie = useCallback(async (zombieId: number, price: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.buyZombie(zombieId, price);
+            await CryptozombiesBattleService.instance.buyZombie(zombieId, price);
             getAllZombiesInShop();
         } catch (error: any) {
             notification.error({
@@ -63,7 +63,7 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const getZombieById = useCallback(async (id: number) => {
-        return CryptoZombiesService.instance.getZombieById(id);
+        return CryptozombiesBattleService.instance.getZombieById(id);
     }, []);
 
     const contextValue = useMemo(() => ({ allZombiesInShop, getZombieById, buyZombie }), [allZombiesInShop]);

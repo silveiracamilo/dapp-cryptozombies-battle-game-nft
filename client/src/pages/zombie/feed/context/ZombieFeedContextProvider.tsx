@@ -7,7 +7,7 @@ import { Paths } from "src/router/RouteConsts";
 import { useGetKittiesQuery } from "src/store/cryptokitties/api";
 import { IKitty } from "src/store/interface/cryptokitties/IKitty";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieFeedContext {
     zombie: IZombie | undefined
@@ -53,7 +53,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const addEventListener = useCallback(async () => {
-        const ctct = await CryptoZombiesService.instance.getContract();
+        const ctct = await CryptozombiesBattleService.instance.getContract();
         contract.current = ctct;
         ctct.on('onFeed', handleOnFeed);
     }, []);
@@ -79,7 +79,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
 
     const getZombieById = useCallback(async () => {
         try {
-            const zombie = await CryptoZombiesService.instance.getZombieById(+id);
+            const zombie = await CryptozombiesBattleService.instance.getZombieById(+id);
             setZombie(zombie);
         } catch (error: any) {
             notification.error({
@@ -93,7 +93,7 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         try {
             addEventListener();
-            await CryptoZombiesService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
+            await CryptozombiesBattleService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
         } catch (error: any) {
             notification.error({
                 message: 'Error in feed zombie',

@@ -8,7 +8,7 @@ import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/Market
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import IZombieFees from "src/store/interface/zombie/IZombieFees";
 import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
@@ -67,10 +67,10 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
 
     const getZombieById = useCallback(async () => {
         try {
-            const zombie = await CryptoZombiesService.instance.getZombieById(+id);
+            const zombie = await CryptozombiesBattleService.instance.getZombieById(+id);
             setZombie(zombie);
 
-            const zombieInShop = await CryptoZombiesService.instance.getZombieByIdInSale(zombie.id);
+            const zombieInShop = await CryptozombiesBattleService.instance.getZombieByIdInSale(zombie.id);
             if (zombieInShop.seller != '0x0000000000000000000000000000000000000000') {
                 setZombieSale(zombieInShop);
             }
@@ -84,7 +84,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     
     const getFees = useCallback(async () => {
         try {
-            const fees = await CryptoZombiesService.instance.getFees();
+            const fees = await CryptozombiesBattleService.instance.getFees();
             setFees(fees);
         } catch (error: any) {
             notification.error({
@@ -97,7 +97,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const levelUp = useCallback(async () => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.levelUp(+id);
+            await CryptozombiesBattleService.instance.levelUp(+id);
             await getZombieById();
         } catch (error: any) {
             notification.error({
@@ -112,7 +112,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const changeName = useCallback(async (newName: string = 'Camilo Novo') => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.changeName(+id, newName);
+            await CryptozombiesBattleService.instance.changeName(+id, newName);
             await getZombieById();
         } catch (error: any) {
             notification.error({
@@ -127,7 +127,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const changeDna = useCallback(async (newDna: number = 3169225795162389) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.changeDna(+id, newDna);
+            await CryptozombiesBattleService.instance.changeDna(+id, newDna);
             await getZombieById();
         } catch (error: any) {
             notification.error({
@@ -142,7 +142,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const saleZombie = useCallback(async (zombieId: number, price: bigint) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.saleZombie(zombieId, price);
+            await CryptozombiesBattleService.instance.saleZombie(zombieId, price);
             getZombieById();
             getSalesAndBuys();
         } catch (error: any) {
@@ -158,7 +158,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const cancelSaleZombie = useCallback(async (zombieId: number) => {
         setLoading(true);
         try {
-            await CryptoZombiesService.instance.cancelSaleZombie(zombieId);
+            await CryptozombiesBattleService.instance.cancelSaleZombie(zombieId);
             getZombieById();
             getSalesAndBuys();
         } catch (error: any) {
@@ -175,10 +175,10 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         setLoadingActivities(true);
         try {
             const [newZombie, sales, cancelSales, buys] = await Promise.all([
-                CryptoZombiesService.instance.getLogsNewZombieByZombieId(+id),
-                CryptoZombiesService.instance.getLogsSaleZombieByZombieId(+id),
-                CryptoZombiesService.instance.getLogsCancelSaleByZombieId(+id),
-                CryptoZombiesService.instance.getLogsBuyShopZombieByZombieId(+id),
+                CryptozombiesBattleService.instance.getLogsNewZombieByZombieId(+id),
+                CryptozombiesBattleService.instance.getLogsSaleZombieByZombieId(+id),
+                CryptozombiesBattleService.instance.getLogsCancelSaleByZombieId(+id),
+                CryptozombiesBattleService.instance.getLogsBuyShopZombieByZombieId(+id),
             ])
 
             setActivities(

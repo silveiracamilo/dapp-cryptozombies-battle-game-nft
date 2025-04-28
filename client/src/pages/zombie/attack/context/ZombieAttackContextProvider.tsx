@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IZombieAttackContext {
@@ -54,7 +54,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     }, [id]);
 
     const addEventListener = useCallback(async () => {
-        const ctct = await CryptoZombiesService.instance.getContract();
+        const ctct = await CryptozombiesBattleService.instance.getContract();
         contract.current = ctct;
         ctct.on('onAttackVitory', handleOnAttackVitory);
         ctct.on('onAttackDefeat', handleOnAttackDefeat);
@@ -105,7 +105,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
 
     const start = useCallback(async () => {
         try {
-            const zombies = await CryptoZombiesService.instance.getZombiesByOwnerMapped(addressEnemie);
+            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwnerMapped(addressEnemie);
             setZombies([...zombies]);
         } catch (error: any) {
             if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
@@ -118,14 +118,14 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const getZombieById = useCallback(async (id: number) => {
-        return CryptoZombiesService.instance.getZombieById(id);
+        return CryptozombiesBattleService.instance.getZombieById(id);
     }, []);
 
     const attack = useCallback(async (targetId: number) => {
         setLoading(true);
         try {
             addEventListener();
-            await CryptoZombiesService.instance.attack(parseInt(id), targetId);
+            await CryptozombiesBattleService.instance.attack(parseInt(id), targetId);
         } catch (error: any) {
             notification.error({
                 message: 'Error attack zombie',

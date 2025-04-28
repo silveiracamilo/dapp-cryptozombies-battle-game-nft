@@ -8,7 +8,7 @@ import AccountDropdown from "src/components/account/AccountDropdown";
 import styled from "styled-components";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { OWNER_ADDRESS } from "src/store/Constants";
-import CryptozombiesBattleService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 const { Header, Content, Footer } = Layout;
 

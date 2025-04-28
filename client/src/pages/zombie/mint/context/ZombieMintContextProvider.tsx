@@ -4,7 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieMintContext {
     mintFee: string
@@ -38,19 +38,19 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const addEventListener = useCallback(async () => {
-        const ctct = await CryptoZombiesService.instance.getContract();
+        const ctct = await CryptozombiesBattleService.instance.getContract();
         contract.current = ctct;
         ctct.on('NewZombie', handleNewZombie);
         // const eventTopic = ethers.id("NewZombie(address,uint,string,uint)");
         // const ownerAddress = address; // Endereço do owner
         // const filter = {
-        //     address: CryptoZombiesService.instance.contractAddress, // Opcional: filtra eventos apenas deste contrato
+        //     address: CryptozombiesBattleService.instance.contractAddress, // Opcional: filtra eventos apenas deste contrato
         //     topics: [
         //         eventTopic, // Tópico do evento
         //         ethers.zeroPadValue(ownerAddress, 32) // Filtra eventos onde `from == owner`
         //     ]
         // };
-        // CryptoZombiesService.instance.provider.on(filter, handleNewZombie);
+        // CryptozombiesBattleService.instance.provider.on(filter, handleNewZombie);
     }, []);
 
     const removeEventListener = useCallback(() => {
@@ -74,7 +74,7 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
     const getMintFee = useCallback(async () => {
         setLoading(true);
         try {
-            const mintFee = await CryptoZombiesService.instance.getMintFee();
+            const mintFee = await CryptozombiesBattleService.instance.getMintFee();
             setMintFee(formatEther(mintFee));
         } catch (error: any) {
             notification.error({
@@ -90,7 +90,7 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         try {
             addEventListener();
-            await CryptoZombiesService.instance.mint(name);
+            await CryptozombiesBattleService.instance.mint(name);
         } catch (error: any) {
             notification.error({
                 message: 'Error in mint zombie',

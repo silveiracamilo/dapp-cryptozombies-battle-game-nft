@@ -4,7 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieMintFreeContext {
     mintFree: () => void
@@ -35,7 +35,7 @@ const ZombieMintFreeContextProvider = ({ children }: { children: ReactNode }) =>
     }, []);
 
     const addEventListener = useCallback(async () => {
-        const ctct = await CryptoZombiesService.instance.getContract();
+        const ctct = await CryptozombiesBattleService.instance.getContract();
         contract.current = ctct;
         ctct.on('NewZombie', handleNewZombie);
     }, []);
@@ -62,7 +62,7 @@ const ZombieMintFreeContextProvider = ({ children }: { children: ReactNode }) =>
         setLoading(true);
         try {
             addEventListener();
-            await CryptoZombiesService.instance.mintFree();
+            await CryptozombiesBattleService.instance.mintFree();
         } catch (error: any) {
             notification.error({
                 message: 'Error in mint free zombie',

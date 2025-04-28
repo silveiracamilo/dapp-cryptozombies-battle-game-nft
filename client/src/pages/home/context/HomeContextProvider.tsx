@@ -2,7 +2,7 @@ import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptoZombiesService from "src/store/services/contract/cryptoZombies/CryptozombiesBattleService";
+import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IHomeContext {
@@ -40,7 +40,7 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
 
     const start = useCallback(async () => {
         try {
-            const zombies = await CryptoZombiesService.instance.getZombiesByOwner(address);
+            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwner(address);
             setZombiesId([...zombies]);
         } catch (error: any) {
             if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
@@ -55,8 +55,8 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
     const getMintFreeDisponible = useCallback(async () => {
         setLoading(true);
         try {
-            const mintFreeLimit = await CryptoZombiesService.instance.getMintFreeLimit();
-            const mintedFreeCount = await CryptoZombiesService.instance.getMintedFreeCount();
+            const mintFreeLimit = await CryptozombiesBattleService.instance.getMintFreeLimit();
+            const mintedFreeCount = await CryptozombiesBattleService.instance.getMintedFreeCount();
             setMintFreeDisponible(mintFreeLimit > mintedFreeCount);
             setMintFreeLeft(mintFreeLimit - mintedFreeCount);
         } catch (error: any) {
@@ -71,7 +71,7 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
 
 
     const getZombieById = useCallback(async (id: number) => {
-        return CryptoZombiesService.instance.getZombieById(id);
+        return CryptozombiesBattleService.instance.getZombieById(id);
     }, []);
 
     const contextValue = useMemo(() => ({ 
