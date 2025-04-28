@@ -74,10 +74,10 @@ const LearnToPlay: React.FC = () => {
                 <CardContent>
                 <TitleStyled level={3}>⚔️ BATTLES</TitleStyled>
                 <ParagraphStyled>
-                    You can start battles against other accounts once per day. Choose a <strong>target account</strong> and an <strong>opponent zombie</strong> to fight. The chance of victory is <strong>50%</strong>, based on strength, agility, and resilience.
+                    You can start battles against other accounts once per day. Choose a <strong>target account</strong> and an <strong>opponent zombie</strong> to fight. The chance of victory is based on level, strength, agility, and resilience.
                 </ParagraphStyled>
                 <ParagraphStyled>
-                    Winning a battle allows your zombie to <strong>level up</strong> and <strong>generate a new zombie</strong>. Wins and losses are recorded.
+                    Winning a battle allows your zombie to <strong>level up</strong> and <strong>generate a new zombie</strong>: if you are on a winning streak of 7 (your winning streak changes when your opponents attack you and lose), after 7 wins the streak resets. Wins and losses are recorded.
                 </ParagraphStyled>
                 </CardContent>
             </Section>
@@ -86,7 +86,7 @@ const LearnToPlay: React.FC = () => {
                 <CardContent>
                 <TitleStyled level={3}>🍖 FEEDING</TitleStyled>
                 <ParagraphStyled>
-                    You can <strong>feed your zombie once per day</strong>. After <strong>10 feedings</strong>, a new zombie will be generated automatically.
+                    You can <strong>feed your zombie once per 6 hour</strong>. After <strong>10 feedings</strong>, a new zombie will be generated automatically.
                 </ParagraphStyled>
                 </CardContent>
             </Section>
@@ -95,7 +95,7 @@ const LearnToPlay: React.FC = () => {
                 <CardContent>
                 <TitleStyled level={3}>🛒 TRADING & MARKET</TitleStyled>
                 <ParagraphStyled>
-                    Zombies are <strong>NFTs</strong>. You can <strong>sell them on the marketplace</strong>, setting a price above <strong>0.0001 HT</strong>. A tax of <strong>0.0001 HT</strong> is charged per sale.
+                    Zombies are <strong>NFTs</strong>. You can <strong>sell them on the marketplace</strong>, setting a price above <strong>0.0002 EHT</strong>. A tax of <strong>0.0002 EHT</strong> is charged per sale.
                 </ParagraphStyled>
                 <ParagraphStyled>
                     The sale amount (after tax) is sent to the original owner.
@@ -124,8 +124,11 @@ const LearnToPlay: React.FC = () => {
                     <li>List of your zombies</li>
                     <li>Individual zombie details</li>
                     <li>Zombies by address</li>
+                    <li>Zombies activities</li>
                     <li>Zombies listed in the store</li>
                     <li>Zombies by ID</li>
+                    <li>Marketplace</li>
+                    <li>Ranking</li>
                     </ul>
                 </ParagraphStyled>
                 </CardContent>
