@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ButtonAction from 'src/components/button/ButtonAction';
 import { useNavigate } from 'react-router';
 import { Paths } from 'src/router/RouteConsts';
-import logo from "assets/images/cryptozombies-logo.png";
+import logo from "/images/cryptozombies_battle_logo_400.png";
 
 const { Title, Paragraph } = Typography;
 
