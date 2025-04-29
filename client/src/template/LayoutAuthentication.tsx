@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { ConfigProvider, Image, Layout, Menu, MenuProps, notification } from "antd";
-import logo from "assets/images/cryptozombies-logo.png";
+import logo from "/images/cryptozombies_battle_logo_150.png";
 import { useLocation, useNavigate } from "react-router";
 import { findIndex, isEmpty, map, reduce } from "lodash";
 import { Paths } from "src/router/RouteConsts";
@@ -106,7 +106,8 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
                 </Header>
                 <Content style={{ padding: 20 }}>{children}</Content>
                 <Footer style={{ textAlign: 'center', background: '#000' }}>
-                    <Image src={logo} width={150} preview={false} /> 
+                    <Image src={logo} width={80} preview={false} /> 
+                    &nbsp;
                     <span>| Powered by <a href="https://silveiracamilo.com.br" target="_blank">silveiracamilo.com.br</a></span>
                 </Footer>
             </LayoutStyled>

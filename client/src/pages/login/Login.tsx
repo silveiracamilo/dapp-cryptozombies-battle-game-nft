@@ -2,7 +2,7 @@ import { Image, Row } from 'antd';
 import React from 'react';
 import { useLoginContext } from './context/LoginContextProvider';
 import { debounce } from 'lodash';
-import logo from "assets/images/cryptozombies-logo.png";
+import logo from "/images/cryptozombies_battle_logo_400.png";
 import ButtonAction from 'src/components/button/ButtonAction';
 
 const Login: React.FC = () => {
