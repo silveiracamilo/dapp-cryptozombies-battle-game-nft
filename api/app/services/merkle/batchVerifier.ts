@@ -109,38 +109,3 @@ export async function runVerificationBatch() {
     console.log('Nenhum novo aprovado');
   }
 }
-
-// export async function runVerificationBatch() {
-//   console.log(`[${new Date().toISOString()}] Iniciando verificação...`);
-
-//   const approvedWallets: string[] = [];
-//   const accounts = await fetchFormsData();
-
-//   console.log('accounts: ', accounts);
-
-//   for (const account of accounts) {
-//     const passed = await verifyUser(account);
-//     if (passed) {
-//       approvedWallets.push(account.wallet);
-//       console.log(`✅ ${account.twitter} aprovado`);
-//     } else {
-//       console.log(`❌ ${account.twitter} reprovado`);
-//     }
-//   }
-
-//   if (approvedWallets.length > 0) {
-//     const leaves = approvedWallets.map(addr => keccak256(addr.toLowerCase()));
-//     const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
-//     const root = tree.getHexRoot();
-
-//     console.log('🌳 Merkle Root:', root);
-
-//     fs.writeFileSync('merkle_root.json', JSON.stringify({
-//       timestamp: new Date().toISOString(),
-//       root,
-//       approvedWallets
-//     }, null, 2));
-//   } else {
-//     console.log('Nenhum aprovado');
-//   }
-// }
