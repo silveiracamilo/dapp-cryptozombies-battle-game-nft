@@ -9,6 +9,8 @@
     "node": "npx hardhat node",
     "local:czbattle": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattle.ts --network localhost",
     "local:czbattleranking": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattleRanking.ts --network localhost",
+    "local:czbattlemarket": "npx hardhat ignition deploy ./ignition/modules/CryptozombiesBattleMarket.ts --network localhost",
+    "ignition": "yarn run local:czbattle && yarn run local:czbattleranking && yarn run local:czbattlemarket",
     "test": "npx hardhat test",
     "dashboard": "npx truffle dashboard",
     "deploy": "npx hardhat run scripts/deploy.ts --network dashboard",

@@ -12,6 +12,12 @@ async function main() {
   await cryptozombiesBattleRanking.waitForDeployment();
  
   console.log('CryptozombiesBattleRanking Contract Deployed at ' + cryptozombiesBattleRanking.target);
+  
+  const cryptozombiesBattleMarket = await ethers.deployContract('CryptozombiesBattleMarket', [cryptozombiesBattle.target]);
+ 
+  await cryptozombiesBattleMarket.waitForDeployment();
+ 
+  console.log('CryptozombiesBattleMarket Contract Deployed at ' + cryptozombiesBattleMarket.target);
 }
  
 // We recommend this pattern to be able to use async/await everywhere

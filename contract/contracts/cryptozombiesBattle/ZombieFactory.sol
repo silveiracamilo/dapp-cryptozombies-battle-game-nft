@@ -3,6 +3,7 @@ pragma solidity ^0.8.28;
 
 import "../common/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract ZombieFactory is Ownable {
 
@@ -11,13 +12,14 @@ contract ZombieFactory is Ownable {
     uint private nonce = 0;
     uint dnaDigits = 16;
     uint dnaModulus = 10 ** dnaDigits;
-    uint public mintFreeLimit = 5000;
+    uint public mintFreeLimit = 500;
     uint public mintedFreeCount = 0;
     uint public mintFee = 0.003 ether;
     uint public cooldownTimeAttack = 1 minutes;
     uint public cooldownTimeFeeding = 1 minutes;
     uint8 public totalAttackVictoryToGetReward = 7;
     uint8 public totalFedToGetReward = 10;
+    bytes32 public merkleRoot;
     
     struct Zombie {
         string name;
@@ -82,9 +84,12 @@ contract ZombieFactory is Ownable {
         _triggerAccountAdd(msg.sender);
     }
 
-    function mintFree() public {
+    function mintFree(bytes32[] calldata proof) public {
         require(mintedFreeCount < mintFreeLimit, string.concat("Only ", Strings.toString(mintFreeLimit)));
         require(!ownerMintedFreeZombie[msg.sender], "One mint per account");
+
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+        require(MerkleProof.verify(proof, merkleRoot, leaf), "Invalid proof");
         
         string memory _name = string.concat("Zombie ", Strings.toString(nonce));
         uint randDna = _generateRandomDna(_name);
@@ -114,7 +119,13 @@ contract ZombieFactory is Ownable {
         return found;
     }
 
+    function accountAdd(address _account) external {
+        _triggerAccountAdd(_account);
+    }
+    
     function _triggerAccountAdd(address _account) internal {
+        require(ownerZombieCount[_account] > 0, "Can't to add account, account without zombie");
+
         if (!_includesAccount(_account)) {
             accounts.push(_account);
         }
@@ -138,5 +149,9 @@ contract ZombieFactory is Ownable {
 
     function setTotalFedToGetReward(uint8 _totalFedToGetReward) external onlyOwner {
         totalFedToGetReward = _totalFedToGetReward;
+    }
+
+    function setMerkleRoot(bytes32 _root) external onlyOwner {
+        merkleRoot = _root;
     }
 }

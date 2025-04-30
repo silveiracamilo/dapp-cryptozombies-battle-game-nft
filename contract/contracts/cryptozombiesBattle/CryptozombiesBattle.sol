@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "./ZombieMarket.sol";
+import "./ZombieOwnership.sol";
 
-contract CryptozombiesBattle is ZombieMarket { }
+contract CryptozombiesBattle is ZombieOwnership { }

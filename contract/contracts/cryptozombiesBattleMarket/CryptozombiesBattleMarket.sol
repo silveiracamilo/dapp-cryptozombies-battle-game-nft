@@ -1,9 +1,17 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "./ZombieOwnership.sol";
+import "../common/Ownable.sol";
 
-contract ZombieMarket is ZombieOwnership {
+abstract contract CryptozombiesBattleInterface {
+    function ownerOf(uint256 _tokenId) virtual external view returns (address);
+    function transferFrom(address _from, address _to, uint256 _tokenId) virtual external payable;
+    function accountAdd(address _account) virtual external;
+}
+
+contract CryptozombiesBattleMarket is Ownable {
+
+    CryptozombiesBattleInterface cryptozombiesBattleContract;
 
     uint public tax = 0.0001 ether;
     uint public minPrice = 0.0001 ether;
@@ -21,6 +29,15 @@ contract ZombieMarket is ZombieOwnership {
     event SaleZombie(uint indexed zombieId, uint indexed price, address indexed seller);
     event CancelSaleZombie(uint indexed zombieId, address indexed seller);
     event BuyZombie(uint indexed zombieId, address indexed buyer, address indexed seller);
+
+    constructor(address _cryptozombiesBattleContractAddress) {
+        cryptozombiesBattleContract = CryptozombiesBattleInterface(_cryptozombiesBattleContractAddress);
+    }
+
+    modifier onlyOwnerOf(uint _zombieId) {
+        require(msg.sender == cryptozombiesBattleContract.ownerOf(_zombieId));
+        _;
+    }
 
     function saleZombie(uint zombieId, uint price) external onlyOwnerOf(zombieId) {
         require(price >= tax + minPrice, "Your price is too low");
@@ -47,12 +64,12 @@ contract ZombieMarket is ZombieOwnership {
         require(msg.sender != zombieSale.seller, "Can't buy, you are the seller");
         require(msg.value >= zombieSale.price, "Your price is too low");
 
-        _transfer(zombieSale.seller, msg.sender, zombieId);
+        cryptozombiesBattleContract.transferFrom(zombieSale.seller, msg.sender, zombieId);
 
         zombieSale.seller.transfer(msg.value - tax);
 
         _removeZombieFromShop(zombieId);
-        _triggerAccountAdd(msg.sender);
+        cryptozombiesBattleContract.accountAdd(msg.sender);
         
         emit BuyZombie(zombieId, msg.sender, zombieSale.seller);
     }
@@ -97,5 +114,28 @@ contract ZombieMarket is ZombieOwnership {
         }
 
         return result;
+    }
+
+    function _getPaginationStat(uint _total, uint _page, uint _pageSize) internal pure returns(uint, uint, uint) {
+        uint start = _page * _pageSize;
+        require(start < _total, "Page out of range");
+
+        uint end = start + _pageSize;
+        if (end > _total) {
+            end = _total;
+        }
+
+        uint resultCount = end - start;
+
+        return (start, resultCount, end);
+    }
+
+    function balance() external view onlyOwner returns (uint256) {
+        return address(this).balance;
+    }
+
+    function withdraw() external onlyOwner {
+        address payable _owner = payable(owner());
+        _owner.transfer(address(this).balance);
     }
 }
