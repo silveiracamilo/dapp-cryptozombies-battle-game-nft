@@ -11,7 +11,7 @@
 
 import 'reflect-metadata'
 import { Ignitor, prettyPrintError } from '@adonisjs/core'
-import { setupWebsocket } from '../start/socket.js'
+// import { setupWebsocket } from '../start/socket.js'
 
 
 /**
@@ -46,4 +46,4 @@ new Ignitor(APP_ROOT, { importer: IMPORTER })
     prettyPrintError(error)
   })
 
-setupWebsocket();
+// setupWebsocket();

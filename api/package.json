@@ -11,7 +11,9 @@
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "loginX": "npx tsx app/services/merkle/loginX.ts",
+    "x-verifier-accounts": "npx tsx app/services/merkle/run.ts"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -55,9 +57,16 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.6.0",
     "@vinejs/vine": "^3.0.0",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "googleapis": "^148.0.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.5.2",
+    "playwright": "^1.52.0",
     "reflect-metadata": "^0.2.2",
     "sharp": "^0.33.5",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "twitter-api-v2": "^1.22.0"
   },
   "hotHook": {
     "boundaries": [

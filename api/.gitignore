@@ -21,3 +21,9 @@ yarn-error.log
 
 # Platform specific
 .DS_Store
+
+credentials.json
+
+twitter-auth.json
+
+merkle_root.json

@@ -9,8 +9,8 @@
 
 
 import env from '#start/env'
-import ZombieGenesMapper from '#services/ZombieGenesMapper';
-import ZombieImageService from '#services/ZombieImageService';
+import ZombieGenesMapper from '#services/zombie/ZombieGenesMapper';
+import ZombieImageService from '#services/zombie/ZombieImageService';
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async () => {
