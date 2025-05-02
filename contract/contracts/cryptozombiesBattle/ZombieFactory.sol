@@ -15,8 +15,8 @@ contract ZombieFactory is Ownable {
     uint public mintFreeLimit = 500;
     uint public mintedFreeCount = 0;
     uint public mintFee = 0.003 ether;
-    uint public cooldownTimeAttack = 1 minutes;
-    uint public cooldownTimeFeeding = 1 minutes;
+    uint public cooldownTimeAttack = 1 days;
+    uint public cooldownTimeFeeding = 4 hours;
     uint8 public totalAttackVictoryToGetReward = 7;
     uint8 public totalFedToGetReward = 10;
     bytes32 public merkleRoot;

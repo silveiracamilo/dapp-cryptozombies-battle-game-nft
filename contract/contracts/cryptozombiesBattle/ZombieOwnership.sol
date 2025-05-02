@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 /// @title A contract that manages transfering zombie ownership
 /// @author Camilo da Silveira
 contract ZombieOwnership is ZombieAttack, ERC721 {
-    string public baseUrlTokenURI = "http://localhost:3333/zombie/uri/";
+    string public baseUrlTokenURI = "https://api.cryptozombiesbattle.com/zombie/uri/";
     
     mapping (uint => address) zombieApprovals;
     
