@@ -69,7 +69,8 @@ const About: React.FC = () => {
             <Text strong>RPC Endpoint:</Text> https://sepolia.base.org (rate limited, not for production) <br />
             <Text strong>Chain ID:</Text> 84532 <br />
             <Text strong>Currency Symbol:</Text> ETH <br />
-            <Text strong>Block Explorer:</Text> <Link href="https://sepolia-explorer.base.org" target="_blank" rel="noopener noreferrer">https://sepolia-explorer.base.org</Link>
+            <Text strong>Block Explorer:</Text> <Link href="https://sepolia-explorer.base.org" target="_blank" rel="noopener noreferrer">https://sepolia-explorer.base.org</Link> <br />
+            <Text strong>Faucets:</Text> <Link href="https://docs.base.org/chain/network-faucets" target="_blank" rel="noopener noreferrer">https://docs.base.org/chain/network-faucets</Link>
           </Paragraph>
 
           <Divider />
@@ -77,8 +78,9 @@ const About: React.FC = () => {
           <Title level={4}>Contracts</Title>
           <Paragraph>
             <Space direction="vertical">
-              <Text><Text strong>CryptozombiesBattle:</Text> <Link href="https://base-sepolia.blockscout.com/address/0xAFDcaba9d11BbbA54F4288a7A261cC70f4EAFf47" target="_blank" rel="noopener noreferrer">0xAFDcaba9d11BbbA54F4288a7A261cC70f4EAFf47</Link></Text>
-              <Text><Text strong>CryptozombiesBattleRanking:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x7f45227025F2c39491D5e393a380062A4e6fcb7e" target="_blank" rel="noopener noreferrer">0x7f45227025F2c39491D5e393a380062A4e6fcb7e</Link></Text>
+              <Text><Text strong>CryptozombiesBattle:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x0a9eaFD9d6f1b5104b90CA6F1744C92aC252E23B" target="_blank" rel="noopener noreferrer">0x0a9eaFD9d6f1b5104b90CA6F1744C92aC252E23B</Link></Text>
+              <Text><Text strong>CryptozombiesBattleRanking:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x0B2f53cd8A011675e737920Cbf3Dd8CCf33FF74d" target="_blank" rel="noopener noreferrer">0x0B2f53cd8A011675e737920Cbf3Dd8CCf33FF74d</Link></Text>
+              <Text><Text strong>CryptozombiesBattleMarket:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x632ff7e1C869e7Dcd97CDCdE5764e73D752fC027" target="_blank" rel="noopener noreferrer">0x632ff7e1C869e7Dcd97CDCdE5764e73D752fC027</Link></Text>
             </Space>
           </Paragraph>
         </Typography>
