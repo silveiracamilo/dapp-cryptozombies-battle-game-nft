@@ -1,8 +1,10 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { cryptokittiesApi } from "./cryptokitties/api";
+import { cryptokittiesApi } from "./api/cryptokitties/api";
+import { cryptozombiesBattleApi } from "./api/cryptozombiesBattle/api";
 
 const reducers = combineReducers({
 	[cryptokittiesApi.reducerPath]: cryptokittiesApi.reducer,
+	[cryptozombiesBattleApi.reducerPath]: cryptozombiesBattleApi.reducer,
 });
 
 export const makeStore = () =>
@@ -14,6 +16,7 @@ export const makeStore = () =>
 				serializableCheck: false,
 			}).concat(
 				cryptokittiesApi.middleware,
+				cryptozombiesBattleApi.middleware
 			),
 	});
 

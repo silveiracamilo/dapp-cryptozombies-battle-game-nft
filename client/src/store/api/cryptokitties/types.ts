@@ -1,4 +1,4 @@
-import { IKitty } from "../interface/cryptokitties/IKitty";
+import { IKitty } from "../../interface/cryptokitties/IKitty";
 
 export const nameState = "cryptokitties";
 

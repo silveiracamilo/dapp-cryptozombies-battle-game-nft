@@ -9,6 +9,7 @@ import { IZombie } from "src/store/interface/zombie/IZombie";
 import IZombieFees from "src/store/interface/zombie/IZombieFees";
 import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
@@ -70,7 +71,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
             const zombie = await CryptozombiesBattleService.instance.getZombieById(+id);
             setZombie(zombie);
 
-            const zombieInShop = await CryptozombiesBattleService.instance.getZombieByIdInSale(zombie.id);
+            const zombieInShop = await CryptozombiesBattleMarketService.instance.getZombieByIdInSale(zombie.id);
             if (zombieInShop.seller != '0x0000000000000000000000000000000000000000') {
                 setZombieSale(zombieInShop);
             }
@@ -84,7 +85,19 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     
     const getFees = useCallback(async () => {
         try {
-            const fees = await CryptozombiesBattleService.instance.getFees();
+            const marketFees = await CryptozombiesBattleMarketService.instance.getFees();
+            const zombieFees = await Promise.all([
+                CryptozombiesBattleService.instance.getLevelUpFee(),
+                CryptozombiesBattleService.instance.getChangeNameFee(),
+                CryptozombiesBattleService.instance.getChangeDNAFee(),
+            ]);
+            const [levelUpFee, changeNameFee, changeDNAFee] = zombieFees;
+            const fees = {
+                levelUpFee,
+                changeNameFee,
+                changeDNAFee,
+                ...marketFees,
+            }
             setFees(fees);
         } catch (error: any) {
             notification.error({
@@ -142,7 +155,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const saleZombie = useCallback(async (zombieId: number, price: bigint) => {
         setLoading(true);
         try {
-            await CryptozombiesBattleService.instance.saleZombie(zombieId, price);
+            await CryptozombiesBattleMarketService.instance.saleZombie(zombieId, price);
             getZombieById();
             getSalesAndBuys();
         } catch (error: any) {
@@ -158,7 +171,7 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
     const cancelSaleZombie = useCallback(async (zombieId: number) => {
         setLoading(true);
         try {
-            await CryptozombiesBattleService.instance.cancelSaleZombie(zombieId);
+            await CryptozombiesBattleMarketService.instance.cancelSaleZombie(zombieId);
             getZombieById();
             getSalesAndBuys();
         } catch (error: any) {
@@ -176,9 +189,9 @@ const ZombieDetailContextProvider = ({ children }: { children: ReactNode }) => {
         try {
             const [newZombie, sales, cancelSales, buys] = await Promise.all([
                 CryptozombiesBattleService.instance.getLogsNewZombieByZombieId(+id),
-                CryptozombiesBattleService.instance.getLogsSaleZombieByZombieId(+id),
-                CryptozombiesBattleService.instance.getLogsCancelSaleByZombieId(+id),
-                CryptozombiesBattleService.instance.getLogsBuyShopZombieByZombieId(+id),
+                CryptozombiesBattleMarketService.instance.getLogsSaleZombieByZombieId(+id),
+                CryptozombiesBattleMarketService.instance.getLogsCancelSaleByZombieId(+id),
+                CryptozombiesBattleMarketService.instance.getLogsBuyShopZombieByZombieId(+id),
             ])
 
             setActivities(

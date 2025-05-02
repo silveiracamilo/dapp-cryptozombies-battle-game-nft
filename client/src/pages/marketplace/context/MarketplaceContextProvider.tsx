@@ -3,6 +3,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IMarketplaceContext {
@@ -32,7 +33,7 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
     const getAllZombiesInShop = useCallback(async () => {
         setLoading(true);
         try {
-            const allZombiesInShop = await CryptozombiesBattleService.instance.getAllZombiesInShop();
+            const allZombiesInShop = await CryptozombiesBattleMarketService.instance.getAllZombiesInShop();
             
             setAllZombiesInShop(allZombiesInShop);
         } catch (error: any) {
@@ -50,7 +51,7 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
     const buyZombie = useCallback(async (zombieId: number, price: bigint) => {
         setLoading(true);
         try {
-            await CryptozombiesBattleService.instance.buyZombie(zombieId, price);
+            await CryptozombiesBattleMarketService.instance.buyZombie(zombieId, price);
             getAllZombiesInShop();
         } catch (error: any) {
             notification.error({

@@ -22,7 +22,7 @@ const ZombieMintFree: React.FC = () => {
                 <SectionTitle>📌 How to take part</SectionTitle>
                 <Steps>
                     <li>1. Follow <a href="https://x.com/zombiesbattle" target="_blank" rel="noreferrer">@zombiesbattle</a> on X</li>
-                    <li>2. Like and comment on the pinned post by tagging 2 friends</li>
+                    <li>2. Repost on the <a href="https://x.com/zombiesbattle/status/1916992738635223049" target="_blank" rel="noreferrer">pinned post</a> by commenting tagging 2 friends your comment</li>
                     <li>3. Fill out the <a href="https://docs.google.com/forms/d/e/1FAIpQLSdynCzYM143at1uNEFUkFkbj1MkQxHva-zsdqZpHqzjPxLE3A/viewform?usp=header" target="_blank" rel="noreferrer">entry form</a> with your wallet address and X address</li>
                     <li><i>After submitting the form, wait 24 hours for validation</i></li>
                 </Steps>

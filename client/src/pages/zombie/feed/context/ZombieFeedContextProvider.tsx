@@ -4,7 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { useNavigate, useParams } from "react-router";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
-import { useGetKittiesQuery } from "src/store/cryptokitties/api";
+import { useGetKittiesQuery } from "src/store/api/cryptokitties/api";
 import { IKitty } from "src/store/interface/cryptokitties/IKitty";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";

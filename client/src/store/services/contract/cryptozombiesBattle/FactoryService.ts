@@ -13,9 +13,9 @@ class FactoryService extends ContractService {
         return tx.wait();
     }
     
-    public async mintFree() {
+    public async mintFree(proof: string[] = []) {
         const contract = await this.getContract(true);
-        const tx = await contract.mintFree();
+        const tx = await contract.mintFree(proof);
         return tx.wait();
     }
 
@@ -110,6 +110,17 @@ class FactoryService extends ContractService {
         }
 
         return this.getLogs<INewZombie>(topics, mapper);
+    }
+
+    public async getMerkleRoot() {
+        const contract = await this.getContract();
+        return contract.merkleRoot();
+    }
+
+    public async setMerkleRoot(root: string) {
+        const contract = await this.getContract(true);
+        const tx = await contract.setMerkleRoot(root);
+        return tx.wait();
     }
 }
 

@@ -1,7 +1,7 @@
 import { Button, Col, Form, notification, Row } from "antd";
 import { useSettingsContext } from "../../context/SettingsContextProvider";
 import { useCallback, useMemo } from "react";
-import { FormItemStyled, InputNumberStyled } from "./styles";
+import { FormItemStyled, InputNumberStyled, InputStyled } from "./styles";
 import SimpleLoading from "src/components/loading/SimpleLoading";
 import { isEmpty } from "lodash";
 import { formatEther, parseEther } from "ethers";
@@ -12,16 +12,19 @@ interface IFormFields {
     mintFee: string
     totalAttackVictoryToGetReward: number
     totalFedToGetReward: number
+    merkleRoot: string
 }
 
 const FactoryForm = () => {
     const { 
         settings,
+        proofRoot,
         setCooldownTimeAttack,
         setCooldownTimeFeeding,
         setMintFee,
         setTotalAttackVictoryToGetReward,
         setTotalFedToGetReward,
+        setMerkleRoot,
     } = useSettingsContext();
 
     const {
@@ -30,6 +33,7 @@ const FactoryForm = () => {
         mintFee,
         totalAttackVictoryToGetReward,
         totalFedToGetReward,
+        merkleRoot,
     } = settings;
     const initialValues = useMemo(() => ({
         cooldownTimeAttack,
@@ -37,7 +41,8 @@ const FactoryForm = () => {
         mintFee: formatEther(mintFee.toString()),
         totalAttackVictoryToGetReward,
         totalFedToGetReward,
-    }), [cooldownTimeAttack, cooldownTimeFeeding, mintFee, totalAttackVictoryToGetReward, totalFedToGetReward]);
+        merkleRoot,
+    }), [cooldownTimeAttack, cooldownTimeFeeding, mintFee, totalAttackVictoryToGetReward, totalFedToGetReward, merkleRoot]);
 
     const onFinishCooldownTimeAttack = useCallback(({ cooldownTimeAttack }: IFormFields) => {
         if (cooldownTimeAttack === settings?.cooldownTimeAttack) {
@@ -92,6 +97,17 @@ const FactoryForm = () => {
             return;
         }
         setTotalFedToGetReward(totalFedToGetReward);
+    }, [settings]);
+
+    const onFinishMerkleRoot = useCallback(({ merkleRoot }: IFormFields) => {
+        if (merkleRoot === settings?.merkleRoot) {
+            notification.error({
+                message: 'Error in update merkle root',
+                description: 'Merkle root is the same as the current one',
+            });
+            return;
+        }
+        setMerkleRoot(merkleRoot);
     }, [settings]);
 
     if (isEmpty(settings)) {
@@ -206,6 +222,32 @@ const FactoryForm = () => {
                         
                     >
                         <InputNumberStyled />
+                    </FormItemStyled>
+                </Col>
+                <Col span={16}>
+                    <Button htmlType="submit">
+                        Update
+                    </Button>
+                </Col>
+            </Row>
+        </Form>
+        <Form
+            initialValues={initialValues}
+            onFinish={onFinishMerkleRoot}
+        >
+            <Row align="middle">
+                <Col span={8}>
+                    <FormItemStyled
+                        label={<div>
+                            Merkle Root
+                            <br />
+                            proofRoot: {proofRoot?.root}
+                        </div>}
+                        name="merkleRoot"
+                        layout="vertical"
+                        rules={[{ required: true, message: 'Please input your "merkle root"!' }]}
+                    >
+                        <InputStyled />
                     </FormItemStyled>
                 </Col>
                 <Col span={16}>

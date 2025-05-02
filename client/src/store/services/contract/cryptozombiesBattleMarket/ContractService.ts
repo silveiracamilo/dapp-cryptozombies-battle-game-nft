@@ -1,15 +1,15 @@
 
 import { Contract } from 'ethers';
-import CryptozombiesBattle from './CryptozombiesBattle.json';
+import CryptozombiesBattleMarket from './CryptozombiesBattleMarket.json';
 import ContractBaseService from '../ContractBaseService';
 
 class ContractService extends ContractBaseService {
-    public contractAddress: string = import.meta.env.VITE_CRYPTOZOMBIES_BATTLE_CONTRACT_ADDRESS;
+    public contractAddress: string = import.meta.env.VITE_CRYPTOZOMBIES_BATTLE_MARKET_CONTRACT_ADDRESS;
     protected pageSize = 20;
 
     public async getContract(isTransaction: boolean = false): Promise<Contract> {
         const provider = isTransaction ? await this.providerSigner.getSigner() : this.providerPublic;
-        return new Contract(this.contractAddress, CryptozombiesBattle.abi, provider);
+        return new Contract(this.contractAddress, CryptozombiesBattleMarket.abi, provider);
     }
 } 
 

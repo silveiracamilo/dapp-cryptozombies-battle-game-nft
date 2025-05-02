@@ -1,7 +1,8 @@
 import ISettings from "src/store/interface/admin/ISettings";
-import MarketService from "./MarketService";
+import OwnershipService from "./OwnershipService";
+import CryptozombiesBattleMarketService from "../cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 
-class AdminService extends MarketService {
+class AdminService extends OwnershipService {
 
     public async getSettings(): Promise<ISettings> {
         const settingsList = await Promise.all([
@@ -14,8 +15,10 @@ class AdminService extends MarketService {
             this.getChangeNameFee(),
             this.getChangeDNAFee(),
             this.getBaseUrlTokenURI(),
-            this.getTax(),
-            this.getMinPrice(),
+            this.getMerkleRoot(),
+            CryptozombiesBattleMarketService.instance.getTax(),
+            CryptozombiesBattleMarketService.instance.getMinPrice(),
+            CryptozombiesBattleMarketService.instance.getBalance(),
         ]);
 
         return {
@@ -28,8 +31,10 @@ class AdminService extends MarketService {
             changeNameFee: settingsList[6],
             changeDNAFee: settingsList[7],
             baseUrlTokenURI: settingsList[8],
-            tax: settingsList[9],
-            minPrice: settingsList[10],
+            merkleRoot: settingsList[9],
+            tax: settingsList[10],
+            minPrice: settingsList[11],
+            balanceMarket: settingsList[12],
         };
     }
 }

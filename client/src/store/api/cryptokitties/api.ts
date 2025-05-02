@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IKitty } from "../interface/cryptokitties/IKitty";
+import { IKitty } from "../../interface/cryptokitties/IKitty";
 import axios from "axios";
 import { IGetKittiesResponse } from "./types";
 

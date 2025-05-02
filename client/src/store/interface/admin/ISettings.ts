@@ -8,8 +8,10 @@ interface ISettings {
     changeNameFee: bigint
     changeDNAFee: bigint
     baseUrlTokenURI: string
+    merkleRoot: string  
     tax: bigint
     minPrice: bigint
+    balanceMarket: bigint
 }
 
 export default ISettings;

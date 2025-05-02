@@ -1,10 +1,16 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useGetProofRootQuery } from "src/store/api/cryptozombiesBattle/api";
+import { IGetProofRootResponse } from "src/store/api/cryptozombiesBattle/types";
 import ISettings from "src/store/interface/admin/ISettings";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 
 interface ISettingsContext {
+    balance: bigint
     settings: ISettings
+    proofRoot: IGetProofRootResponse | undefined
+    proofRootLoading: boolean
     withdraw: () => Promise<void>
     setCooldownTimeAttack: (cooldownTimeAttack: number) => Promise<void>
     setCooldownTimeFeeding: (cooldownTimeFeeding: number) => Promise<void>
@@ -17,7 +23,7 @@ interface ISettingsContext {
     setBaseUrlTokenURI: (baseUrl: string) => Promise<void>
     setTax: (tax: bigint) => Promise<void>
     setMinPrice: (price: bigint) => Promise<void>
-    balance: bigint
+    setMerkleRoot: (root: string) => Promise<void>
 }
 
 const SettingsContext = createContext<ISettingsContext>({} as ISettingsContext);
@@ -34,6 +40,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState<ISettings>({} as ISettings);
     const [balance, setBalance] = useState<bigint>(0n);
+    const { data: proofRoot, isLoading: proofRootLoading } = useGetProofRootQuery();
 
     useEffect(() => {
         loadSettings();
@@ -217,7 +224,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setTax = useCallback(async (tax: bigint) => {
         setLoading(true);
         try {
-            await CryptozombiesBattleService.instance.setTax(tax);
+            await CryptozombiesBattleMarketService.instance.setTax(tax);
             setSettings(s => ({ ...s as ISettings, tax }));
         } catch (error: any) {
             notification.error({
@@ -232,11 +239,25 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const setMinPrice = useCallback(async (price: bigint) => {
         setLoading(true);
         try {
-            await CryptozombiesBattleService.instance.setMinPrice(price);
+            await CryptozombiesBattleMarketService.instance.setMinPrice(price);
             setSettings(s => ({ ...s as ISettings, minPrice: price }));
         } catch (error: any) {
             notification.error({
                 message: 'Error in update Min Price',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
+    const setMerkleRoot = useCallback(async (root: string) => {
+        setLoading(true);
+        try {
+            await CryptozombiesBattleService.instance.setMerkleRoot(root);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in update Merkle Root',
                 description: error.reason || 'Error generic'
             });
         } finally {
@@ -248,6 +269,8 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
     const contextValue = useMemo(() => ({ 
         balance,
         settings,
+        proofRoot,
+        proofRootLoading,
         withdraw,
         setCooldownTimeAttack,
         setCooldownTimeFeeding,
@@ -260,6 +283,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         setBaseUrlTokenURI,
         setTax,
         setMinPrice,
+        setMerkleRoot,
     }), [settings, balance]);
 
     return (
