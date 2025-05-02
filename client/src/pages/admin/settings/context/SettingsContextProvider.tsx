@@ -12,6 +12,7 @@ interface ISettingsContext {
     proofRoot: IGetProofRootResponse | undefined
     proofRootLoading: boolean
     withdraw: () => Promise<void>
+    withdrawMarket: () => Promise<void>
     setCooldownTimeAttack: (cooldownTimeAttack: number) => Promise<void>
     setCooldownTimeFeeding: (cooldownTimeFeeding: number) => Promise<void>
     setMintFee: (mintFee: bigint) => Promise<void>
@@ -75,6 +76,21 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         try {
             await CryptozombiesBattleService.instance.withdraw();
+            getBalance();
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in update Min Price',
+                description: error.reason || 'Error generic'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
+    const withdrawMarket = useCallback(async () => {
+        setLoading(true);
+        try {
+            await CryptozombiesBattleMarketService.instance.withdraw();
             getBalance();
         } catch (error: any) {
             notification.error({
@@ -272,6 +288,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         proofRoot,
         proofRootLoading,
         withdraw,
+        withdrawMarket,
         setCooldownTimeAttack,
         setCooldownTimeFeeding,
         setMintFee,
@@ -284,7 +301,7 @@ const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
         setTax,
         setMinPrice,
         setMerkleRoot,
-    }), [settings, balance]);
+    }), [settings, balance, proofRoot, proofRootLoading]);
 
     return (
         <SettingsContext.Provider value={contextValue}>

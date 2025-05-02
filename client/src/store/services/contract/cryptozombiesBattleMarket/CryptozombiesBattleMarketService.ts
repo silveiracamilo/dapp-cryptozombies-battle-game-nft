@@ -55,7 +55,7 @@ class CryptozombiesBattleMarketService extends ContractService {
     }
 
     public async getBalance() {
-        const contract = await this.getContract();
+        const contract = await this.getContract(true);
         return contract.balance();
     }
     

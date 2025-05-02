@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { FormItemStyled, InputNumberStyled } from "./styles";
 import SimpleLoading from "src/components/loading/SimpleLoading";
 import { formatEther, parseEther } from "ethers";
-import { isEmpty } from "lodash";
+import { debounce, isEmpty } from "lodash";
 
 interface IFormFields {
     tax: bigint
@@ -12,8 +12,8 @@ interface IFormFields {
 }
 
 const MarketForm = () => {
-    const { settings, setTax, setMinPrice } = useSettingsContext();
-    const { tax, minPrice } = settings;
+    const { settings, setTax, setMinPrice, withdrawMarket } = useSettingsContext();
+    const { tax, minPrice, balanceMarket } = settings;
     const initialValues = useMemo(() => ({
         tax: formatEther(tax.toString()),
         minPrice: formatEther(minPrice.toString()),
@@ -47,6 +47,16 @@ const MarketForm = () => {
 
     return (
         <>
+        <Row align="middle">
+            <Col span={4}>
+                <p style={{ color: '#FFF' }}>Balance: { formatEther(balanceMarket) } ETH</p>
+            </Col>
+            <Col span={20}>
+                <Button disabled={balanceMarket <= 0} onClick={debounce(withdrawMarket, 200)}>
+                    Withdraw
+                </Button>
+            </Col>
+        </Row>
         <Form
             initialValues={initialValues}
             onFinish={onFinishTax}
