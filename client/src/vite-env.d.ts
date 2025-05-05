@@ -10,6 +10,8 @@ interface ImportMetaEnv {
     readonly VITE_OWNER_ADDRESS: string
     readonly VITE_FROM_BLOCK: number
     readonly VITE_RPC_URL: string
+    readonly VITE_NETWORK_NAME: string
+    readonly VITE_CHAIN_ID: string
   }
   
   interface ImportMeta {

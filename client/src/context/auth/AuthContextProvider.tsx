@@ -30,8 +30,17 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         }
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        const myAddress = await signer.getAddress();
-        setAddress(myAddress);
+        const network = await signer.provider.getNetwork();
+
+        if (network.chainId !== BigInt(import.meta.env.VITE_CHAIN_ID)) {
+            notification.error({
+                message: 'Network incompatible',
+                description: `Please use network: ${import.meta.env.VITE_NETWORK_NAME} (chainID: ${import.meta.env.VITE_CHAIN_ID})`
+            });
+            return;
+        }
+        
+        setAddress(signer.address);
     }, []);
 
     const contextValue = useMemo(() => ({ address, doAuth }), [address]);
