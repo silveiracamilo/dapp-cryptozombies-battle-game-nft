@@ -34,6 +34,10 @@ contract CryptozombiesBattleMarket is Ownable {
         cryptozombiesBattleContract = CryptozombiesBattleInterface(_cryptozombiesBattleContractAddress);
     }
 
+    function setCryptozombiesBattleContractAddress(address _address) external onlyOwner {
+        cryptozombiesBattleContract = CryptozombiesBattleInterface(_address);
+    }
+
     modifier onlyOwnerOf(uint _zombieId) {
         require(msg.sender == cryptozombiesBattleContract.ownerOf(_zombieId));
         _;

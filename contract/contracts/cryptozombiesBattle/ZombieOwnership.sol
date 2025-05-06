@@ -12,6 +12,10 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
     string public baseUrlTokenURI = "https://api.cryptozombiesbattle.com/zombie/uri/";
     
     mapping (uint => address) zombieApprovals;
+
+    function supportsInterface(bytes4 interfaceId) public view virtual returns (bool) {
+        return interfaceId == type(ERC721).interfaceId;
+    }
     
     function balance() external view onlyOwner returns (uint256) {
         return address(this).balance;
@@ -51,7 +55,8 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
             "/",
             zombie.name,
             "/",
-            Strings.toString(zombie.dna)
+            Strings.toString(zombie.dna),
+            ".json"
         );
     }
 
