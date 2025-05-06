@@ -20,20 +20,21 @@ router.get('/', async () => {
   return 'Cryptozombies Battle API V1.0.0'
 })
 
-router.get('/zombie/uri/:id/:name/:dna', async ({ params }) => {
+router.get('/zombie/uri/:id/:name/:dna.json', async ({ params }) => {
   const genes: any = ZombieGenesMapper.mapper(params.dna);
   const attributes = Object.keys(genes).map((key: any) => ({ trait_type: key, value: genes[key] }));
 
   return {
-    description: "Cryptozombies Battle NFT", 
-    external_url: `${env.get('CLIENT_URL')}/zombie/about/${params.id}`, 
-    image: `${env.get('API_URL')}/zombie/image/${params.dna}`, 
     name: decodeURI(params.name),
-    attributes
+    description: "Cryptozombies Battle NFT", 
+    image: `${env.get('API_URL')}/zombie/image/${params.dna}.png`, 
+    external_url: `${env.get('CLIENT_URL')}/zombie/about/${params.id}`, 
+    attributes,
+    token_id: +params.id
   }
 })
 
-router.get('/zombie/image/:dna', async ({ params, response }) => {
+router.get('/zombie/image/:dna.png', async ({ params, response }) => {
   const dna = params.dna;
   const serviceImage = new ZombieImageService();
   const image = await serviceImage.generateZombieImage(dna);
