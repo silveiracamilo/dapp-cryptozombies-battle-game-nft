@@ -78,9 +78,9 @@ const About: React.FC = () => {
           <Title level={4}>Contracts</Title>
           <Paragraph>
             <Space direction="vertical">
-              <Text><Text strong>CryptozombiesBattle:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x0a9eaFD9d6f1b5104b90CA6F1744C92aC252E23B" target="_blank" rel="noopener noreferrer">0x0a9eaFD9d6f1b5104b90CA6F1744C92aC252E23B</Link></Text>
+              <Text><Text strong>CryptozombiesBattle:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x2958dBc6c1182c69c354d5Ec63dad5c3cCAF4f14" target="_blank" rel="noopener noreferrer">0x2958dBc6c1182c69c354d5Ec63dad5c3cCAF4f14</Link></Text>
               <Text><Text strong>CryptozombiesBattleRanking:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x0B2f53cd8A011675e737920Cbf3Dd8CCf33FF74d" target="_blank" rel="noopener noreferrer">0x0B2f53cd8A011675e737920Cbf3Dd8CCf33FF74d</Link></Text>
-              <Text><Text strong>CryptozombiesBattleMarket:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x632ff7e1C869e7Dcd97CDCdE5764e73D752fC027" target="_blank" rel="noopener noreferrer">0x632ff7e1C869e7Dcd97CDCdE5764e73D752fC027</Link></Text>
+              <Text><Text strong>CryptozombiesBattleMarket:</Text> <Link href="https://base-sepolia.blockscout.com/address/0x814FC32616DCC7f727663660E102b9ae26c700b5" target="_blank" rel="noopener noreferrer">0x814FC32616DCC7f727663660E102b9ae26c700b5</Link></Text>
             </Space>
           </Paragraph>
         </Typography>
