@@ -10,8 +10,13 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 /// @author Camilo da Silveira
 contract ZombieOwnership is ZombieAttack, ERC721 {
     string public baseUrlTokenURI = "https://api.cryptozombiesbattle.com/zombie/uri/";
+    address private cryptozombiesBattleMarketContractAddress = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
     
     mapping (uint => address) zombieApprovals;
+
+    function setCryptozombiesBattleMarketContractAddress(address _address) external onlyOwner {
+        cryptozombiesBattleMarketContractAddress = _address;
+    }
 
     function supportsInterface(bytes4 interfaceId) public view virtual returns (bool) {
         return interfaceId == type(ERC721).interfaceId;
@@ -38,7 +43,12 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
     }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) override external payable {
-        require(zombieToOwner[_tokenId] == msg.sender || zombieApprovals[_tokenId] == msg.sender, "You are not owner or approved.");
+        require(
+            cryptozombiesBattleMarketContractAddress == msg.sender || 
+            zombieToOwner[_tokenId] == msg.sender || 
+            zombieApprovals[_tokenId] == msg.sender, 
+            "You are not owner or approved. "
+        );
         _transfer(_from, _to, _tokenId);
     }
 

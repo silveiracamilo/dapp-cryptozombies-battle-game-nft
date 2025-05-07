@@ -1,5 +1,7 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
+import { Paths } from "src/router/RouteConsts";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
@@ -25,6 +27,7 @@ export const useMarketplaceContext = () => {
 const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
     const [allZombiesInShop, setAllZombiesInShop] = useState<IZombieSale[]>([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getAllZombiesInShop();
@@ -52,7 +55,7 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         try {
             await CryptozombiesBattleMarketService.instance.buyZombie(zombieId, price);
-            getAllZombiesInShop();
+            setTimeout(() => navigate(Paths.HOME), 1000);
         } catch (error: any) {
             notification.error({
                 message: 'Error in buy shop zombie',
