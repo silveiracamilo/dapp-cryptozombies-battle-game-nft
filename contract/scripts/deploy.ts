@@ -18,7 +18,7 @@ async function main() {
   await cryptozombiesBattleMarket.waitForDeployment();
  
   console.log('CryptozombiesBattleMarket Contract Deployed at ' + cryptozombiesBattleMarket.target);
-  await cryptozombiesBattle.setCryptozombiesBattleMarketContractAddress(cryptozombiesBattle.target);
+  await cryptozombiesBattle.setCryptozombiesBattleMarketContractAddress(cryptozombiesBattleMarket.target);
 }
  
 // We recommend this pattern to be able to use async/await everywhere
