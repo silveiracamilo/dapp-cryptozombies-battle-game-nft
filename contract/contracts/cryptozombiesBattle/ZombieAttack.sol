@@ -19,42 +19,38 @@ contract ZombieAttack is ZombieHelper {
         _zombie.attackReadyTime = uint32(block.timestamp + cooldownTimeAttack);
     }
 
-    function randMod(uint _modulus) internal returns (uint) {
-        randNonce = randNonce + 1;
-        return uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce))) % _modulus;
-    }
-
     function _calculateVictoryChance(Zombie storage attacker, Zombie storage defender) internal view returns (uint) {
-        uint baseChance = attackVictoryProbability;
-        int32 levelDiff = int32(attacker.level) - int32(defender.level);
-
-        if (levelDiff > 0) {
-            baseChance += uint(uint32(levelDiff) * 2); 
-        } else if (levelDiff < 0) {
-            baseChance -= uint(uint32(-levelDiff) * 2);
-        }
+        int baseChance = int(uint(attackVictoryProbability));
+        int levelDiff = int(uint(attacker.level)) - int(uint(defender.level));
+        baseChance += levelDiff * 2;
 
         (uint attackerStrength, uint attackerAgility,) = _generateStats(attacker.dna);
         (,,uint defenderResilience) = _generateStats(defender.dna);
 
-        uint attributeBonus = ((attackerStrength * 2) + (attackerAgility) - (defenderResilience)) / 10;
-        baseChance += attributeBonus;
+        int attributeScore = int(attackerStrength * 2 + attackerAgility) - int(defenderResilience);
+        if (attributeScore < 0) attributeScore = 0;
+
+        baseChance += attributeScore / 10;
 
         if (baseChance > 90) baseChance = 90;
         if (baseChance < 30) baseChance = 30;
 
-        return baseChance;
+        return uint(baseChance);
     }
 
     function attack(uint _zombieId, uint _targetId) external onlyOwnerOf(_zombieId) {
+        require(_zombieId != _targetId, "Cannot attack itself");
+        
         Zombie storage myZombie = zombies[_zombieId];
 
         require(_isReadyAttack(myZombie), "It's not ready to attack");
 
         Zombie storage enemyZombie = zombies[_targetId];
 
+        randNonce++;
+
         uint victoryChance = _calculateVictoryChance(myZombie, enemyZombie);
-        uint rand = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, _zombieId))) % 100;
+        uint rand = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, _zombieId, _targetId, randNonce))) % 100;
 
         if (rand <= victoryChance) {
             myZombie.winCount++;
@@ -83,10 +79,10 @@ contract ZombieAttack is ZombieHelper {
     }
 
     function _triggerUpdateScore(Zombie storage zombie) internal {
-        uint32 zombieScore = (zombie.level * 10) + (zombie.winCount * 5) - (zombie.lossCount * 3);
-        if (zombieScore < 10) {
-            zombieScore = 10;
+        int score = int(uint(zombie.level) * 10 + uint(zombie.winCount) * 5) - int(uint(zombie.lossCount) * 3);
+        if (score < 10) {
+            score = 10;
         }
-        zombie.score = zombieScore;
+        zombie.score = uint32(uint(score));
     }
 }
