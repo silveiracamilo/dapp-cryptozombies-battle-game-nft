@@ -16,9 +16,9 @@
     "deploy:main": "npx hardhat run scripts/deployMain.ts --network dashboard",
     "deploy:market": "npx hardhat run scripts/deployMarket.ts --network dashboard",
     "deploy": "npx hardhat run scripts/deploy.ts --network dashboard",
-    "verify:czbattle": "npx hardhat verify --network dashboard 0x2958dBc6c1182c69c354d5Ec63dad5c3cCAF4f14 --contract contracts/cryptozombiesBattle/CryptozombiesBattle.sol:CryptozombiesBattle",
-    "verify:czbattleranking": "npx hardhat verify --network dashboard 0x0B2f53cd8A011675e737920Cbf3Dd8CCf33FF74d --contract contracts/cryptozombiesBattleRanking/CryptozombiesBattleRanking.sol:CryptozombiesBattleRanking 0x2958dBc6c1182c69c354d5Ec63dad5c3cCAF4f14",
-    "verify:czbattlemarket": "npx hardhat verify --network dashboard 0x814FC32616DCC7f727663660E102b9ae26c700b5 --contract contracts/cryptozombiesBattleMarket/CryptozombiesBattleMarket.sol:CryptozombiesBattleMarket 0x2958dBc6c1182c69c354d5Ec63dad5c3cCAF4f14"
+    "verify:czbattle": "npx hardhat verify --network dashboard 0xF89b7bD192f05148C3a31125B1723196791325e1 --contract contracts/cryptozombiesBattle/CryptozombiesBattle.sol:CryptozombiesBattle",
+    "verify:czbattleranking": "npx hardhat verify --network dashboard 0x1A4bC2E45595453A2A95C6Fd71Cb7a5f82006Cd2 --contract contracts/cryptozombiesBattleRanking/CryptozombiesBattleRanking.sol:CryptozombiesBattleRanking 0xF89b7bD192f05148C3a31125B1723196791325e1",
+    "verify:czbattlemarket": "npx hardhat verify --network dashboard 0x26c047F3A36564E6b00B3B843Fd6367EE8F3f4AF --contract contracts/cryptozombiesBattleMarket/CryptozombiesBattleMarket.sol:CryptozombiesBattleMarket 0xF89b7bD192f05148C3a31125B1723196791325e1"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
