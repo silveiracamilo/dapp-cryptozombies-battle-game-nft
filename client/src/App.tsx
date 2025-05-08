@@ -6,6 +6,7 @@ import Router from './router/Router'
 import { Provider } from 'react-redux';
 import store from './store/store';
 import { GlobalStyle, themeStyle } from './globalStyles';
+import AppContextProvider from './context/app/AppContextProvider';
 
 function App() {
   return (
@@ -13,8 +14,10 @@ function App() {
       <ErrorBoundary FallbackComponent={FallbackErrorBoundary}>
         <Provider store={store}>
           <AuthContextProvider>
-            <Router />
-            <GlobalStyle />
+            <AppContextProvider>
+              <Router />
+              <GlobalStyle />
+            </AppContextProvider>
           </AuthContextProvider>
         </Provider>
       </ErrorBoundary>

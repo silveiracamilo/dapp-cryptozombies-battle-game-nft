@@ -44,7 +44,11 @@ const AccountEnemie = ({ account }: { account: string }) => {
     return (
         <Card>
             <Row justify="center">
-                <Image src={`https://robohash.org/${account}?set=set2`} placeholder={<Spin spinning />} preview={false} />
+                <Image 
+                    src={`https://robohash.org/${account}?set=set2`}
+                    placeholder={<Spin spinning />}
+                    preview={false} 
+                />
             </Row>
             
             <CardFooterStyle>

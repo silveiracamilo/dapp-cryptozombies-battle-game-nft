@@ -1,8 +1,7 @@
 import { notification, Spin } from "antd";
-import { Contract, formatEther } from "ethers";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { formatEther } from "ethers";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
@@ -22,53 +21,12 @@ export const useZombieMintContext = () => {
 }
 
 const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
-    const { address } = useAuthContext();
     const navigate = useNavigate();
-    const contract = useRef<Contract>();
     const [loading, setLoading] = useState(false);
     const [mintFee, setMintFee] = useState('');
 
     useEffect(() => {
-        // addEventListener();
         getMintFee();
-        
-        return () => {
-            removeEventListener();
-        }
-    }, []);
-
-    const addEventListener = useCallback(async () => {
-        const ctct = await CryptozombiesBattleService.instance.getContract();
-        contract.current = ctct;
-        ctct.on('NewZombie', handleNewZombie);
-        // const eventTopic = ethers.id("NewZombie(address,uint,string,uint)");
-        // const ownerAddress = address; // Endereço do owner
-        // const filter = {
-        //     address: CryptozombiesBattleService.instance.contractAddress, // Opcional: filtra eventos apenas deste contrato
-        //     topics: [
-        //         eventTopic, // Tópico do evento
-        //         ethers.zeroPadValue(ownerAddress, 32) // Filtra eventos onde `from == owner`
-        //     ]
-        // };
-        // CryptozombiesBattleService.instance.provider.on(filter, handleNewZombie);
-    }, []);
-
-    const removeEventListener = useCallback(() => {
-        if(contract.current) {
-            contract.current.off('NewZombie', handleNewZombie);
-        }
-    }, []);
-
-    const handleNewZombie = useCallback((from: string, zombieId: number, name: string, dna: number) => {
-        if (from === address) {
-            removeEventListener();
-            navigate(
-                Paths.ZOMBIE_MINTED
-                    .replace(':id', zombieId.toString())
-                    .replace(':name', name)
-                    .replace(':dna', dna.toString())
-            )
-        }
     }, []);
     
     const getMintFee = useCallback(async () => {
@@ -89,8 +47,13 @@ const ZombieMintContextProvider = ({ children }: { children: ReactNode }) => {
     const mint = useCallback(async (name: string) => {
         setLoading(true);
         try {
-            addEventListener();
-            await CryptozombiesBattleService.instance.mint(name);
+            const result = await CryptozombiesBattleService.instance.mint(name);
+            navigate(
+                Paths.ZOMBIE_MINTED
+                    .replace(':id', result.zombieId.toString())
+                    .replace(':name', name)
+                    .replace(':dna', result.dna.toString())
+            )
         } catch (error: any) {
             notification.error({
                 message: 'Error in mint zombie',

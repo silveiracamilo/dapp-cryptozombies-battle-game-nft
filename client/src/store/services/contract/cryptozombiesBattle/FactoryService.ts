@@ -3,20 +3,27 @@ import ContractService from "./ContractService";
 import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
 import { LogDescription, toBeHex, zeroPadValue } from "ethers";
 import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
+import { IMintResult } from "src/store/interface/mint/IMintResult";
+import { mintResultMap } from "src/store/mapper/mint/mintMapper";
+import { getGasLimit } from "utils/contract/gasLimit";
 
 class FactoryService extends ContractService {
 
-    public async mint(name: string) {
+    public async mint(name: string): Promise<IMintResult> {
         const contract = await this.getContract(true);
         const mintFee = await this.getMintFee();
-        const tx = await contract.mint(name, { value: mintFee });
-        return tx.wait();
+        const estimatedGas = await contract.mint.estimateGas(name, { value: mintFee });
+        const gasLimit = getGasLimit(estimatedGas);
+        const tx = await contract.mint(name, { value: mintFee, gasLimit });
+        return mintResultMap(tx, contract);
     }
     
-    public async mintFree(proof: string[] = []) {
+    public async mintFree(proof: string[] = []): Promise<IMintResult> {
         const contract = await this.getContract(true);
-        const tx = await contract.mintFree(proof);
-        return tx.wait();
+        const estimatedGas = await contract.mintFree.estimateGas(proof);
+        const gasLimit = getGasLimit(estimatedGas);
+        const tx = await contract.mintFree(proof, { gasLimit });
+        return mintResultMap(tx, contract);
     }
 
     public async getZombieById(id: number) {

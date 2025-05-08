@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Breadcrumb, Button, Card, Col, Image, Row } from 'antd';
+import { Breadcrumb, Button, Card, Col, Image, Row, Spin } from 'antd';
 import { debounce, map } from 'lodash';
 import { useZombieFeedContext } from './context/ZombieFeedContextProvider';
 import { Zombie } from 'src/components/zombie/Zombie';
@@ -37,7 +37,11 @@ const ZombieFeed: React.FC = () => {
                             <Col span={4} key={kitty.id}>
                                 <Card
                                     style={{ width: 200 }}
-                                    cover={<Image src={kitty.image_url_cdn} width={200} />}
+                                    cover={<Image 
+                                        src={kitty.image_url_cdn}
+                                        placeholder={<Spin spinning />}
+                                        width={200}
+                                    />}
                                     actions={[
                                         <Button 
                                             onClick={debounce(() => feedOnKitty(kitty.genes, kitty.id), 200)}

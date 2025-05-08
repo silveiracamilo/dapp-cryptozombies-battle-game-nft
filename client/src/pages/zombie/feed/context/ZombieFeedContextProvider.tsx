@@ -1,8 +1,6 @@
 import { notification, Spin } from "antd";
-import { Contract } from "ethers";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import { useGetKittiesQuery } from "src/store/api/cryptokitties/api";
 import { IKitty } from "src/store/interface/cryptokitties/IKitty";
@@ -27,12 +25,10 @@ export const useZombieFeedContext = () => {
 }
 
 const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
-    const { address } = useAuthContext();
     const { id = '' } = useParams();
     const navigate = useNavigate();
     const [zombie, setZombie] = useState<IZombie>();
     const [loading, setLoading] = useState(false);
-    const contract = useRef<Contract>();
     const {
         data: kitties,
         isLoading: isKittiesLoading,
@@ -43,39 +39,6 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
             getZombieById();
         }
     }, [id]);
-
-    useEffect(() => {
-        // addEventListener();
-        
-        return () => {
-            removeEventListener();
-        }
-    }, []);
-
-    const addEventListener = useCallback(async () => {
-        const ctct = await CryptozombiesBattleService.instance.getContract();
-        contract.current = ctct;
-        ctct.on('onFeed', handleOnFeed);
-    }, []);
-
-    const removeEventListener = useCallback(() => {
-        if(contract.current) {
-            contract.current.off('onFeed', handleOnFeed);
-        }
-    }, []);
-
-    const handleOnFeed = useCallback((from: string, fromDna: number, targetDna: number, kittyId: number, newDna: number) => {
-        if (from === address) {
-            removeEventListener();
-            navigate(
-                Paths.ZOMBIE_FEEDING
-                    .replace(':fromDna', fromDna.toString())
-                    .replace(':targetDna', targetDna.toString())
-                    .replace(':kittyId', kittyId.toString())
-                    .replace(':newDna', newDna.toString())
-            )
-        }
-    }, []);
 
     const getZombieById = useCallback(async () => {
         try {
@@ -92,8 +55,14 @@ const ZombieFeedContextProvider = ({ children }: { children: ReactNode }) => {
     const feedOnKitty = useCallback(async (kittyGenes: string, kittyId: number) => {
         setLoading(true);
         try {
-            addEventListener();
-            await CryptozombiesBattleService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
+            const result = await CryptozombiesBattleService.instance.feedOnKitty(+id, parseInt(kittyGenes.substring(0, 16)), kittyId);
+            navigate(
+                Paths.ZOMBIE_FEEDING
+                    .replace(':fromDna', result.fromDna.toString())
+                    .replace(':targetDna', result.targetDna.toString())
+                    .replace(':kittyId', result.kittyId.toString())
+                    .replace(':newDna', result.newDna.toString())
+            )
         } catch (error: any) {
             notification.error({
                 message: 'Error in feed zombie',

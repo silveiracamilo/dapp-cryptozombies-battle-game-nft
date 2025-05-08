@@ -1,8 +1,6 @@
 import { notification, Spin } from "antd";
-import { Contract } from "ethers";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { Paths } from "src/router/RouteConsts";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
@@ -26,24 +24,17 @@ export const useZombieAttackContext = () => {
 }
 
 const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
-    const { address } = useAuthContext();
     const { id = '', addressEnemie = '' } = useParams();
     const navigate = useNavigate();
     const [zombie, setZombie] = useState<IZombie>();
     const [zombies, setZombies] = useState<IZombie[]>([]);
     const [loading, setLoading] = useState(false);
     const isFirst = useRef(true);
-    const contract = useRef<Contract>();
 
     useEffect(() => {
         if (isFirst.current) {
             start();
-            // addEventListener();
             isFirst.current = false;
-        }
-        
-        return () => {
-            removeEventListener();
         }
     }, []);
 
@@ -52,44 +43,6 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
             loadZombieById(+id);
         }
     }, [id]);
-
-    const addEventListener = useCallback(async () => {
-        const ctct = await CryptozombiesBattleService.instance.getContract();
-        contract.current = ctct;
-        ctct.on('onAttackVitory', handleOnAttackVitory);
-        ctct.on('onAttackDefeat', handleOnAttackDefeat);
-    }, []);
-
-    const removeEventListener = useCallback(() => {
-        if(contract.current) {
-            contract.current.off('onAttackVitory', handleOnAttackVitory);
-            contract.current.off('onAttackDefeat', handleOnAttackDefeat);
-        }
-    }, []);
-
-    const handleOnAttackVitory = useCallback((from: string, fromId: number, targetId: number, newDna: number) => {
-        console.log("handleOnAttackVitory: ", from, address);
-        if (from === address) {
-            removeEventListener();
-            navigate(
-                Paths.ZOMBIE_ATTACK_VITORY
-                    .replace(':fromId', fromId.toString())
-                    .replace(':targetId', targetId.toString())
-                    .replace(':newDna', newDna.toString())
-            )
-        }
-    }, []);
-    
-    const handleOnAttackDefeat = useCallback((from: string, fromId: number, targetId: number) => {
-        if (from === address) {
-            removeEventListener();
-            navigate(
-                Paths.ZOMBIE_ATTACK_DEFEAT
-                    .replace(':fromId', fromId.toString())
-                    .replace(':targetId', targetId.toString())
-            )
-        }
-    }, []);
 
     const loadZombieById = useCallback(async (id: number) => {
         try {
@@ -124,8 +77,23 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     const attack = useCallback(async (targetId: number) => {
         setLoading(true);
         try {
-            addEventListener();
-            await CryptozombiesBattleService.instance.attack(parseInt(id), targetId);
+            const result = await CryptozombiesBattleService.instance.attack(parseInt(id), targetId);
+            
+            if (result.victory) {
+                navigate(
+                    Paths.ZOMBIE_ATTACK_VITORY
+                        .replace(':fromId', id)
+                        .replace(':targetId', targetId.toString())
+                        .replace(':newDna', result.newDna.toString())
+                );
+                return;
+            }
+
+            navigate(
+                Paths.ZOMBIE_ATTACK_DEFEAT
+                    .replace(':fromId', id)
+                    .replace(':targetId', targetId.toString())
+            )
         } catch (error: any) {
             notification.error({
                 message: 'Error attack zombie',

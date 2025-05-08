@@ -2,6 +2,7 @@ import { IZombie } from "src/store/interface/zombie/IZombie";
 import { Zombie } from "./Zombie";
 import styled from "styled-components";
 import { ConfigProvider, Progress, ProgressProps, Row } from "antd";
+import { useAppContext } from "src/context/app/AppContextProvider";
 
 interface IZombieCard {
     zombie: IZombie
@@ -25,6 +26,7 @@ const fedColors: ProgressProps['strokeColor'] = {
 };
 
 const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieScale = 1, showWinAndFed = true }) => {
+    const { totalAttackVictoryToGetReward, totalFedToGetReward } = useAppContext();
 
     if (!zombie) {
         return <></>;
@@ -41,7 +43,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                     <Progress
                         type="dashboard"
                         size={45}
-                        percent={((zombie.winCount % 7) / 7) * 100}
+                        percent={((zombie.winCount % totalAttackVictoryToGetReward) / totalAttackVictoryToGetReward) * 100}
                         strokeColor={winColors}
                         trailColor="#00000055"
                         format={() => <strong style={{ color:'#FFF'}}>Win</strong>}
@@ -49,7 +51,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                     <Progress
                         type="dashboard"
                         size={45}
-                        percent={((zombie.fedCount % 10) / 10) * 100}
+                        percent={((zombie.fedCount % totalFedToGetReward) / totalFedToGetReward) * 100}
                         strokeColor={fedColors}
                         trailColor="#00000055"
                         format={() => <strong style={{ color:'#FFF'}}>Fed</strong>}

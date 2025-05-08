@@ -1,4 +1,4 @@
-import { Button, Card, Col, Image, Row } from 'antd';
+import { Button, Card, Col, Image, Row, Spin } from 'antd';
 import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Zombie } from 'src/components/zombie/Zombie';
@@ -23,6 +23,7 @@ const ZombieFeeding: React.FC = () => {
                 <Image 
                     src={`https://img.cn.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${kittyId}.svg`} 
                     width={250} 
+                    placeholder={<Spin spinning />}
                     preview={false}
                 />
             </Col>
