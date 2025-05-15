@@ -5,6 +5,8 @@ import { debounce, isEmpty } from 'lodash';
 import { useZombieMintFreeContext } from './context/ZombieMintFreeContextProvider';
 import { addressFormat } from 'utils/formatter';
 import ButtonAction from 'src/components/button/ButtonAction';
+import CardButtonAction from 'src/components/button/CardButtonAction';
+import { Row } from 'antd';
 
 
 const ZombieMintFree: React.FC = () => {
@@ -32,12 +34,15 @@ const ZombieMintFree: React.FC = () => {
                 👾 Limited free mints<br />
                 </Info>
 
-                <ButtonAction onClick={debounce(doAuth, 150)} disabled={!isEmpty(address)}>
-                    {address ? `Connected: ${addressFormat(address)}` : "Connect Wallet"}
-                </ButtonAction>
-                <ButtonAction onClick={debounce(mintFree, 200)} disabled={!address}>
-                    Mint Free
-                </ButtonAction>
+                <Row justify="center" align="middle">
+                    <CardButtonAction onClick={debounce(doAuth, 150)} disabled={!isEmpty(address)} style={{ marginRight: 16 }}>
+                        {address ? `Connected: ${addressFormat(address)}` : "Connect Wallet"}
+                    </CardButtonAction>
+                    <ButtonAction onClick={debounce(mintFree, 200)} disabled={!address}>
+                        Mint Free
+                    </ButtonAction>
+                </Row>
+                
             </Card>
         </Container>
     )

@@ -2,11 +2,6 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
   body {
-    /* background: url("src/assets/images/grunge-scratched-cracked-texture-background_dark.jpg");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat; */
-    background-color: #000;
     color: white;
     font-family: 'Orbitron', sans-serif;
     margin: 0;
@@ -35,6 +30,12 @@ export const themeStyle = {
     // colorText: '#FFF',
   },
   components: {
+    Layout: {
+      bodyBg: 'url("/images/grunge-scratched-cracked-texture-background_dark.jpg")',
+    },
+    Menu: {
+      darkItemSelectedBg: '#666',
+    },
     Form: {
       labelColor: '#FFF'
     },

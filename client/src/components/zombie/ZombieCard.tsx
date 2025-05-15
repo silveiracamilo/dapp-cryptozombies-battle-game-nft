@@ -1,8 +1,8 @@
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { Zombie } from "./Zombie";
-import styled from "styled-components";
 import { ConfigProvider, Progress, ProgressProps, Row } from "antd";
 import { useAppContext } from "src/context/app/AppContextProvider";
+import { CardFooterStyled, CardStyled } from "./stylesCard";
 
 interface IZombieCard {
     zombie: IZombie
@@ -33,7 +33,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
     }
 
     return (
-        <Card>
+        <CardStyled>
             <Row justify="center" style={{ height: `${zombieHeight}px` }}>
                 <div style={{ transform: `scale(${zombieScale})`, transformOrigin: 'top' }}>
                     <Zombie dna={zombie.dna} />
@@ -68,7 +68,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                     },
                 }}
             >
-                <CardFooterStyle>
+                <CardFooterStyled>
                     <div>{zombie.id} # {zombie.name}</div>
                     <div>Level: {zombie.level} | Score: {zombie.score}</div>
                     <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
@@ -101,31 +101,10 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
                             trailColor="#999"
                         />
                     </div>
-                </CardFooterStyle>
+                </CardFooterStyled>
             </ConfigProvider>
-        </Card>
+        </CardStyled>
     )
 }
-
-const Card = styled.div`
-    border-radius: 8px;
-    background: url("src/assets/images/textured-paper.png");
-    background-color: #86835d88;
-    background-blend-mode: darken;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-`;
-
-const CardFooterStyle = styled(Row)`
-    width: 100%;
-    background-color: #262819;
-    color: #b6a764;
-    font-size: 16px;
-    font-weight: bold;
-    width: '100%';
-    padding: 8px;
-    display: block;
-`;
 
 export default ZombieCard;

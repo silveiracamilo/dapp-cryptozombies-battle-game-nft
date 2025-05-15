@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { notification, Row, Statistic } from "antd";
+import { notification, Statistic } from "antd";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import { useNavigate } from "react-router";
 import { Paths } from "src/router/RouteConsts";
 import { useHomeContext } from "../context/HomeContextProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressCard, faCat, faRadiation } from "@fortawesome/free-solid-svg-icons";
-import styled from "styled-components";
 import ZombieCard from "src/components/zombie/ZombieCard";
 import CardButtonAction from "src/components/button/CardButtonAction";
+import { CardFooterStyled, CardStyled } from "./styles";
 
 const { Countdown } = Statistic;
 
@@ -68,9 +68,9 @@ const ZombieArmy = ({ id }: { id: number }) => {
     }, []);
 
     return (
-        <CardStyle>
+        <CardStyled>
             <ZombieCard zombie={zombie as IZombie} />
-            <CardFooterStyle justify="space-between">
+            <CardFooterStyled justify="space-between">
                 <CardButtonAction icon={<FontAwesomeIcon icon={faCat} />} onClick={fedDisabled ? undefined : feed} size="small">
                     {!fedDisabled ?
                     'Feed' :
@@ -87,20 +87,9 @@ const ZombieArmy = ({ id }: { id: number }) => {
                 <CardButtonAction icon={<FontAwesomeIcon icon={faAddressCard} />} onClick={detail} size="small">
                     Detail
                 </CardButtonAction>
-            </CardFooterStyle>
-        </CardStyle>
+            </CardFooterStyled>
+        </CardStyled>
     )
 }
 
 export default ZombieArmy;
-
-const CardStyle = styled.div`
-    width: 100%;
-`;
-
-const CardFooterStyle = styled(Row)`
-    width: 100%;
-    background-color: #262819;
-    gap: 8px; 
-    padding: 8px;
-`;

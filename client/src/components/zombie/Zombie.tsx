@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import * as S from './style'
+import * as S from './styles'
 import { zombieGenesMapper } from 'src/store/mapper/zombie/ZombieMapper'
 
 interface IZombie {
