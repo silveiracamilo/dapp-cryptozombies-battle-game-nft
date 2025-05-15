@@ -1,5 +1,5 @@
 import { notification, Spin } from "antd";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
@@ -28,17 +28,13 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
     const [mintFreeDisponible, setMintFreeDisponible] = useState(false);
     const [mintFreeLeft, setMintFreeLeft] = useState(0);
-    const isFirst = useRef(true);
 
     useEffect(() => {
-        if (isFirst.current) {
-            start();
-            getMintFreeDisponible();
-            isFirst.current = false;
-        }
+        getZombiesByOwner();
+        getMintFreeDisponible();
     }, []);
 
-    const start = useCallback(async () => {
+    const getZombiesByOwner = useCallback(async () => {
         try {
             const zombies = await CryptozombiesBattleService.instance.getZombiesByOwner(address);
             setZombiesId([...zombies]);
@@ -68,7 +64,6 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
             setLoading(false);
         }
     }, []);
-
 
     const getZombieById = useCallback(async (id: number) => {
         return CryptozombiesBattleService.instance.getZombieById(id);

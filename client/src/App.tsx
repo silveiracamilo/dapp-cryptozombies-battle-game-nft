@@ -15,8 +15,8 @@ function App() {
         <Provider store={store}>
           <AuthContextProvider>
             <AppContextProvider>
-              <Router />
               <GlobalStyle />
+              <Router />
             </AppContextProvider>
           </AuthContextProvider>
         </Provider>

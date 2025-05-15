@@ -1,46 +1,19 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
-import { Image, Layout, Menu, MenuProps, notification } from "antd";
+import { ReactNode, useCallback, useEffect, useState } from "react";
+import { Image, notification } from "antd";
 import logo from "/images/cryptozombies_battle_logo_150.png";
-import { useLocation, useNavigate } from "react-router";
-import { findIndex, isEmpty, map, reduce } from "lodash";
+import { useNavigate } from "react-router";
+import { isEmpty, reduce } from "lodash";
 import { Paths } from "src/router/RouteConsts";
 import AccountDropdown from "src/components/account/AccountDropdown";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import { OWNER_ADDRESS } from "src/store/Constants";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
-import { LayoutStyled } from "./styles";
-
-const { Header, Content, Footer } = Layout;
+import { ContentStyled, FooterStyled, HeaderStyled, LayoutStyled, ScoreStyled } from "./styles";
+import LayoutMenu from "./components/LayoutMenu";
 
 const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
     const { address } = useAuthContext();
-    const { pathname } = useLocation();
-    const [selectedKeys, setSelectedKeys] = useState<string[]>(['1']);
     const [accountScore, setAccountScore] = useState(0);
-    const items = useMemo(() => [
-        { label: "Play to Earn", route: Paths.HOME },
-        { label: "Mint", route: Paths.ZOMBIE_MINT },
-        { label: "Mint Free", route: Paths.ZOMBIE_MINT_FREE },
-        { label: "Marketplace", route: Paths.MARKETPLACE },
-        { label: "Ranking", route: Paths.RANKING },
-        { label: "Learn to play", route: Paths.LEARN_TO_PLAY },
-        { label: "About", route: Paths.ABOUT },
-        ...(address === OWNER_ADDRESS ? [
-            { label: "Settings", route: Paths.ADMIN_SETTINGS },
-        ] : [])
-    ], [address]);
-    const menuItems = useMemo(
-        () => map(items, ({ label }, i) => ({ key: i + 1, label })), 
-        [items]
-    );
-
-    useEffect(() => {
-        const indexItem = findIndex(items, ({ route }) => route === pathname);
-        if (!isNaN(indexItem)) {
-            setSelectedKeys([(indexItem + 1).toString()]);
-        }
-    }, [pathname]);
     
     useEffect(() => {
         if (!isEmpty(address)){
@@ -60,42 +33,26 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
         }
     }, [address]);
 
-    const onClickMenu: MenuProps['onClick'] = useCallback((e: any) => {
-        const item = items[+e.key - 1];
-        item && navigate(item.route);
-    }, [items]);
-
     const goHome = useCallback(() => {
         navigate(Paths.HOME);
     }, []);
 
     return (
         <LayoutStyled>
-            <Header style={{ display: 'flex', alignItems: 'center', background: '#000' }}>
-                <div>
-                    <Image src={logo} width={150} preview={false} onClick={goHome} />
-                </div>
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    selectedKeys={selectedKeys}
-                    items={menuItems}
-                    onClick={onClickMenu}
-                    style={{ flex: 1, minWidth: 0, background: '#000' }}
-                />
-                {!isEmpty(address) &&
-                <>
-                    <span style={{ marginRight: '16px' }}><strong>Score</strong>: {accountScore}</span>
+            <HeaderStyled>
+                <Image src={logo} width={150} preview={false} onClick={goHome} />
+                <LayoutMenu />
+                {!isEmpty(address) && <>
+                    <ScoreStyled><strong>Score</strong>: {accountScore}</ScoreStyled>
                     <AccountDropdown />
-                </>
-                }
-            </Header>
-            <Content style={{ padding: 20 }}>{children}</Content>
-            <Footer style={{ textAlign: 'center', background: '#000' }}>
+                </>}
+            </HeaderStyled>
+            <ContentStyled>{children}</ContentStyled>
+            <FooterStyled>
                 <Image src={logo} width={80} preview={false} /> 
                 &nbsp;
                 <span>| Powered by <a href="https://silveiracamilo.com.br" target="_blank">silveiracamilo.com.br</a></span>
-            </Footer>
+            </FooterStyled>
         </LayoutStyled>
     )
 }

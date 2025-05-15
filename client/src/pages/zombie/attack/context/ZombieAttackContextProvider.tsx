@@ -1,5 +1,5 @@
 import { notification, Spin } from "antd";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Paths } from "src/router/RouteConsts";
 import { IZombie } from "src/store/interface/zombie/IZombie";
@@ -29,13 +29,9 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     const [zombie, setZombie] = useState<IZombie>();
     const [zombies, setZombies] = useState<IZombie[]>([]);
     const [loading, setLoading] = useState(false);
-    const isFirst = useRef(true);
 
     useEffect(() => {
-        if (isFirst.current) {
-            start();
-            isFirst.current = false;
-        }
+        getZombiesByOwnerMapped();
     }, []);
 
     useEffect(() => {
@@ -56,7 +52,7 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    const start = useCallback(async () => {
+    const getZombiesByOwnerMapped = useCallback(async () => {
         try {
             const zombies = await CryptozombiesBattleService.instance.getZombiesByOwnerMapped(addressEnemie);
             setZombies([...zombies]);
