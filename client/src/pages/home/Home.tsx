@@ -8,6 +8,8 @@ import { Paths } from 'src/router/RouteConsts';
 import CardButtonAction from 'src/components/button/CardButtonAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import BattleAnimation from './components/BattleAnimation';
+import ZombieBattleScene from 'src/components/zombie/ZombieBattleScene';
 
 const Home: React.FC = () => {
     const { zombiesId, mintFreeDisponible, mintFreeLeft } = useHomeContext();
@@ -48,13 +50,15 @@ const Home: React.FC = () => {
             <Row>
                 <h1 style={{ color: '#b6a764' }}>Your Zombie Army</h1>
             </Row>
-            <Row gutter={[8, 8]}>
+            <ZombieBattleScene />
+            {/* <BattleAnimation />  */}
+            {/* <Row gutter={[8, 8]}>
             { map(zombiesId, id => (
                 <Col key={id} md={6} xxl={4}>
                     <ZombieArmy id={id} />
                 </Col>
             )) }
-            </Row>
+            </Row> */}
         </>
     )
 }
