@@ -21,7 +21,7 @@ export const CardButtonActionStyled = styled(Button)`
     background: url("/images/wall-4-light.png") #86835d;
     font-size: 14px;
     font-weight: bold;
-    padding: 16px;
+    padding: 8px;
     
     &:hover {
         color: #928313 !important;
