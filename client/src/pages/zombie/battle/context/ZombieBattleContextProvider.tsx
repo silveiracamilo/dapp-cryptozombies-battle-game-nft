@@ -10,7 +10,10 @@ import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 interface IZombieBattleContext {
     zombie: IZombie | undefined
     accounts: string[]
+    accountsTotal: number
+    pageSize: number
     getZombiesByOwnerMapped: (accountAddress: string) => Promise<IZombie[]>
+    getAccounts: (page: number) => Promise<void>
 }
 
 const ZombieBattleContext = createContext<IZombieBattleContext>({} as IZombieBattleContext);
@@ -27,16 +30,32 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
     const { address } = useAuthContext();
     const { id = '' } = useParams();
     const [zombie, setZombie] = useState<IZombie>();
+    const [accountsTotal, setAccountsTotal] = useState(0);
     const [accounts, setAccounts] = useState<string[]>([]);
+    const pageSize = useMemo(() => 16, []);
 
     useEffect(() => {
-        loadAccounts();
-        loadZombieById(+id);
+        getAccountsTotal();
+        getAccounts(1);
+        getZombie();
     }, []);
 
-    const loadAccounts = useCallback(async () => {
+    const getAccountsTotal = useCallback(async () => {
         try {
-            const accounts = await CryptozombiesBattleService.instance.getAccounts();
+            const accountsTotal = await CryptozombiesBattleService.instance.getAccountsTotal();
+            const total = (+accountsTotal.toString()) - 1;
+            setAccountsTotal(total);
+        } catch (error: any) {
+            notification.error({
+                message: 'Error in get accounts total',
+                description: error.reason || 'Error generic'
+            });
+        }
+    }, []);
+
+    const getAccounts = useCallback(async (page: number) => {
+        try {
+            const accounts = await CryptozombiesBattleService.instance.getAccounts((page - 1), pageSize);
             const accountsFiltered = filter([...accounts], account => account !== address);
             setAccounts(accountsFiltered);
         } catch (error: any) {
@@ -49,9 +68,9 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    const loadZombieById = useCallback(async (id: number) => {
+    const getZombie = useCallback(async () => {
         try {
-            const zombie = await getZombieById(id);
+            const zombie = await getZombieById(+id);
             setZombie(zombie);
         } catch (error: any) {
             notification.error({
@@ -59,17 +78,24 @@ const ZombieBattleContextProvider = ({ children }: { children: ReactNode }) => {
                 description: error.reason || 'Error generic'
             });
         }
-    }, []);
+    }, [id]);
 
     const getZombieById = useCallback(async (id: number) => {
         return CryptozombiesBattleService.instance.getZombieById(id);
     }, []);
 
     const getZombiesByOwnerMapped = useCallback(async (accountAddress: string) => {
-        return CryptozombiesBattleService.instance.getZombiesByOwnerMapped(accountAddress);
+        return CryptozombiesBattleService.instance.getZombiesAllByOwner(accountAddress);
     }, []);
 
-    const contextValue = useMemo(() => ({ zombie, accounts, getZombiesByOwnerMapped }), [zombie, accounts]);
+    const contextValue = useMemo(() => ({ 
+        zombie,
+        accounts,
+        accountsTotal,
+        pageSize,
+        getZombiesByOwnerMapped,
+        getAccounts
+    }), [zombie, accounts, accountsTotal, pageSize]);
 
     return (
         <ZombieBattleContext.Provider value={contextValue}>

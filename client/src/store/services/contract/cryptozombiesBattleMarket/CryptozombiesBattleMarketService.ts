@@ -59,15 +59,20 @@ class CryptozombiesBattleMarketService extends ContractService {
         return contract.balance();
     }
     
+    public async getZombiesInShopTotal(): Promise<bigint> {
+        const contract = await this.getContract(true);
+        return contract.getZombiesInShopTotal();
+    }
+    
     public async getZombieByIdInSale(zombieId: number): Promise<IZombieSale> {
         const contract = await this.getContract();
         const zombieSale = await contract.getZombieByIdInSale(zombieId);
         return zombieSaleMapper(zombieSale);
     }
     
-    public async getAllZombiesInShop(): Promise<IZombieSale[]> {
+    public async getZombiesInShop(page: number, pageSize: number = this.pageSize): Promise<IZombieSale[]> {
         const contract = await this.getContract();
-        const result = await contract.getZombiesInShopPaginated(0, this.pageSize);
+        const result = await contract.getZombiesInShopPaginated(page, pageSize);
         return map(result, zombieSaleMapper);
     }
 

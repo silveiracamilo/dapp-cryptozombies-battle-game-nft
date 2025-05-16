@@ -1,5 +1,5 @@
-import { Breadcrumb, Col, Row } from 'antd';
-import React, { useMemo } from 'react';
+import { Breadcrumb, Col, PaginationProps, Row } from 'antd';
+import React, { useCallback, useMemo } from 'react';
 import { useZombieBattleContext } from './context/ZombieBattleContextProvider';
 import { map } from 'lodash';
 import AccountEnemie from './components/AccountEnemie';
@@ -7,9 +7,10 @@ import ZombieCard from 'src/components/zombie/ZombieCard';
 import { IZombie } from 'src/store/interface/zombie/IZombie';
 import { Paths } from 'src/router/RouteConsts';
 import { useNavigate } from 'react-router';
+import CZBPagination from 'src/components/pagination/CZBPagination';
 
 const ZombieBattle: React.FC = () => {
-    const { zombie, accounts } = useZombieBattleContext();
+    const { zombie, accounts, accountsTotal, pageSize, getAccounts } = useZombieBattleContext();
     const navigate = useNavigate();
     const breadcrumbItems = useMemo(() => [
         {
@@ -20,13 +21,17 @@ const ZombieBattle: React.FC = () => {
         },
     ], []);
 
+    const onChange: PaginationProps['onChange'] = useCallback((page: number) => {
+        getAccounts(page);
+    }, []);
+
     return (
         <>
         <Breadcrumb items={breadcrumbItems} />
         <Row>
             <h1 style={{ color: '#b6a764' }}>Choose a account to fight {zombie?.name}</h1>
         </Row>
-        <Row align="middle">
+        <Row gutter={24}>
             <Col span={4}>
                 <ZombieCard zombie={zombie as IZombie} />
             </Col>
@@ -43,8 +48,8 @@ const ZombieBattle: React.FC = () => {
                     <p>Loading enemies account...</p>
                 </Row>
                 }
+                <CZBPagination pageSize={pageSize} total={accountsTotal} onChange={onChange} />
             </Col>
-            
         </Row>
         </>
     )

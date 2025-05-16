@@ -1,5 +1,5 @@
-import { Breadcrumb, Col, Row } from 'antd';
-import React, { useMemo } from 'react';
+import { Breadcrumb, Col, PaginationProps, Row } from 'antd';
+import React, { useCallback, useMemo } from 'react';
 import { useZombieAttackContext } from './context/ZombieAttackContextProvider';
 import { map } from 'lodash';
 import ZombieEnemy from './components/ZombieEnemy';
@@ -7,11 +7,12 @@ import ZombieCard from 'src/components/zombie/ZombieCard';
 import { IZombie } from 'src/store/interface/zombie/IZombie';
 import { useNavigate } from 'react-router';
 import { Paths } from 'src/router/RouteConsts';
+import CZBPagination from 'src/components/pagination/CZBPagination';
 
 const ZombieAttack: React.FC = () => {
     // const { address } = useAuthContext();
     // const { addressEnemie } = useParams();
-    const { zombie, zombies } = useZombieAttackContext();
+    const { zombie, zombies, pageSize, balanceOfEnemie, getZombiesByOwnerMapped } = useZombieAttackContext();
     // const chatRef = useRef<IChatRef>(null);
     const navigate = useNavigate();
     const breadcrumbItems = useMemo(() => [
@@ -29,6 +30,10 @@ const ZombieAttack: React.FC = () => {
     // const showChat = useCallback(() => {
     //     chatRef.current?.showChat();
     // }, [chatRef])
+
+    const onChange: PaginationProps['onChange'] = useCallback((page: number) => {
+        getZombiesByOwnerMapped(page);
+    }, []);
 
     return (
         <>
@@ -56,6 +61,7 @@ const ZombieAttack: React.FC = () => {
                     <p>Loading enemies...</p>
                 </Row>
                 }
+                <CZBPagination pageSize={pageSize} total={balanceOfEnemie} onChange={onChange} />
             </Col>
         </Row>
         {/* <Chat ref={chatRef} from={address} to={addressEnemie || ''} /> */}

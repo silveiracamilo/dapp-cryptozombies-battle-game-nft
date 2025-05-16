@@ -10,6 +10,9 @@ import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 
 interface IMarketplaceContext {
     allZombiesInShop: IZombieSale[]
+    total: number
+    pageSize: number
+    getZombiesInShop: (page: number) => Promise<void>
     getZombieById: (id: number) => Promise<IZombie>
     buyZombie: (zombieId: number, price: bigint) => Promise<void>
 }
@@ -27,17 +30,36 @@ export const useMarketplaceContext = () => {
 const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
     const [allZombiesInShop, setAllZombiesInShop] = useState<IZombieSale[]>([]);
     const [loading, setLoading] = useState(false);
+    const [total, setTotal] = useState(0);
+    const pageSize = useMemo(() => 18, []);
     const navigate = useNavigate();
 
     useEffect(() => {
-        getAllZombiesInShop();
+        getZombiesInShopTotal();
+        getZombiesInShop(1);
     }, []);
 
-    const getAllZombiesInShop = useCallback(async () => {
+    const getZombiesInShopTotal = useCallback(async () => {
         setLoading(true);
         try {
-            const allZombiesInShop = await CryptozombiesBattleMarketService.instance.getAllZombiesInShop();
-            
+            const total = await CryptozombiesBattleMarketService.instance.getZombiesInShopTotal();
+            setTotal(+total.toString());
+        } catch (error: any) {
+            if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
+                notification.error({
+                    message: 'Error in get zombies in shop total',
+                    description: error.reason || 'Error generic'
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const getZombiesInShop = useCallback(async (page: number) => {
+        setLoading(true);
+        try {
+            const allZombiesInShop = await CryptozombiesBattleMarketService.instance.getZombiesInShop((page - 1), pageSize);
             setAllZombiesInShop(allZombiesInShop);
         } catch (error: any) {
             if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
@@ -70,7 +92,14 @@ const MarketplaceContextProvider = ({ children }: { children: ReactNode }) => {
         return CryptozombiesBattleService.instance.getZombieById(id);
     }, []);
 
-    const contextValue = useMemo(() => ({ allZombiesInShop, getZombieById, buyZombie }), [allZombiesInShop]);
+    const contextValue = useMemo(() => ({ 
+        total,
+        pageSize,
+        allZombiesInShop,
+        getZombiesInShop,
+        getZombieById,
+        buyZombie,
+     }), [total, allZombiesInShop]);
 
     return (
         <MarketplaceContext.Provider value={contextValue}>

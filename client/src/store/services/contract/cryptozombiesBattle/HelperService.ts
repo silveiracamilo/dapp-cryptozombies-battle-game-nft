@@ -3,25 +3,32 @@ import { IZombie } from "src/store/interface/zombie/IZombie";
 
 class HelperService extends FeedingService {
 
-    public async getZombiesByOwner(owner: string) {
+    public async getZombiesByOwner(owner: string, page: number, pageSize: number = this.pageSize) {
         const contract = await this.getContract();
-        return contract.getZombiesByOwnerPaginated(owner, 0, this.pageSize);
+        return contract.getZombiesByOwnerPaginated(owner, page, pageSize);
     }
     
     public async getZombiesAllByOwner(owner: string) {
         const contract = await this.getContract();
-        return contract.getZombiesByOwner(owner);
+        const zombiesId = await contract.getZombiesByOwner(owner);
+        const promiseAllZombies = zombiesId.map((zombieId: number) => this.getZombieById(zombieId))
+        return Promise.all<IZombie[]>(promiseAllZombies);
+    }
+    
+    public async getAccountsTotal(): Promise<bigint> {
+        const contract = await this.getContract();
+        return contract.getAccountsTotal();
     }
 
-    public async getZombiesByOwnerMapped(accountAddress: string)  {
-        const zombiesId = await this.getZombiesAllByOwner(accountAddress);
+    public async getZombiesByOwnerMapped(accountAddress: string, page: number, pageSize: number)  {
+        const zombiesId = await this.getZombiesByOwner(accountAddress, page, pageSize);
         const promiseAllZombies = zombiesId.map((zombieId: number) => this.getZombieById(zombieId))
         return Promise.all<IZombie[]>(promiseAllZombies);
     }
 
-    public async getAccounts() {
+    public async getAccounts(page: number, pageSize: number = this.pageSize) {
         const contract = await this.getContract();
-        return contract.getAccountsPaginated(0, this.pageSize);
+        return contract.getAccountsPaginated(page, pageSize);
     }
 
     public async levelUp(zombieId: number) {

@@ -19,6 +19,11 @@ class OwnershipService extends AttackService {
         return contract.balance();
     }
     
+    public async getBalanceOf(owner: string): Promise<bigint> {
+        const contract = await this.getContract(true);
+        return contract.balanceOf(owner);
+    }
+    
 }
 
 export default OwnershipService;

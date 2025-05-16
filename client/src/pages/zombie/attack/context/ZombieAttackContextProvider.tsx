@@ -9,7 +9,10 @@ import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
 interface IZombieAttackContext {
     zombie: IZombie | undefined
     zombies: IZombie[]
+    pageSize: number
+    balanceOfEnemie: number
     getZombieById: (id: number) => Promise<IZombie>
+    getZombiesByOwnerMapped: (page: number) => Promise<void>
     attack: (targetId: number) => Promise<void>
 }
 
@@ -29,9 +32,12 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
     const [zombie, setZombie] = useState<IZombie>();
     const [zombies, setZombies] = useState<IZombie[]>([]);
     const [loading, setLoading] = useState(false);
+    const [balanceOfEnemie, setBalanceOfEnemie] = useState(0);
+    const pageSize = useMemo(() => 16, []);
 
     useEffect(() => {
-        getZombiesByOwnerMapped();
+        getBalanceByEnemie();
+        getZombiesByOwnerMapped(1);
     }, []);
 
     useEffect(() => {
@@ -39,6 +45,23 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
             loadZombieById(+id);
         }
     }, [id]);
+
+    const getBalanceByEnemie = useCallback(async () => {
+        setLoading(true);
+        try {
+            const balanceOf = await CryptozombiesBattleService.instance.getBalanceOf(addressEnemie);
+            setBalanceOfEnemie(+balanceOf.toString());
+        } catch (error: any) {
+            if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
+                notification.error({
+                    message: 'Error in get balance of owner',
+                    description: error.reason || 'Error generic'
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     const loadZombieById = useCallback(async (id: number) => {
         try {
@@ -52,9 +75,9 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
-    const getZombiesByOwnerMapped = useCallback(async () => {
+    const getZombiesByOwnerMapped = useCallback(async (page: number) => {
         try {
-            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwnerMapped(addressEnemie);
+            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwnerMapped(addressEnemie, (page - 1), pageSize);
             setZombies([...zombies]);
         } catch (error: any) {
             if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
@@ -101,10 +124,13 @@ const ZombieAttackContextProvider = ({ children }: { children: ReactNode }) => {
 
     const contextValue = useMemo(() => ({ 
         zombies,
-        getZombieById,
         zombie,
+        pageSize,
+        balanceOfEnemie,
         attack,
-    }), [zombies, zombie, attack]);
+        getZombieById,
+        getZombiesByOwnerMapped,
+    }), [zombies, zombie, pageSize, balanceOfEnemie, attack]);
 
     return (
         <ZombieAttackContext.Provider value={contextValue}>

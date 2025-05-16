@@ -23,7 +23,7 @@ const LayoutAuthentication = ({ children }: { children: ReactNode }) => {
 
     const loadZombiesByOwner = useCallback(async () => {
         try {
-            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwnerMapped(address);
+            const zombies = await CryptozombiesBattleService.instance.getZombiesAllByOwner(address);
             setAccountScore(reduce(zombies, (acc, z) => acc + z.score, 0));
         } catch (error: any) {
             notification.error({

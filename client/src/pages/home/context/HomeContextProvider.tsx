@@ -9,7 +9,10 @@ interface IHomeContext {
     zombiesId: number[]
     mintFreeDisponible: boolean
     mintFreeLeft: number
+    balanceOf: number
+    pageSize: number
     getZombieById: (id: number) => Promise<IZombie>
+    getZombiesByOwner: (page: number) => Promise<void>
 }
 
 const HomeContext = createContext<IHomeContext>({} as IHomeContext);
@@ -28,15 +31,19 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
     const [mintFreeDisponible, setMintFreeDisponible] = useState(false);
     const [mintFreeLeft, setMintFreeLeft] = useState(0);
+    const [balanceOf, setBalanceOf] = useState(0);
+    const pageSize = useMemo(() => 12, []);
 
     useEffect(() => {
-        getZombiesByOwner();
+        getZombiesByOwner(1);
         getMintFreeDisponible();
+        getBalanceByOwner();
     }, []);
 
-    const getZombiesByOwner = useCallback(async () => {
+    const getZombiesByOwner = useCallback(async (page: number) => {
+        setLoading(true);
         try {
-            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwner(address);
+            const zombies = await CryptozombiesBattleService.instance.getZombiesByOwner(address, (page - 1), pageSize);
             setZombiesId([...zombies]);
         } catch (error: any) {
             if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
@@ -45,6 +52,25 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
                     description: error.reason || 'Error generic'
                 });
             }
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
+    const getBalanceByOwner = useCallback(async () => {
+        setLoading(true);
+        try {
+            const balanceOf = await CryptozombiesBattleService.instance.getBalanceOf(address);
+            setBalanceOf(+balanceOf.toString());
+        } catch (error: any) {
+            if(error.reason !== ERROR_PAGE_OUT_OF_RANGE) {
+                notification.error({
+                    message: 'Error in get balance of owner',
+                    description: error.reason || 'Error generic'
+                });
+            }
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -73,8 +99,11 @@ const HomeContextProvider = ({ children }: { children: ReactNode }) => {
         zombiesId,
         mintFreeDisponible,
         mintFreeLeft,
-        getZombieById 
-    }), [zombiesId, mintFreeDisponible, mintFreeLeft]);
+        balanceOf,
+        pageSize,
+        getZombieById,
+        getZombiesByOwner, 
+    }), [zombiesId, mintFreeDisponible, mintFreeLeft, balanceOf, pageSize]);
 
     return (
         <HomeContext.Provider value={contextValue}>

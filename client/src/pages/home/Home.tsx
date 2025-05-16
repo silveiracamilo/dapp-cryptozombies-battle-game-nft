@@ -1,6 +1,6 @@
-import { Col, Row, Tooltip } from 'antd';
+import { Col, PaginationProps, Row, Tooltip } from 'antd';
 import { map } from 'lodash';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useHomeContext } from './context/HomeContextProvider';
 import ZombieArmy from './components/ZombieArmy';
 import { useNavigate } from 'react-router';
@@ -8,10 +8,15 @@ import { Paths } from 'src/router/RouteConsts';
 import CardButtonAction from 'src/components/button/CardButtonAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import CZBPagination from 'src/components/pagination/CZBPagination';
 
 const Home: React.FC = () => {
-    const { zombiesId, mintFreeDisponible, mintFreeLeft } = useHomeContext();
+    const { zombiesId, mintFreeDisponible, mintFreeLeft, balanceOf, pageSize, getZombiesByOwner } = useHomeContext();
     const navigate = useNavigate();
+
+    const onChange: PaginationProps['onChange'] = useCallback((page: number) => {
+        getZombiesByOwner(page);
+    }, []);
 
     if (!zombiesId.length) {
         return (
@@ -55,6 +60,7 @@ const Home: React.FC = () => {
                 </Col>
             )) }
             </Row>
+            <CZBPagination pageSize={pageSize} total={balanceOf} onChange={onChange} />
         </>
     )
 }
