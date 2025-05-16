@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { IZombie } from "src/store/interface/zombie/IZombie";
-import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
+import { INewZombie, ZombieActivitiesType } from "src/store/interface/zombie/ZombieEvents";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 
@@ -14,7 +14,7 @@ interface IZombieAboutContext {
     zombieSale: IZombieSale | undefined
     loading: boolean;
     loadingActivities: boolean;
-    activities: (ISale | ICancelSale | IBuy | INewZombie)[]
+    activities: ZombieActivitiesType
     buyZombie: (zombieId: number, price: bigint) => Promise<void>
 }
 

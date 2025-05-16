@@ -7,7 +7,7 @@ import IZombieSale from "src/store/interface/marketplace/IZombieSale";
 import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
 import { IZombie } from "src/store/interface/zombie/IZombie";
 import IZombieFees from "src/store/interface/zombie/IZombieFees";
-import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
+import { ZombieActivitiesType, INewZombie } from "src/store/interface/zombie/ZombieEvents";
 import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 
@@ -22,7 +22,7 @@ interface IZombieDetailContext {
     changeDna: (newDna: number) => Promise<void>
     saleZombie: (zombieId: number, price: bigint) => Promise<void>
     cancelSaleZombie: (zombieId: number) => Promise<void>
-    activities: (ISale | ICancelSale | IBuy | INewZombie)[]
+    activities: ZombieActivitiesType
 }
 
 const ZombieDetailContext = createContext<IZombieDetailContext>({} as IZombieDetailContext);

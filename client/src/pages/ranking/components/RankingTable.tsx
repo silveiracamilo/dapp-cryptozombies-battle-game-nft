@@ -4,6 +4,7 @@ import { useRankingContext } from "../context/RankingContextProvider";
 import { isEmpty } from "lodash";
 import { addressFormat } from "utils/formatter";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
+import SimpleLoading from "src/components/loading/SimpleLoading";
 
 const RankingTable = () => {
     const { address } = useAuthContext();
@@ -60,7 +61,7 @@ const RankingTable = () => {
     ], [address]);
 
     if (isEmpty(ranking)) {
-        return <div>loading...</div>;
+        return <SimpleLoading />;
     }
 
     return (

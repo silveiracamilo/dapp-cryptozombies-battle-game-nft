@@ -1,7 +1,6 @@
-import { useMemo } from "react";
-import { useZombieAboutContext } from "../context/ZombieAboutContextProvider";
+import React, { useMemo } from "react";
 import { map } from "lodash";
-import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
+import { INewZombie, ZombieActivitiesType } from "src/store/interface/zombie/ZombieEvents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBirthdayCake, faCancel, faMoneyCheckDollar, faTag } from "@fortawesome/free-solid-svg-icons";
 import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
@@ -32,15 +31,19 @@ const itemMapper = {
     },
 };
 
-const Activities = () => {
-    const { loadingActivities, activities } = useZombieAboutContext();
+interface IZombieActivities {
+    loading: boolean
+    activities: ZombieActivitiesType
+}
+
+const ZombieActivities: React.FC<IZombieActivities> = ({ loading, activities }) => {
     const items = useMemo(() => map(activities, activity => ({
         children: itemMapper[activity.event].children(activity as any),
         dot: itemMapper[activity.event].dot,
     })), [activities]);
 
     return (
-        <Spin spinning={loadingActivities}>
+        <Spin spinning={loading}>
             <h2>Activities</h2>
             <Timeline
                 style={{ width: '100%' }}
@@ -50,4 +53,4 @@ const Activities = () => {
     );
 }
 
-export default Activities;
+export default ZombieActivities;
