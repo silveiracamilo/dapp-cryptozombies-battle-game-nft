@@ -34,4 +34,5 @@ export const ContentStyled = styled(Content)`
 export const FooterStyled = styled(Footer)`
     text-align: center;
     background: #000;
+    color: white;
 `;

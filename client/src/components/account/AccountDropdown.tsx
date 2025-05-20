@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Button, Dropdown, MenuProps } from "antd";
+import { Dropdown, MenuProps, Tag } from "antd";
 import { useAuthContext } from "src/context/auth/AuthContextProvider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
@@ -24,10 +24,9 @@ const AccountDropdown = () => {
 
     return (
         <Dropdown menu={{ items }}>
-            <Button>
-                <FontAwesomeIcon icon={faGear} />
-                {addressFormatted}
-            </Button>
+            <Tag icon={<FontAwesomeIcon icon={faGear} />} color="lime">
+                {' '}{addressFormatted}
+            </Tag>
         </Dropdown>
     )
 }

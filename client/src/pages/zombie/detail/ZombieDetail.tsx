@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Col, Row, Tooltip } from 'antd';
+import { Breadcrumb, Col, Row, Tooltip } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useZombieDetailContext } from './context/ZombieDetailContextProvider';
 import { debounce, isNil } from 'lodash';
@@ -12,6 +12,7 @@ import PutForSaleModal from './components/PutForSaleModal';
 import { formatEther } from 'ethers';
 import ZombieStatistic from 'src/components/zombie/statistics/ZombieStatistic';
 import SimpleLoading from 'src/components/loading/SimpleLoading';
+import CardButtonAction from 'src/components/button/CardButtonAction';
 
 const ZombieDetail: React.FC = () => {
     const { zombie, zombieSale, cancelSaleZombie, levelUp, fees, loadingActivities, activities } = useZombieDetailContext();
@@ -50,28 +51,28 @@ const ZombieDetail: React.FC = () => {
             </Col>
             <Col span={16} style={{ textAlign: 'right' }}>
                 <Row style={{ gap: 16 }} justify="end">
-                    <Button icon={<FontAwesomeIcon icon={faCat} />} onClick={feed}>Feed</Button>
-                    <Button icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>Battle</Button>
-                    <Button icon={<FontAwesomeIcon icon={faArrowUp} />} onClick={debounce(levelUp, 200)}>
+                    <CardButtonAction icon={<FontAwesomeIcon icon={faCat} />} onClick={feed}>Feed</CardButtonAction>
+                    <CardButtonAction icon={<FontAwesomeIcon icon={faRadiation} />} onClick={battle}>Battle</CardButtonAction>
+                    <CardButtonAction icon={<FontAwesomeIcon icon={faArrowUp} />} onClick={debounce(levelUp, 200)}>
                         Level Up
                         <Tooltip title={`Price ${ formatEther(fees.levelUpFee) } ETH`}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
-                    </Button>
-                    <Button icon={<FontAwesomeIcon icon={faSignature} />} onClick={() => setShowChangeNameModal(true)}>
+                    </CardButtonAction>
+                    <CardButtonAction icon={<FontAwesomeIcon icon={faSignature} />} onClick={() => setShowChangeNameModal(true)}>
                         Change Name
                         <Tooltip title={`Price ${ formatEther(fees.changeNameFee) } ETH`}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
-                    </Button>
-                    <Button icon={<FontAwesomeIcon icon={faDna} />} onClick={() => setShowChangeDNAModal(true)}>
+                    </CardButtonAction>
+                    <CardButtonAction icon={<FontAwesomeIcon icon={faDna} />} onClick={() => setShowChangeDNAModal(true)}>
                         Change DNA
                         <Tooltip title={`Price ${ formatEther(fees.changeDNAFee) } ETH`}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
-                    </Button>
+                    </CardButtonAction>
                     {isNil(zombieSale) &&
-                    <Button 
+                    <CardButtonAction 
                         icon={<FontAwesomeIcon icon={faTag} />}
                         onClick={() => setShowPutForSaleModal(true)}
                         disabled={!isNil(zombieSale)}
@@ -81,16 +82,16 @@ const ZombieDetail: React.FC = () => {
                         <Tooltip title={`Price ${ formatEther(fees.tax) } ETH`}>
                             <FontAwesomeIcon icon={faCircleInfo} />
                         </Tooltip>
-                    </Button>
+                    </CardButtonAction>
                     }
                     {!isNil(zombieSale) &&
-                    <Button 
+                    <CardButtonAction 
                         icon={<FontAwesomeIcon icon={faTag} />}
                         onClick={debounce(() => cancelSaleZombie(zombieSale.zombieId), 200)}
                         disabled={isNil(zombieSale)}
                     >
                         Cancel Sale
-                    </Button>
+                    </CardButtonAction>
                     }
                 </Row>
             </Col>
