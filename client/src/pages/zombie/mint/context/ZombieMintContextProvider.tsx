@@ -2,8 +2,8 @@ import { notification, Spin } from "antd";
 import { formatEther } from "ethers";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { Paths } from "src/router/RouteConsts";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import { Paths } from "@/router/RouteConsts";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieMintContext {
     mintFee: string

@@ -2,7 +2,7 @@ import { Col, ConfigProvider, InputNumber, Modal, notification, Row, Tooltip } f
 import { useCallback, useMemo, useState } from "react";
 import { useZombieDetailContext } from "../context/ZombieDetailContextProvider";
 import { debounce } from "lodash";
-import { Zombie } from "src/components/zombie/Zombie";
+import { Zombie } from "@/components/zombie/Zombie";
 import { formatEther, parseEther } from "ethers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";

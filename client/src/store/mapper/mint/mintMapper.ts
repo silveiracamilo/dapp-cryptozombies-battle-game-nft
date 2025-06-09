@@ -1,6 +1,6 @@
 import { Contract } from "ethers";
 import { last } from "lodash";
-import { IMintResult } from "src/store/interface/mint/IMintResult";
+import { IMintResult } from "@/store/interface/mint/IMintResult";
 
 export const mintResultMap = async (tx: any, contract: Contract): Promise<IMintResult> => {
     const receipt = await tx.wait();

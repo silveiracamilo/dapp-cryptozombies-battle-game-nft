@@ -1,8 +1,8 @@
 import { Button, Card, Col, Image, Row, Spin } from 'antd';
 import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { Zombie } from 'src/components/zombie/Zombie';
-import { Paths } from 'src/router/RouteConsts';
+import { Zombie } from '@/components/zombie/Zombie';
+import { Paths } from '@/router/RouteConsts';
 
 const ZombieFeeding: React.FC = () => {
     const { fromDna = '', targetDna = '', kittyId = '', newDna = '' } = useParams();

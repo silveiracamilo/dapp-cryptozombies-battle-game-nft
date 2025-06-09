@@ -1,8 +1,8 @@
 import { notification } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
-import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import { IZombie } from "@/store/interface/zombie/IZombie";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieAttackDefeatContext {
     zombieFrom: IZombie | undefined

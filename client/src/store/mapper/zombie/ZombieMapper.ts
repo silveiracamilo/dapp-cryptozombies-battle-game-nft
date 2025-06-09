@@ -1,4 +1,4 @@
-import { IZombie } from "src/store/interface/zombie/IZombie"
+import { IZombie } from "@/store/interface/zombie/IZombie"
 
 const HEAD_VARIATIONS = 7
 const EYES_VARIATIONS = 11

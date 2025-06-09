@@ -4,10 +4,10 @@ import { useZombieAttackDefeatContext } from './context/ZombieAttackDefeatContex
 import { useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Paths } from 'src/router/RouteConsts';
-import ZombieCard from 'src/components/zombie/ZombieCard';
-import { IZombie } from 'src/store/interface/zombie/IZombie';
-import CardButtonAction from 'src/components/button/CardButtonAction';
+import { Paths } from '@/router/RouteConsts';
+import ZombieCard from '@/components/zombie/ZombieCard';
+import { IZombie } from '@/store/interface/zombie/IZombie';
+import CardButtonAction from '@/components/button/CardButtonAction';
 
 const { Meta } = Card;
 

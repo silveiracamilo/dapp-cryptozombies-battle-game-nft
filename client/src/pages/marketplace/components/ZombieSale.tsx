@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { Card, notification } from "antd";
-import { IZombie } from "src/store/interface/zombie/IZombie";
+import { IZombie } from "@/store/interface/zombie/IZombie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag } from "@fortawesome/free-solid-svg-icons";
-import CardButtonAction from "src/components/button/CardButtonAction";
+import CardButtonAction from "@/components/button/CardButtonAction";
 import { useMarketplaceContext } from "../context/MarketplaceContextProvider";
-import IZombieSale from "src/store/interface/marketplace/IZombieSale";
-import { addressFormat } from "utils/formatter";
+import IZombieSale from "@/store/interface/marketplace/IZombieSale";
+import { addressFormat } from "@/utils/formatter";
 import { formatEther } from "ethers";
 import { debounce } from "lodash";
-import ZombieCard from "src/components/zombie/ZombieCard";
+import ZombieCard from "@/components/zombie/ZombieCard";
 import { useNavigate } from "react-router";
-import { Paths } from "src/router/RouteConsts";
+import { Paths } from "@/router/RouteConsts";
 
 const { Meta } = Card;
 

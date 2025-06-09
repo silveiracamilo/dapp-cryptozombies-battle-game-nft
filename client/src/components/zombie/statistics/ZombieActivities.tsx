@@ -1,14 +1,14 @@
 import React, { useMemo } from "react";
 import { map } from "lodash";
-import { INewZombie, ZombieActivitiesType } from "src/store/interface/zombie/ZombieEvents";
+import { INewZombie, ZombieActivitiesType } from "@/store/interface/zombie/ZombieEvents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBirthdayCake, faCancel, faMoneyCheckDollar, faTag } from "@fortawesome/free-solid-svg-icons";
-import { IBuy, ISale } from "src/store/interface/marketplace/MarketEvents";
+import { IBuy, ISale } from "@/store/interface/marketplace/MarketEvents";
 import { formatEther } from "ethers";
-import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
+import { ZombieEventTypes } from "@/store/interface/event/ZombieEvent";
 import { Spin, Timeline } from "antd";
 import moment from "moment";
-import { addressFormat } from "utils/formatter";
+import { addressFormat } from "@/utils/formatter";
 
 const dateFormat = (date: string) => moment(date).format('LLL');
 

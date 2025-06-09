@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { notification, Statistic } from "antd";
-import { IZombie } from "src/store/interface/zombie/IZombie";
+import { IZombie } from "@/store/interface/zombie/IZombie";
 import { useNavigate } from "react-router";
-import { Paths } from "src/router/RouteConsts";
+import { Paths } from "@/router/RouteConsts";
 import { useHomeContext } from "../context/HomeContextProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressCard, faCat, faRadiation } from "@fortawesome/free-solid-svg-icons";
-import ZombieCard from "src/components/zombie/ZombieCard";
-import CardButtonAction from "src/components/button/CardButtonAction";
+import ZombieCard from "@/components/zombie/ZombieCard";
+import CardButtonAction from "@/components/button/CardButtonAction";
 import { CardFooterStyled, CardStyled } from "./styles";
 
 const { Countdown } = Statistic;

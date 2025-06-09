@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, Row } from 'antd';
 import React, { useCallback } from 'react';
 import { useZombieMintContext } from './context/ZombieMintContextProvider';
 import { debounce } from 'lodash';
-import { FormItemStyled } from 'pages/admin/settings/components/forms/styles';
+import { FormItemStyled } from '@/pages/admin/settings/components/forms/styles';
 
 interface IFormFields {
     name: string

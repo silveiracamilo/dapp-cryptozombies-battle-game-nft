@@ -1,6 +1,6 @@
 import { Contract } from "ethers";
 import { last } from "lodash";
-import { IAttackResult } from "src/store/interface/attack/IAttackResult";
+import { IAttackResult } from "@/store/interface/attack/IAttackResult";
 
 export const attackResultMap = async (tx: any, contract: Contract): Promise<IAttackResult> => {
     const receipt = await tx.wait();

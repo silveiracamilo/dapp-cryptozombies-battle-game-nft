@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { Image, Row, Spin, Table } from "antd";
 import { useRankingContext } from "../context/RankingContextProvider";
 import { isEmpty } from "lodash";
-import { addressFormat } from "utils/formatter";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import SimpleLoading from "src/components/loading/SimpleLoading";
+import { addressFormat } from "@/utils/formatter";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
+import SimpleLoading from "@/components/loading/SimpleLoading";
 
 const RankingTable = () => {
     const { address } = useAuthContext();

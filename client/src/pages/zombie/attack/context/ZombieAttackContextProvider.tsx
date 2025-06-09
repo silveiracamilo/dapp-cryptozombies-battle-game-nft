@@ -1,10 +1,10 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Paths } from "src/router/RouteConsts";
-import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
-import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
+import { Paths } from "@/router/RouteConsts";
+import { IZombie } from "@/store/interface/zombie/IZombie";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import { ERROR_PAGE_OUT_OF_RANGE } from "@/utils/error/Constants";
 
 interface IZombieAttackContext {
     zombie: IZombie | undefined

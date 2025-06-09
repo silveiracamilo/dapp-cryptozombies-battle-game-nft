@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { useMarketplaceContext } from './context/MarketplaceContextProvider';
 import { map } from 'lodash';
 import ZombieSale from './components/ZombieSale';
-import CZBPagination from 'src/components/pagination/CZBPagination';
+import CZBPagination from '@/components/pagination/CZBPagination';
 
 const Marketplace: React.FC = () => {
     const { total, pageSize, allZombiesInShop, getZombiesInShop } = useMarketplaceContext();

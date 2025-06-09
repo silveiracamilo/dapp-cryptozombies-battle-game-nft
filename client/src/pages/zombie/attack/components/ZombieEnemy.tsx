@@ -1,8 +1,8 @@
-import { IZombie } from "src/store/interface/zombie/IZombie";
+import { IZombie } from "@/store/interface/zombie/IZombie";
 import { useZombieAttackContext } from "../context/ZombieAttackContextProvider";
 import { debounce } from "lodash";
-import ZombieCard from "src/components/zombie/ZombieCard";
-import CardButtonAction from "src/components/button/CardButtonAction";
+import ZombieCard from "@/components/zombie/ZombieCard";
+import CardButtonAction from "@/components/button/CardButtonAction";
 import { CardFooterStyled, CardStyled } from "./styles";
 
 const ZombieEnemy = ({ zombie }: { zombie: IZombie }) => {

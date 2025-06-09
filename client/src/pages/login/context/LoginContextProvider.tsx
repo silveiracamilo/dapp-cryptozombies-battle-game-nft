@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
 import { useNavigate, useSearchParams } from "react-router";
-import { Paths } from "src/router/RouteConsts";
+import { Paths } from "@/router/RouteConsts";
 
 interface ILoginContext {
     doAuth: () => void;

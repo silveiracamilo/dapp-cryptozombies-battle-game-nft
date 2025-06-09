@@ -1,14 +1,14 @@
 import { Card, Col, Row } from 'antd';
 import React, { useMemo } from 'react';
-import { Zombie } from 'src/components/zombie/Zombie';
+import { Zombie } from '@/components/zombie/Zombie';
 import { useZombieAttackVitoryContext } from './context/ZombieAttackVitoryContextProvider';
 import { useNavigate, useParams } from 'react-router';
-import { Paths } from 'src/router/RouteConsts';
+import { Paths } from '@/router/RouteConsts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import ZombieCard from 'src/components/zombie/ZombieCard';
-import { IZombie } from 'src/store/interface/zombie/IZombie';
-import CardButtonAction from 'src/components/button/CardButtonAction';
+import ZombieCard from '@/components/zombie/ZombieCard';
+import { IZombie } from '@/store/interface/zombie/IZombie';
+import CardButtonAction from '@/components/button/CardButtonAction';
 
 const { Meta } = Card;
 

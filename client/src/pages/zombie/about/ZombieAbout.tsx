@@ -3,12 +3,12 @@ import React, { useMemo } from 'react';
 import { useZombieAboutContext } from './context/ZombieAboutContextProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
-import { Paths } from 'src/router/RouteConsts';
+import { Paths } from '@/router/RouteConsts';
 import { useNavigate } from 'react-router';
 import { debounce, isNil } from 'lodash';
 import { formatEther } from 'ethers';
-import ZombieStatistic from 'src/components/zombie/statistics/ZombieStatistic';
-import SimpleLoading from 'src/components/loading/SimpleLoading';
+import ZombieStatistic from '@/components/zombie/statistics/ZombieStatistic';
+import SimpleLoading from '@/components/loading/SimpleLoading';
 
 const ZombieAbout: React.FC = () => {
     const { zombie, zombieSale, buyZombie, loadingActivities, activities } = useZombieAboutContext();

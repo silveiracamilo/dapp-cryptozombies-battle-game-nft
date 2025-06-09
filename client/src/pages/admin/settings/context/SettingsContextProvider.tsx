@@ -1,10 +1,10 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useGetProofRootQuery } from "src/store/api/cryptozombiesBattle/api";
-import { IGetProofRootResponse } from "src/store/api/cryptozombiesBattle/types";
-import ISettings from "src/store/interface/admin/ISettings";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
-import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
+import { useGetProofRootQuery } from "@/store/api/cryptozombiesBattle/api";
+import { IGetProofRootResponse } from "@/store/api/cryptozombiesBattle/types";
+import ISettings from "@/store/interface/admin/ISettings";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import CryptozombiesBattleMarketService from "@/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 
 interface ISettingsContext {
     balance: bigint

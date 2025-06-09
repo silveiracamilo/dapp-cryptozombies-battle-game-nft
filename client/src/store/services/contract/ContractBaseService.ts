@@ -1,5 +1,5 @@
 import { BrowserProvider, Contract, JsonRpcProvider, LogDescription } from "ethers";
-import { FROM_BLOCK } from 'src/store/Constants';
+import { FROM_BLOCK } from '@/store/Constants';
 
 class ContractBaseService {
     private _providerPublic!: JsonRpcProvider;

@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Menu, MenuProps } from "antd";
 import { useLocation, useNavigate } from "react-router";
 import { findIndex, map } from "lodash";
-import { Paths } from "src/router/RouteConsts";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import { OWNER_ADDRESS } from "src/store/Constants";
+import { Paths } from "@/router/RouteConsts";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
+import { OWNER_ADDRESS } from "@/store/Constants";
 
 const LayoutMenu = () => {
     const navigate = useNavigate();

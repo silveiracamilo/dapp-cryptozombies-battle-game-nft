@@ -1,7 +1,7 @@
 import HelperService from "./HelperService";
-import { IAttackResult } from "src/store/interface/attack/IAttackResult";
-import { attackResultMap } from "src/store/mapper/attack/attackMapper";
-import { getGasLimit } from "utils/contract/gasLimit";
+import { IAttackResult } from "@/store/interface/attack/IAttackResult";
+import { attackResultMap } from "@/store/mapper/attack/attackMapper";
+import { getGasLimit } from "@/utils/contract/gasLimit";
 
 class AttackService extends HelperService {
     

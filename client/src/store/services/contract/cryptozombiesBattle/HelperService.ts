@@ -1,5 +1,5 @@
 import FeedingService from "./FeedingService";
-import { IZombie } from "src/store/interface/zombie/IZombie";
+import { IZombie } from "@/store/interface/zombie/IZombie";
 
 class HelperService extends FeedingService {
 

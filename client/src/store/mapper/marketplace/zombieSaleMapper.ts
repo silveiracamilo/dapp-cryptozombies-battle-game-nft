@@ -1,4 +1,4 @@
-import IZombieSale from "src/store/interface/marketplace/IZombieSale";
+import IZombieSale from "@/store/interface/marketplace/IZombieSale";
 
 export const zombieSaleMapper = (zombieSale: (string | number | bigint)[]): IZombieSale => ({
     seller: zombieSale[0] as string,

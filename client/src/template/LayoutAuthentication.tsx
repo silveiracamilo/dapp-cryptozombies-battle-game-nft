@@ -3,10 +3,10 @@ import { Image, notification } from "antd";
 import logo from "/images/cryptozombies_battle_logo_150.png";
 import { useNavigate } from "react-router";
 import { isEmpty, reduce } from "lodash";
-import { Paths } from "src/router/RouteConsts";
-import AccountDropdown from "src/components/account/AccountDropdown";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import { Paths } from "@/router/RouteConsts";
+import AccountDropdown from "@/components/account/AccountDropdown";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 import { ContentStyled, FooterStyled, HeaderStyled, LayoutStyled, ScoreStyled } from "./styles";
 import LayoutMenu from "./components/LayoutMenu";
 

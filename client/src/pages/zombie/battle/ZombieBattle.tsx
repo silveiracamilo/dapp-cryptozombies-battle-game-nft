@@ -3,11 +3,11 @@ import React, { useCallback, useMemo } from 'react';
 import { useZombieBattleContext } from './context/ZombieBattleContextProvider';
 import { map } from 'lodash';
 import AccountEnemie from './components/AccountEnemie';
-import ZombieCard from 'src/components/zombie/ZombieCard';
-import { IZombie } from 'src/store/interface/zombie/IZombie';
-import { Paths } from 'src/router/RouteConsts';
+import ZombieCard from '@/components/zombie/ZombieCard';
+import { IZombie } from '@/store/interface/zombie/IZombie';
+import { Paths } from '@/router/RouteConsts';
 import { useNavigate } from 'react-router';
-import CZBPagination from 'src/components/pagination/CZBPagination';
+import CZBPagination from '@/components/pagination/CZBPagination';
 
 const ZombieBattle: React.FC = () => {
     const { zombie, accounts, accountsTotal, pageSize, getAccounts } = useZombieBattleContext();

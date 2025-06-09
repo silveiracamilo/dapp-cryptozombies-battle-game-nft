@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, notification, Row } from "antd";
 import { useSettingsContext } from "../../context/SettingsContextProvider";
 import { useCallback, useMemo } from "react";
 import { FormItemStyled } from "./styles";
-import SimpleLoading from "src/components/loading/SimpleLoading";
+import SimpleLoading from "@/components/loading/SimpleLoading";
 import { isEmpty } from "lodash";
 
 interface IFormFields {

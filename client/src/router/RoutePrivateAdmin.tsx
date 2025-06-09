@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 import { Navigate, Outlet } from "react-router";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import LayoutAuthentication from "src/template/LayoutAuthentication";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
+import LayoutAuthentication from "@/template/LayoutAuthentication";
 import { Paths } from "./RouteConsts";
-import { OWNER_ADDRESS } from "src/store/Constants";
+import { OWNER_ADDRESS } from "@/store/Constants";
 
 const withLayoutAuthentication = (children: ReactElement) => {
     return <LayoutAuthentication>{children}</LayoutAuthentication>;

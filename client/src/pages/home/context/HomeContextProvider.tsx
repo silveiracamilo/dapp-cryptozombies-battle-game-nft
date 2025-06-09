@@ -1,9 +1,9 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
-import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
+import { IZombie } from "@/store/interface/zombie/IZombie";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import { ERROR_PAGE_OUT_OF_RANGE } from "@/utils/error/Constants";
 
 interface IHomeContext {
     zombiesId: number[]

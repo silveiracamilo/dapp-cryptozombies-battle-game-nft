@@ -1,11 +1,11 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Paths } from "src/router/RouteConsts";
-import { useGetKittiesQuery } from "src/store/api/cryptokitties/api";
-import { IKitty } from "src/store/interface/cryptokitties/IKitty";
-import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import { Paths } from "@/router/RouteConsts";
+import { useGetKittiesQuery } from "@/store/api/cryptokitties/api";
+import { IKitty } from "@/store/interface/cryptokitties/IKitty";
+import { IZombie } from "@/store/interface/zombie/IZombie";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieFeedContext {
     zombie: IZombie | undefined

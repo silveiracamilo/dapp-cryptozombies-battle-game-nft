@@ -1,6 +1,6 @@
 import { Contract } from "ethers";
 import { last } from "lodash";
-import { IFeedResult } from "src/store/interface/feed/IFeedResult";
+import { IFeedResult } from "@/store/interface/feed/IFeedResult";
 
 export const feedResultMap = async (tx: any, contract: Contract): Promise<IFeedResult> => {
     const receipt = await tx.wait();

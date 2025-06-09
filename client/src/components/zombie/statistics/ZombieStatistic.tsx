@@ -3,10 +3,10 @@ import { Zombie } from "../Zombie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useMemo } from "react";
 import moment from "moment";
-import { IZombie } from "src/store/interface/zombie/IZombie";
+import { IZombie } from "@/store/interface/zombie/IZombie";
 import { faArrowDown, faArrowsToEye, faArrowUp, faBirthdayCake, faDna, faDumbbell, faEye, faGaugeSimpleHigh, faHandFist, faHeadSideCough, faPerson, faPersonRays, faStairs, faStopwatch, faTShirt } from '@fortawesome/free-solid-svg-icons';
 import ZombieActivities from "./ZombieActivities";
-import { ZombieActivitiesType } from "src/store/interface/zombie/ZombieEvents";
+import { ZombieActivitiesType } from "@/store/interface/zombie/ZombieEvents";
 
 interface IZombieStatistic {
     zombie: IZombie

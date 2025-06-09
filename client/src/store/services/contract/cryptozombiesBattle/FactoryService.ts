@@ -1,11 +1,11 @@
-import { INewZombie } from "src/store/interface/zombie/ZombieEvents";
+import { INewZombie } from "@/store/interface/zombie/ZombieEvents";
 import ContractService from "./ContractService";
-import { zombieMapper } from "src/store/mapper/zombie/ZombieMapper";
+import { zombieMapper } from "@/store/mapper/zombie/ZombieMapper";
 import { LogDescription, toBeHex, zeroPadValue } from "ethers";
-import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
-import { IMintResult } from "src/store/interface/mint/IMintResult";
-import { mintResultMap } from "src/store/mapper/mint/mintMapper";
-import { getGasLimit } from "utils/contract/gasLimit";
+import { ZombieEventTypes } from "@/store/interface/event/ZombieEvent";
+import { IMintResult } from "@/store/interface/mint/IMintResult";
+import { mintResultMap } from "@/store/mapper/mint/mintMapper";
+import { getGasLimit } from "@/utils/contract/gasLimit";
 
 class FactoryService extends ContractService {
 

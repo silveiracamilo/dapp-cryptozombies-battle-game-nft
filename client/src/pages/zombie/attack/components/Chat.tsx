@@ -1,7 +1,7 @@
 import { Button, Drawer, Form, Input, Row } from 'antd';
 import { map } from 'lodash';
 import { ForwardRefRenderFunction, forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
-import { socket } from 'utils/socket';
+import { socket } from '@/utils/socket';
 
 const { TextArea } = Input;
 

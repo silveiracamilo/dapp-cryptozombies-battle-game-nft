@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { Dropdown, MenuProps, Tag } from "antd";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
-import { addressFormat } from "utils/formatter";
+import { addressFormat } from "@/utils/formatter";
 
 const AccountDropdown = () => {
     const { address } = useAuthContext();

@@ -1,10 +1,10 @@
 import { Image, notification, Row, Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Paths } from "src/router/RouteConsts";
-import { addressFormat } from "utils/formatter";
+import { Paths } from "@/router/RouteConsts";
+import { addressFormat } from "@/utils/formatter";
 import { useZombieBattleContext } from "../context/ZombieBattleContextProvider";
-import CardButtonAction from "src/components/button/CardButtonAction";
+import CardButtonAction from "@/components/button/CardButtonAction";
 import { CardFooterStyled, CardStyled } from "./styles";
 
 

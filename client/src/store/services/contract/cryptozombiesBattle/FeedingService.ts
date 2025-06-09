@@ -1,6 +1,6 @@
-import { feedResultMap } from "src/store/mapper/feed/feedMapper";
+import { feedResultMap } from "@/store/mapper/feed/feedMapper";
 import FactoryService from "./FactoryService";
-import { getGasLimit } from "utils/contract/gasLimit";
+import { getGasLimit } from "@/utils/contract/gasLimit";
 
 class FeedingService extends FactoryService {
     

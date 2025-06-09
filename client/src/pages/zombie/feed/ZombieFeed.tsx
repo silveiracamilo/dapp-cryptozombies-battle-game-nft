@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { Breadcrumb, Button, Card, Col, Image, Row, Spin } from 'antd';
 import { debounce, map } from 'lodash';
 import { useZombieFeedContext } from './context/ZombieFeedContextProvider';
-import { Zombie } from 'src/components/zombie/Zombie';
-import { Paths } from 'src/router/RouteConsts';
+import { Zombie } from '@/components/zombie/Zombie';
+import { Paths } from '@/router/RouteConsts';
 import { useNavigate } from 'react-router';
 
 const { Meta } = Card;

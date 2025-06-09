@@ -1,4 +1,4 @@
-import ISettings from "src/store/interface/admin/ISettings";
+import ISettings from "@/store/interface/admin/ISettings";
 import OwnershipService from "./OwnershipService";
 import CryptozombiesBattleMarketService from "../cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 

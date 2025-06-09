@@ -1,7 +1,7 @@
-import { IZombie } from "src/store/interface/zombie/IZombie";
+import { IZombie } from "@/store/interface/zombie/IZombie";
 import { Zombie } from "./Zombie";
 import { ConfigProvider, Progress, ProgressProps, Row } from "antd";
-import { useAppContext } from "src/context/app/AppContextProvider";
+import { useAppContext } from "@/context/app/AppContextProvider";
 import { CardFooterStyled, CardStyled } from "./stylesCard";
 
 interface IZombieCard {

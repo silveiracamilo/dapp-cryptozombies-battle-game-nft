@@ -1,12 +1,12 @@
 import { notification, Spin } from "antd";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { Paths } from "src/router/RouteConsts";
-import IZombieSale from "src/store/interface/marketplace/IZombieSale";
-import { IZombie } from "src/store/interface/zombie/IZombie";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
-import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
-import { ERROR_PAGE_OUT_OF_RANGE } from "utils/error/Constants";
+import { Paths } from "@/router/RouteConsts";
+import IZombieSale from "@/store/interface/marketplace/IZombieSale";
+import { IZombie } from "@/store/interface/zombie/IZombie";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import CryptozombiesBattleMarketService from "@/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
+import { ERROR_PAGE_OUT_OF_RANGE } from "@/utils/error/Constants";
 
 interface IMarketplaceContext {
     allZombiesInShop: IZombieSale[]

@@ -1,4 +1,4 @@
-import { lazyLoad } from 'utils/loadable';
+import { lazyLoad } from '@/utils/loadable';
 
 export const ZombieBattlePage = lazyLoad(
   () => import('.'),

@@ -1,11 +1,11 @@
-import IZombieFees from "src/store/interface/zombie/IZombieFees";
+import IZombieFees from "@/store/interface/zombie/IZombieFees";
 import OwnershipService from "./OwnershipService";
 import { map } from "lodash";
-import { zombieSaleMapper } from "src/store/mapper/marketplace/zombieSaleMapper";
-import IZombieSale from "src/store/interface/marketplace/IZombieSale";
+import { zombieSaleMapper } from "@/store/mapper/marketplace/zombieSaleMapper";
+import IZombieSale from "@/store/interface/marketplace/IZombieSale";
 import { LogDescription, toBeHex, zeroPadValue } from "ethers";
-import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
-import { ZombieEventTypes } from "src/store/interface/event/ZombieEvent";
+import { IBuy, ICancelSale, ISale } from "@/store/interface/marketplace/MarketEvents";
+import { ZombieEventTypes } from "@/store/interface/event/ZombieEvent";
 
 class MarketService extends OwnershipService {
     

@@ -4,11 +4,11 @@ import React, { useCallback } from 'react';
 import { useHomeContext } from './context/HomeContextProvider';
 import ZombieArmy from './components/ZombieArmy';
 import { useNavigate } from 'react-router';
-import { Paths } from 'src/router/RouteConsts';
-import CardButtonAction from 'src/components/button/CardButtonAction';
+import { Paths } from '@/router/RouteConsts';
+import CardButtonAction from '@/components/button/CardButtonAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import CZBPagination from 'src/components/pagination/CZBPagination';
+import CZBPagination from '@/components/pagination/CZBPagination';
 
 const Home: React.FC = () => {
     const { zombiesId, mintFreeDisponible, mintFreeLeft, balanceOf, pageSize, getZombiesByOwner } = useHomeContext();

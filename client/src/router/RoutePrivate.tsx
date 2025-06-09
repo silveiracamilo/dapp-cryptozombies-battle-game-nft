@@ -1,8 +1,8 @@
 import { isEmpty } from "lodash";
 import { ReactElement } from "react";
 import { Navigate, Outlet, useLocation } from "react-router";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import LayoutAuthentication from "src/template/LayoutAuthentication";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
+import LayoutAuthentication from "@/template/LayoutAuthentication";
 import { Paths } from "./RouteConsts";
 
 const withLayoutAuthentication = (children: ReactElement) => {

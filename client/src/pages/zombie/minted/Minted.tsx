@@ -1,8 +1,8 @@
 import { Button, Result, Row } from 'antd';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { Zombie } from 'src/components/zombie/Zombie';
-import { Paths } from 'src/router/RouteConsts';
+import { Zombie } from '@/components/zombie/Zombie';
+import { Paths } from '@/router/RouteConsts';
 
 const ZombieMinted: React.FC = () => {
     const { id, name, dna = ''} = useParams();

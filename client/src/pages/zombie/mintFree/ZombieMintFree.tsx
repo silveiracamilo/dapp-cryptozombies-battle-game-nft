@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, Container, Description, Info, SectionTitle, Steps, Title } from './styles';
-import { useAuthContext } from 'src/context/auth/AuthContextProvider';
+import { useAuthContext } from '@/context/auth/AuthContextProvider';
 import { debounce, isEmpty } from 'lodash';
 import { useZombieMintFreeContext } from './context/ZombieMintFreeContextProvider';
-import { addressFormat } from 'utils/formatter';
-import ButtonAction from 'src/components/button/ButtonAction';
-import CardButtonAction from 'src/components/button/CardButtonAction';
+import { addressFormat } from '@/utils/formatter';
+import ButtonAction from '@/components/button/ButtonAction';
+import CardButtonAction from '@/components/button/CardButtonAction';
 import { Row } from 'antd';
 
 

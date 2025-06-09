@@ -2,7 +2,7 @@ import { Button, Col, Form, notification, Row } from "antd";
 import { useSettingsContext } from "../../context/SettingsContextProvider";
 import { useCallback, useMemo } from "react";
 import { FormItemStyled, InputNumberStyled } from "./styles";
-import SimpleLoading from "src/components/loading/SimpleLoading";
+import SimpleLoading from "@/components/loading/SimpleLoading";
 import { formatEther, parseEther } from "ethers";
 import { debounce, isEmpty } from "lodash";
 

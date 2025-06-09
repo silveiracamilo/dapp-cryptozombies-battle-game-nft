@@ -1,6 +1,6 @@
-import { IRanking } from "src/store/interface/ranking/IRanking";
+import { IRanking } from "@/store/interface/ranking/IRanking";
 import { map } from "lodash";
-import { rankingMapper } from "src/store/mapper/ranking/RankingMapper";
+import { rankingMapper } from "@/store/mapper/ranking/RankingMapper";
 import ContractService from "./ContractService";
 
 class CryptozombiesBattleRankingService extends ContractService {

@@ -1,4 +1,4 @@
-import { IRanking } from "src/store/interface/ranking/IRanking";
+import { IRanking } from "@/store/interface/ranking/IRanking";
 
 export const rankingMapper = (ranking: (string | number)[]): IRanking => {
     return {

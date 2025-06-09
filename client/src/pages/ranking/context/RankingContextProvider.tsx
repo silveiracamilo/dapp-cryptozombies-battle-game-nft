@@ -1,8 +1,8 @@
 import { notification } from "antd";
 import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { IRanking } from "src/store/interface/ranking/IRanking";
-import CryptozombiesBattleRankingService from "src/store/services/contract/cryptozombiesBattleRanking/CryptozombiesBattleRankingService";
+import { IRanking } from "@/store/interface/ranking/IRanking";
+import CryptozombiesBattleRankingService from "@/store/services/contract/cryptozombiesBattleRanking/CryptozombiesBattleRankingService";
 
 interface IRankingContext {
     ranking: IRanking[]

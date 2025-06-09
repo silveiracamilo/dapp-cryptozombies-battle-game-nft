@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import * as S from './styles'
-import { zombieGenesMapper } from 'src/store/mapper/zombie/ZombieMapper'
+import { zombieGenesMapper } from '@/store/mapper/zombie/ZombieMapper'
 
 interface IZombie {
   dna: string
@@ -10,7 +10,7 @@ export const Zombie: React.FC<IZombie> = ({ dna }) => {
   const genes = useMemo(() => zombieGenesMapper(dna), [dna]);
 
   return (
-    <S.ExternalContainer>
+    <S.ExternalContainer role='figure' aria-label={`zombie-${dna}`}>
       <S.Dna>DNA: {dna}</S.Dna>
       <S.ZombieContainer>
         {!genes.catMode && (

@@ -2,11 +2,11 @@ import { notification, Spin } from "antd";
 import { isEmpty } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuthContext } from "src/context/auth/AuthContextProvider";
-import { Paths } from "src/router/RouteConsts";
-import { useGetProofAddressQuery } from "src/store/api/cryptozombiesBattle/api";
-import { IGetProofAddressResponse } from "src/store/api/cryptozombiesBattle/types";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import { useAuthContext } from "@/context/auth/AuthContextProvider";
+import { Paths } from "@/router/RouteConsts";
+import { useGetProofAddressQuery } from "@/store/api/cryptozombiesBattle/api";
+import { IGetProofAddressResponse } from "@/store/api/cryptozombiesBattle/types";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
 
 interface IZombieMintFreeContext {
     mintFree: () => void

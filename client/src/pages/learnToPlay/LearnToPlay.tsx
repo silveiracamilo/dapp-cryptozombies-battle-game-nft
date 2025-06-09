@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image } from "antd";
-import ButtonAction from 'src/components/button/ButtonAction';
+import ButtonAction from '@/components/button/ButtonAction';
 import { useNavigate } from 'react-router';
-import { Paths } from 'src/router/RouteConsts';
+import { Paths } from '@/router/RouteConsts';
 import logo from "/images/cryptozombies_battle_logo_400.png";
 import { CardContentStyled, ContainerStyled, ParagraphStyled, SectionStyled, TitleStyled } from './styles';
 

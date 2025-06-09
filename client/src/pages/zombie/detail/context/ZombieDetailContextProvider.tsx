@@ -3,13 +3,13 @@ import { parseEther } from "ethers";
 import { orderBy } from "lodash";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
-import IZombieSale from "src/store/interface/marketplace/IZombieSale";
-import { IBuy, ICancelSale, ISale } from "src/store/interface/marketplace/MarketEvents";
-import { IZombie } from "src/store/interface/zombie/IZombie";
-import IZombieFees from "src/store/interface/zombie/IZombieFees";
-import { ZombieActivitiesType, INewZombie } from "src/store/interface/zombie/ZombieEvents";
-import CryptozombiesBattleService from "src/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
-import CryptozombiesBattleMarketService from "src/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
+import IZombieSale from "@/store/interface/marketplace/IZombieSale";
+import { IBuy, ICancelSale, ISale } from "@/store/interface/marketplace/MarketEvents";
+import { IZombie } from "@/store/interface/zombie/IZombie";
+import IZombieFees from "@/store/interface/zombie/IZombieFees";
+import { ZombieActivitiesType, INewZombie } from "@/store/interface/zombie/ZombieEvents";
+import CryptozombiesBattleService from "@/store/services/contract/cryptozombiesBattle/CryptozombiesBattleService";
+import CryptozombiesBattleMarketService from "@/store/services/contract/cryptozombiesBattleMarket/CryptozombiesBattleMarketService";
 
 interface IZombieDetailContext {
     zombie: IZombie | undefined;
