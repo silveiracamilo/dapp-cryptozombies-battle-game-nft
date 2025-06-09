@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build",
     "build:dev": "tsc -b && vite build --mode=local",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npx vitest --browser.headless"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -33,20 +34,26 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/lodash": "^4.17.16",
     "@types/react": "18",
     "@types/react-dom": "18",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/browser": "^3.2.2",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "javascript-obfuscator": "^4.1.1",
+    "playwright": "^1.52.0",
     "rollup-obfuscator": "^4.1.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0",
     "vite-plugin-compression": "^0.5.1",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.2"
   }
 }

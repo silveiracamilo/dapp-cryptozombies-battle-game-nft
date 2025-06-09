@@ -22,11 +22,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "utils/*": ["./src/utils/*"],
-      "pages/*": ["./src/pages/*"],
-      "assets/*": ["./src/assets/*"]
+      "@/*": ["./src/*"],
     }
   },
   "include": ["src"]
