@@ -7,6 +7,7 @@ const CZBPagination: React.FC<PaginationProps> = ({ total = 0, pageSize = 10, ..
 
     return (
         <PaginationStyled
+            role="navigation"
             defaultCurrent={1}
             align="center"
             showSizeChanger={false}
