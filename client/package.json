@@ -10,7 +10,8 @@
     "build:dev": "tsc -b && vite build --mode=local",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "npx vitest --browser.headless",
+    "test": "npx vitest",
+    "test-headless": "npx vitest --browser.headless",
     "coverage": "npx vitest --run --coverage"
   },
   "dependencies": {
