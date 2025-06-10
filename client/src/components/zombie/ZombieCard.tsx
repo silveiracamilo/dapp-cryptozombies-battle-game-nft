@@ -33,7 +33,7 @@ const ZombieCard: React.FC<IZombieCard> = ({ zombie, zombieHeight = 338, zombieS
     }
 
     return (
-        <CardStyled>
+        <CardStyled role="figura" aria-label={`zombie-card-${zombie.dna}`}>
             <Row justify="center" style={{ height: `${zombieHeight}px` }}>
                 <div style={{ transform: `scale(${zombieScale})`, transformOrigin: 'top' }}>
                     <Zombie dna={zombie.dna} />
