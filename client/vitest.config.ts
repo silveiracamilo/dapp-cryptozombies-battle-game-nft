@@ -12,6 +12,10 @@ export default defineConfig({
       instances: [
         { browser: 'chromium' },
       ],
-    }
+    },
+    unstubEnvs: true,
+  },
+  define: {
+    'process.env': JSON.stringify({})
   }
 })
