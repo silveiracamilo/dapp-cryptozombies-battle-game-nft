@@ -43,7 +43,7 @@ const ZombieActivities: React.FC<IZombieActivities> = ({ loading, activities }) 
     })), [activities]);
 
     return (
-        <Spin spinning={loading}>
+        <Spin spinning={loading} data-testid="spin-loading">
             <h2>Activities</h2>
             <Timeline
                 style={{ width: '100%' }}
